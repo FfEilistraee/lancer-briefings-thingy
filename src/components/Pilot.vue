@@ -169,6 +169,8 @@ import solsticeRainData from '@/assets/LCPs/osr-data-1.2.0'
 import shadowOfTheWolfData from '@/assets/LCPs/sotw-data-1.0.2'
 import sirensSongData from '@/assets/LCPs/ssmr-data-1.7.0'
 import winterScarData from '@/assets/LCPs/ows-data-1.0.0'
+import intercorpData from '@/assets/LCPs/intercorp_3.2'
+import terkmechandtechData from '@/assets/LCPs/TerkMechandTech-0.19.0.0'
 
 import PilotModal from '@/components/modals/PilotModal.vue'
 import MechModal from '@/components/modals/MechModal.vue'
@@ -209,19 +211,22 @@ export default {
       return `/mechs/${this.pilot.callsign.toUpperCase()}.webp`
     },
     mechWeapons() {
-      return [...lancerData.weapons, ...ktbData.weapons, ...nrfawData.weapons, ...longrimData.weapons, ...dustgraveData.weapons, ...gmsCrisisData.weapons, ...legionnaireData.weapons, ...solsticeRainData.weapons, ...sirensSongData.weapons, ...enhancedCombatData.weapons, ...shadowOfTheWolfData.weapons, winterScarData.weapons]
+      return [...lancerData.weapons, ...ktbData.weapons, ...nrfawData.weapons, ...longrimData.weapons, ...dustgraveData.weapons, ...gmsCrisisData.weapons, ...legionnaireData.weapons, ...solsticeRainData.weapons, ...sirensSongData.weapons, ...enhancedCombatData.weapons, ...shadowOfTheWolfData.weapons, ...winterScarData.weapons, ...intercorpData.weapons, ...terkmechandtechData.weapons]
     },
     mechSystems() {
-      return [...lancerData.systems, ...ktbData.systems, ...nrfawData.systems, ...longrimData.systems, ...dustgraveData.systems, ...gmsCrisisData.systems, ...legionnaireData.systems, ...solsticeRainData.systems, ...sirensSongData.systems, ...enhancedCombatData.systems, ...shadowOfTheWolfData.systems, winterScarData.systems]
+      return [...lancerData.systems, ...ktbData.systems, ...nrfawData.systems, ...longrimData.systems, ...dustgraveData.systems, ...gmsCrisisData.systems, ...legionnaireData.systems, ...solsticeRainData.systems, ...sirensSongData.systems, ...enhancedCombatData.systems, ...shadowOfTheWolfData.systems, ...winterScarData.systems, ...intercorpData.systems, ...terkmechandtechData.systems]
     },
     talents() {
-      return [...lancerData.talents, ...ktbData.talents, ...nrfawData.talents, ...longrimData.talents, ...dustgraveData.talents, ...solsticeRainData.talents, ...legionnaireData.talents, ...sirensSongData.talents]
+      return [...lancerData.talents, ...ktbData.talents, ...nrfawData.talents, ...longrimData.talents, ...dustgraveData.talents, ...solsticeRainData.talents, ...legionnaireData.talents, ...sirensSongData.talents, ...intercorpData.talents]
     },
     skills() {
-      return [...lancerData.skills]    
+      return [...lancerData.skills,]    
+    },
+        bonds() {
+      return [...ktbData.bonds, ...shadowOfTheWolfData.bonds]
     },
     frames() {
-      return [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, winterScarData.frames]
+      return [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, ...winterScarData.frames,intercorpData.frames, ...terkmechandtechData.frames,]
     },
     mechManufacturerIcon() {
       if (this.activeMech.manufacturer)
@@ -262,7 +267,7 @@ export default {
   },
   methods: {
     getBond() {
-      this.bond = ktbData.bonds.find((obj) => {
+      this.bond = this.bonds.find((obj) => {
         return obj.id === this.pilot.bondId
       })
     },
@@ -280,7 +285,7 @@ export default {
         this.pilot.mechs[0] ? this.activeMech = this.pilot.mechs[0] : lancerData.frames.find((obj) => { return obj.id === 'missing_frame' })
       }
 
-      const knownFrames = [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, winterScarData.frames]
+      const knownFrames = [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, ...winterScarData.frames, ...intercorpData.frames, ...terkmechandtechData.frames]
       let frame = knownFrames.find((obj) => {
         return obj.id === this.activeMech.frame
       })

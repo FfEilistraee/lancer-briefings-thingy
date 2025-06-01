@@ -1,0 +1,1824 @@
+[
+  {
+    "id": "bnf_dragontail",
+    "license_id": "bnf_dragontail",
+    "source": "SSC",
+    "license_level": 2,
+    "name": "DRAGONTAIL",
+    "mechtype": [
+      "Striker",
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The Dragontail is the flagship model of Smith Shimano Corpo PROMETHEAN-Innovative line of experimental and cutting edge designs, catering to more eccentric clients of the corporation. A joint project between Exotic Materials Group and Urban Solution Group, the Dragontail is a frame designed for urban combat and redefining chemical warfare. Gone are the days of poisonous gasses and chemical burns, as the rise of mechs within the combat space means the old and cruel methods of chemical warfare are no longer effective. The Dragontail research team went back to basics, as what is chemical warfare if not merely chemical reactions? Exotic Material provided a dizzying array of hyper-reactive chemicals meant especially to combat mech, corroding their armor, clogging their vents, clinging to the battlefield as a looming cloud of death. Urban Solution Group provided the spark, ready to set the prepared chemical cocktail ablaze in a stunning display of the primal destructive power, as well as hypnotizing beauty, of mankind’s first and greatest invention, the Flame.</div>",
+    "mounts": [
+      "Aux/Aux",
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 0,
+      "hp": 10,
+      "evasion": 10,
+      "edef": 6,
+      "heatcap": 6,
+      "repcap": 5,
+      "sensor_range": 10,
+      "tech_attack": 0,
+      "save": 10,
+      "speed": 5,
+      "sp": 6
+    },
+    "traits": [
+      {
+        "name": "Firestarter",
+        "use": "",
+        "description": "<div>When you inflict Burn against an enemy, if the enemy does not have Burn, inflict +1 Burn.</div>"
+      },
+      {
+        "name": "Alchemical Dispersal System",
+        "use": "",
+        "description": "<div>When you make any action that make use of a Blast X template, you may instead use a Burst X+1 template centered on you. This Burst is not on-going, even if the Blast is, and if it would cause you to be unable to occupy the space, you are moved to the nearest available space.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Pyroclastic Area Denial System",
+      "active_name": "Pyre",
+      "active_effect": "<p>Choose an enemy within sensor range and line of sight. Clear all Burn from all characters within a Blast 3 radius centered on the targeted character, and deal Burn to the targeted enemy equal to the total amount of Burn cleared. This action is <strong>Efficient</strong>, and refunds 1 Core Power at the end of any scene in which it’s used.</p>",
+      "activation": "Full",
+      "description": "<p>Sometimes, the fear of Fire is just as, if not more, effective than Fire itself. The Pyroclastic Area Denial System is a two stage mechanism meant to maximize zone control through flame, utilizing the age-old thermobaric principles to deploy clouds of highly flammable explosive gas to cover the battlefield, ready to be ignited into a conflagration if any spark is introduced.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_thermobaric_cloud_deployment_rail"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/3pmcluyx5lhqmxofkstu7/DRAGONTAIL_trans_resized.png?rlkey=czwrvjxtzkiu7y2rh07xll0u4&dl=0",
+    "y_pos": 35
+  },
+  {
+    "id": "bnf_dulius",
+    "license_id": "bnf_dulius",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "DUILIUS",
+    "mechtype": [
+      "Defender",
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The Duilius is IPS-N’s breacher line of mech, developed in conjunction with the IPS-N Tortuga, though some hurdles caused it to be released later. Designed to deal with the “fatal funnel”, the most dangerous space to be in a breach-and-clear scenario, the Duilius is armed with a heavy extendable shield, able to weather the most intense fire while moving through a space, acting as a bulwark to shield its allies as they file in behind it. Commonly, this is its sister mech, the Tortuga, mopping up all remaining survivors. Stout, bulky and heavily armored, the Duilius earned its nickname of 'The Wall' through many deadly boarding actions, being the first to enter the breach and the last to leave.</div>",
+    "mounts": [
+      "Flex",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 2,
+      "structure": 4,
+      "stress": 4,
+      "armor": 3,
+      "hp": 8,
+      "evasion": 6,
+      "edef": 8,
+      "heatcap": 4,
+      "repcap": 6,
+      "sensor_range": 5,
+      "tech_attack": 0,
+      "save": 10,
+      "speed": 4,
+      "sp": 6
+    },
+    "traits": [
+      {
+        "name": "Guardian",
+        "use": "",
+        "description": "<div>Adjacent allied characters can use the Duilius for hard cover.</div>"
+      },
+      {
+        "name": "Into the Breach",
+        "use": "",
+        "description": "<div>When the Duilius Braces, it may move up to its speed in a straight line toward the attacker, then activate Testudo Protocol.</div>"
+      },
+      {
+        "name": "Inexorable",
+        "use": "",
+        "description": "<div>1/turn, when the Duilius is knocked back, pulled or knocked prone, it may make a Hull check to ignore it.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Secutor Expandable Shield",
+      "active_name": "Shield Bash",
+      "active_effect": "<p>Move up to your speed in a line, ignoring Engagement and Reactions, and make a special Ram attack against an adjacent character that cannot miss, Stunning the character until the start of their next turn, on top of the usual Ram effect. You may choose to activate Testudo Protocol immediately afterward. This ability is <strong>Efficient</strong> and will refund 1 Core Point at the end of any scene in which this ability was used.</p>",
+      "activation": "Quick",
+      "description": "<p>Eschewing energy shield designs for tried and tested methods, the Secutor is an offshoot of the Argonaut, with even thicker armor and not much additional weight due to advances from IPS-N's Material Science Lab. Blocking most of the mech’s frame by default, the shield can be extended into a veritable moving wall, blocking all lines of fire with its reinforced panels.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Testudo Protocol",
+      "passive_actions": [
+        {
+          "name": "Testudo Protocol",
+          "activation": "Protocol",
+          "detail": "<p>As a Protocol, raise or lower your shield. When raised, the Duilius becomes Slowed, benefits from Hard Cover, and is considered an object for the purpose of blocking Line of Sight, granting Hard Cover and stopping movement, with height equal to the Duilius's size+1. This effect is ended if the Duilius is Stunned or Grappled.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/yc8rb1kcqa651b2nyxov1/dulius_resized.png?rlkey=k0nnfocoqsaz1dslwh8nm42q4&dl=0",
+    "y_pos": 11.5
+  },
+  {
+    "id": "bnf_heruka",
+    "license_id": "bnf_heruka",
+    "source": "HORUS",
+    "license_level": 2,
+    "name": "HERUKA",
+    "mechtype": [
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>First identified among the underground dueling circles of the House of Smoke, the Heruka is a strange pattern group whose battlefield application stems from its original purpose as a training/simulation frame. Without the resources of sanctioned duels, the underground dueling circles cannot easily repair and refit their mechs, and thus resort to simulation strikes, where points are scored if the weapon would hit, without damaging the frame. This drive for ever greater simulation of a real fight led to the development of the predecessor to the Heruka, the Blue Lotus. Using a constantly updating database of battlefield information and a very powerful simulationist computer, the Blue Lotus was capable of simulating strikes to 99.9% accuracy, including subsequent damages and sub-system effects stemming from the attack, and with the capability of shutting its systems down or modifying them according to simulated results, allowing the duelist to go all out in a duel without risk of damage and getting all the results and feedback of real steel on steel contact.</div><div>With the blueprint circulating around the Omninet in hidden forums and chatrooms, it was only a matter of time before outside actors were able to gain access to its source code and make further modifications. The Heruka is a souped up version of the original Blue Lotus, capable of affecting real damage through its usage of simulated data. Using its powerful on board computer and electronic warfare system, the Heruka is able to feed false damage read-outs and feedback indistinguishable to the real thing into an enemy mech's systems, causing the systems to shut down as if it had been physically hit. After all, if the mech believes that a hose has been cut, then it will no longer send fuel through that hose, and thus the result is as if the hose has been actually cut.</div>",
+    "mounts": [
+      "Aux/Aux",
+      "Main/Aux",
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 10,
+      "evasion": 10,
+      "edef": 10,
+      "heatcap": 6,
+      "repcap": 3,
+      "sensor_range": 10,
+      "tech_attack": 1,
+      "save": 10,
+      "speed": 3,
+      "sp": 8
+    },
+    "traits": [
+      {
+        "name": "System Shock",
+        "use": "",
+        "description": "<div>When you make an Improvised Attack, you may choose to deal 1 AP Kinetic damage and 1d3 Heat instead</div>"
+      },
+      {
+        "name": "Ghost Strike",
+        "use": "",
+        "description": "<div>Gain the following options for <strong>Invade:</strong></div>",
+        "actions": [
+          {
+            "name": "Blade from the Duat",
+            "activation": "Invade",
+            "detail": "<div>Choose one non-Superheavy Melee weapon. You make an attack against the invaded character using that weapon, regardless of Threat. The weapon gains Smart and converts damage to Energy for the attack. The weapon cannot be used to attack again this turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          },
+          {
+            "name": "Fist of the God Moon",
+            "activation": "Invade",
+            "detail": "<div>Attack the invaded character with an Improvised Attack, regardless of Threat.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      }
+    ],
+    "core_system": {
+      "name": "All Under Heaven",
+      "active_name": "Omninet Transubstantiation",
+      "active_effect": "<p>For the rest of the scene, gain the following effect:<br><br>1/turn, when you hit an enemy with a melee attack, you may teleport to a free space within range equal to the weapon’s Threat of the targeted enemy.</p>",
+      "activation": "Quick",
+      "description": "<p>“The swordsman may spend his life learning to cut with a blade. Yet, he may be disarmed, his blade may break, and all his life work may be rendered useless in a heartbeat. The greatest swordsman, who has understood the essence of the cut, may cut without a blade. He may cut with his hand, he may cut with his heart, he may cut with his mind”.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/uizq86y9w0eq6tdy722uz/hack_punch_trans_resized.png?rlkey=cj4zjdsvt731r4gei8r2jk3iu&dl=0",
+    "y_pos": 32.5
+  },
+  {
+    "id": "bnf_painted_lady",
+    "license_id": "bnf_painted_lady",
+    "source": "SSC",
+    "license_level": 2,
+    "name": "PAINTED LADY",
+    "mechtype": [
+      "Striker",
+      "Support"
+    ],
+    "variant": "",
+    "description": "<div>Approaching electronic warfare with the same grace and finesse that the SSC is famous for, the Painted Lady is a skirmisher mech boasting incredible agility and the seamless combination of physical combat with hacking attacks, deftly weaving electronically-guided projectiles through the gaps in enemy armor and defenses.</div>",
+    "mounts": [
+      "Aux/Aux",
+      "Flex"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 0,
+      "hp": 10,
+      "evasion": 10,
+      "edef": 10,
+      "heatcap": 6,
+      "repcap": 3,
+      "sensor_range": 10,
+      "tech_attack": 1,
+      "save": 10,
+      "speed": 5,
+      "sp": 8
+    },
+    "traits": [
+      {
+        "name": "Guided Blade",
+        "use": "",
+        "description": "<div>All main or auxiliary melee weapons have SMART. When thrown, it also gains SEEKING.</div>"
+      },
+      {
+        "name": "Bounce!",
+        "use": "",
+        "description": "<div>Whenever you take a Reaction, you may move 3 spaces afterwards. This movement ignores Engagement and does not trigger reactions</div>"
+      },
+      {
+        "name": "Fragile",
+        "use": "",
+        "description": "<div>The Painted Lady receives +1 difficulty on Hull checks and saves.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "\"RedRose\" Guided Javelin Array",
+      "active_name": "Hyper-bore Fusion Warhead",
+      "active_effect": "<p>For the rest of the scene, the “RedRose” Guided Javelin Array gains AP, and the Guided Javelin reaction has unlimited and does not consume your Reaction cap.</p>",
+      "activation": "Protocol",
+      "description": "<p>A miracle of the Exotic Material Group, the RedRose Javelin is a small needle magnetically controlled by a tiny computer within its head. Though seemingly harmless, the RedRose is impossibly dense for its size, which in combination with its self-sharpening point, can punch through armor that its diminutive appearance does not suggest it to be capable of. Miniaturization research also allows a small fusion warhead to be contained in the tip of the RedRose that when activated, heats the javelin to armor-melting temperature, allowing it to pierce armor and mechs alike, though its small size means it can only be activated for a short period of time before burning out.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_redrose_guided_javelin_array"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/kozit9ylqaeviok7g9xie/bnnuy_resized.png?rlkey=gxbb2872iky141uhnptmsr191&dl=0",
+    "y_pos": 21.6
+  },
+  {
+    "id": "bnf_rat_king",
+    "license_id": "bnf_rat_king",
+    "source": "HORUS",
+    "license_level": 2,
+    "name": "RAT KING",
+    "mechtype": [
+      "Controller",
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>After the success of the K-PG code on Bo, Horus cells within the Long Rim got to work refining and developing it further. With the revolt confined to Bo, they had to look for another avenue of arming the Ungratefuls outside of mining colonies. While mining worlds are few in between, Horus remembered that where there is civilization, there is a sewer, and with it, sanitation workers.</div><div>A fork of the original K-PG code, the RK-PG is another suite of hardware and software aimed at repurposing waste disposal machinery into combat mechs, designated pattern group: Rat King. Integrating with the common Microforge mounted on standard KTB SW exo-suits used to dismantle, compress, store and reprocess trash and waste, the K-PG instead molds a makeshift flash-printer, breaking down almost any waste material into base components and reassembling them into weapons and drones. Alongside chemical waste turned deadly weapons and salvage bots turned combat drones, Hydra-derived systems allows Rat King unparalleled synchronization between it and its horde of drones, allowing even just one ungrateful in a Rat King chassis to amass an army of their own, away from suspicion and prying eyes inside the depth of sewers and industrial landfills.</div>",
+    "mounts": [
+      "Flex"
+    ],
+    "stats": {
+      "size": 0.5,
+      "structure": 4,
+      "stress": 4,
+      "armor": 0,
+      "hp": 6,
+      "evasion": 12,
+      "edef": 10,
+      "heatcap": 4,
+      "repcap": 5,
+      "sensor_range": 10,
+      "tech_attack": 1,
+      "save": 10,
+      "speed": 5,
+      "sp": 8
+    },
+    "traits": [
+      {
+        "name": "Quantum Entanglement",
+        "use": "",
+        "description": "<div>Allied drones adjacent to the Rat King are considered Entangled, as well as the Rat King. Allied drones adjacent to Entangled drones are also considered Entangled.</div><div>When Rat King declares any action, it may instead consider the action to originate from the position of any Entangled drone. Entangled drones may choose to mirror Rat King's movement on its turn, though are still affected by obstructions.</div>"
+      },
+      {
+        "name": "Schrodinger Targeting",
+        "use": "",
+        "description": "<div>1/turn, the Rat King may swap position with an Entangled drone as a free action. Gain the Cat and Mouse reaction.</div>",
+        "actions": [
+          {
+            "name": "Cat and Mouse",
+            "activation": "Reaction",
+            "detail": "<div>Choose another <strong>Entangled </strong>drone. The target of the hostile action and the chosen drone teleport to each other's location, and the chosen drone becomes the target of the triggering action instead.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "1/round",
+            "init": "",
+            "trigger": "<div>The Rat King or an Entangled Drone is targeted by a hostile action</div>"
+          }
+        ]
+      },
+      {
+        "name": "Micro-Forge",
+        "use": "",
+        "description": "<div>When you rest or perform a Full Repair, you may spend 1 Repair to repair all destroyed Drone systems.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Sputnik Assistant System",
+      "active_name": "Swarm Tactics",
+      "active_effect": "<p>Deploy an additional Sputnik Drone at an adjacent free space.</p><p>For the rest of the scene, you and your Sputnik Drones are always considered Entangled, regardless of positions. Entangled drones and characters are always considered to be in Soft Cover.</p>",
+      "activation": "Quick",
+      "description": "<p>Straddling the line between a drone and a comp/con, the Sputnik Assistant System is a standard issue waste processor robot, issued to those working in exceedingly hazardous conditions such as industrial landfills or reactor waste storage rooms. Designed to allow one worker to easily do the work of an entire group, Sputnik is always helpful and collaborative with its user, mimicking their personality and modifying its frames for ease of remote operation. With the RK-PG modification, each Sputnik drone is a veritable comrade, standing in solidarity with its user, ready to take up arms for the fight to come.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Sputnik Drones",
+      "passive_effect": "<p>At the start of the scene, select one of your mounts that does not contain a superheavy or loading weapon and then deploy a Sputnik Drone in an adjacent free space; your sputnik drones are equipped with the weapons from that mount, dealing half damage, burn and heat. They make use of your weapon mods, and consume charges from your weapons' limited pool as usual.</p><p>Your Sputnik drones share your Evasion, E-Defense and Speed, and move independently on your turn.</p><p>Every time you deploy a non-Sputnik drone, you may spend 1 HP to deploy another Sputnik Drone at an adjacent free space. At the end of the scene, all Sputnik Drones are destroyed and you restore HP equal to amount of Sputnik Drones destroyed.</p><p>1/round as a Quick Action, you may command all&nbsp;your Sputnik Droes to fire their weapons at the same target, using your grit for the roll. This is the only way they can fire their weapons.</p>",
+      "passive_actions": [
+        {
+          "name": "Target Acquired",
+          "activation": "Quick",
+          "detail": "<p>Command all your Sputnik Drones to fire their weapons at the same target, using your grit for the roll.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [
+        {
+          "name": "Sputnik Drone",
+          "type": "Drone",
+          "detail": "<p>This drone shares your Evasion, E-Defence and Speed, and moves independently on your turn.</p><p>This drone is armed with the weapons from one of your mounts that does not contain a superheavy or loading weapon, dealing half damage, burn and heat. It benefits from your weapon mods, and consumes charges from your weapons' limited pool as usual.</p>",
+          "size": 0.5,
+          "activation": "",
+          "deactivation": "",
+          "recall": "",
+          "redeploy": "",
+          "instances": 1,
+          "cost": 1,
+          "armor": "",
+          "hp": "5",
+          "evasion": "12",
+          "edef": "10",
+          "heatcap": "",
+          "repcap": "",
+          "sensor_range": "",
+          "tech_attack": "",
+          "save": "",
+          "speed": "5",
+          "pilot": false,
+          "mech": false,
+          "actions": [],
+          "bonuses": [],
+          "synergies": [],
+          "counters": []
+        }
+      ],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/h5jwxes7tawfjxi3w096w/rat_king_resized.png?rlkey=ccqogzddz4ddcv9k9l90rfvvd&dl=0",
+    "y_pos": 29
+  },
+  {
+    "id": "bnf_tukhachevsky",
+    "license_id": "bnf_tukhachevsky",
+    "source": "HA",
+    "license_level": 2,
+    "name": "TUKHACHEVSKY",
+    "mechtype": [
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>In response to a wave of insurgencies utilizing Horus patterns of mechs, Harrison Armory got to work in developing an electronic warfare platform to defend against and counter electronic attacks. With their focus on weapon technology and reactors, HA was starting out at a disadvantage against the well established, and often esoteric codes and sophisticated softwares of its opponent, and it would have taken an unacceptable amount of time to catch up in terms of development while the enemy sails even further out of reach. The Think Tank instead decided to leverage the Armory's greatest strength to solve this conundrum: the power of <strong>hardware</strong> and <strong>heatbanks</strong>.</div><div>Containing a supercomputer loaded with billions of state-of-the-art microprocessors, the Tukhachevsky is capable of employing unfathomable computing power, simply brute-forcing its way through any encryption that it cannot get through the usual way. All of this is crammed into a hardy mech through the use of H-GOBLIN-derived recursive-mesh interdermal substrate. The heat produced by such an intense computational monolith would have been unbearable for most mechs, but Harrison Armory's prowess in dealing with heat problems proved superior once again, producing an electronic warfare frame that lacks none of the Armory signature durability and energy potential.</div>",
+    "mounts": [
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 10,
+      "evasion": 6,
+      "edef": 8,
+      "heatcap": 9,
+      "repcap": 4,
+      "sensor_range": 10,
+      "tech_attack": 0,
+      "save": 11,
+      "speed": 4,
+      "sp": 7
+    },
+    "traits": [
+      {
+        "name": "Brute-Force",
+        "use": "",
+        "description": "<div>After the Tukhachevsky rolls for a tech attack, it may instead take 1d3 Heat to re-roll the result, but you must keep this new result. You may repeat the re-roll as many times as you wish, with the heat cost mounting with each subsequent activation, increasing to 2d3, 3d3, 4d3, etc.</div>"
+      },
+      {
+        "name": "Backdoor Package",
+        "use": "",
+        "description": "<div>The Tukhachevsky can crit with its tech attacks. When it does, the enemy takes an additional 2 heat.</div>"
+      },
+      {
+        "name": "Superior Reactor",
+        "use": "",
+        "description": "<div>The Tukhachevsky gains +1 accuracy on Engineering checks and saves.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "DEEP_RED Supercomputer",
+      "active_name": "Directed Signal Protocol",
+      "active_effect": "<p>For the rest of this scene, you gain the Directed Signal Protocol protocol.</p>",
+      "activation": "Protocol",
+      "description": "<p>The DEEP_RED is Harrison Armory's premiere front-line electronic warfare suite, and one of the most powerful computing systems that can be mounted on a mobile chassis. Containing billions of rows of microprocessors and chips, the supercomputer is contained within folded space in order to fit within the Tukhachevsky. Its unrivaled computing capacity allows the Tukhachevsky to conduct electronic warfare through sheer power, brute-forcing through encryption and jamming every conceivable air-wave with an impenetrable wall of data.</p><p>Rumors of HA pilots leaving the mech running to mine CreightonCoin is unsubstantiated and against protocol.</p>",
+      "deactivation": "",
+      "use": "Encounter",
+      "active_actions": [
+        {
+          "name": "Directed Signal Protocol",
+          "activation": "Protocol",
+          "detail": "<p>Choose an enemy mech within line of sight of any ally. For the rest of the scene, that enemy is always considered to be within Sensor Range of the Tukhachevsky, and the Tukhachevsky always has line of sight to it. Brute-Force against this enemy does not incur the normal mounting heat cost.</p><p>You may only choose one character at a time. When the chosen character is destroyed, you may use this Protocol again to choose another target.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/iqwj32jr1u65zs9iwjkyw/tukha_resized.png?rlkey=ud7hw3fg5gdwg0z40hjntsetn&dl=0",
+    "y_pos": 0
+  },
+  {
+    "id": "bnf_gorshkov",
+    "license_id": "bnf_gorshkov",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "GORSHKOV",
+    "mechtype": [
+      "Support",
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The Gorshkov is IPS-N's line of under-the-table mech, not officially available for civilians or the military. Designed for covert operations, espionage and sabotage, the Gorshkov is a surprisingly low-tech frame compared to its cousins of similar design from other companies. Harkening back to its origin as ad-hoc modifications to standard hard-suits by IPS-N Saboteur teams, Gorshkov uses tried and true technology and design, prioritizing reliability and ease of use above all else, as behind-enemy-line operations provide scarce opportunities for repair. Its largely analog concealment and sabotage system provides an unexpected advantage, as in the ever-developing landscape of the future, more and more of the opposition deploys ever more sophisticated electronic defense systems. And the more advanced something is, the more moving parts it has, and the more places you can break by just sticking a pipe in the wrong place at the right time.</div>",
+    "mounts": [
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 0.5,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 6,
+      "evasion": 8,
+      "edef": 10,
+      "heatcap": 6,
+      "repcap": 4,
+      "sensor_range": 15,
+      "tech_attack": 0,
+      "save": 11,
+      "speed": 5,
+      "sp": 8
+    },
+    "traits": [
+      {
+        "name": "Adaptive Vision Denial",
+        "use": "",
+        "description": "<div>At the end of its turn, if the Gorshkov hasn’t made any attacks or forced any saves, it clears Lock-On.</div><div>If it does not have Lock-on, it becomes Invisible until the end of your next turn or until after you make an attack or force a save.</div><div>If it is already Invisible, it also becomes Hidden.</div>"
+      },
+      {
+        "name": "Pointman Co-Pilot",
+        "use": "",
+        "description": "<div>If a hostile is in the same Soft Cover zone as the Gorshkov, it cannot benefit from that same Soft Cover zone</div>"
+      },
+      {
+        "name": "Saboteur",
+        "use": "",
+        "description": "<div>All checks and saves forced by the Gorshkov against hostile characters while Invisible or Hidden gain +1 Difficulty. If you have both, they automatically fail.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Murky Water Cloak",
+      "active_name": "Abyssal Override",
+      "active_effect": "<p>Set the value of the Blackout Die to 3. It cannot be reduced for the rest of the scene.</p>",
+      "activation": "Quick",
+      "description": "<p>Older models of IPS-N MS-11 civilian heavy-duty reactors are noted for their thick, blinding exhaust due to its reactor waste processor. While their Civil Engineering department eventually ironed out this flaw with the MS-12, IPS-N's Security Engineering department took note of the potential applications, and got to work amplifying it instead, resulting in the Murky Water Cloak. Compatible with most mainline IPS-N mech reactors, Murky Water modifies the exhaust system to create an impenetrable cloud of pitch black smog, almost liquid in consistency, providing unparalleled obscuring capacity as the smog clings to surfaces with a heft that makes it difficult to remove even in strong winds and zero-G environments.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Murky Water Cloak",
+      "passive_effect": "<p>Gain the Blackout Die, starting at 0 and ticking up to a maximum of 3. Lose all charges when you are Stunned, or take Structure or Stress damage.</p><p>You generate an ongoing Burst X area of Soft Cover that moves with you, with X equal to the current value of the Blackout Die.</p>",
+      "passive_actions": [
+        {
+          "name": "Black Out",
+          "activation": "Protocol",
+          "detail": "<p>Tick the Blackout Die's value up by 1, up to a maximum of 3.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [
+        {
+          "id": "bnc_black_out",
+          "name": "Blackout Die",
+          "min": "0",
+          "max": "3",
+          "default_value": "0"
+        }
+      ],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/4axudtrrruhdvoctqqbys/Gorshkov_trans_resized-1.png?rlkey=2nu22dm76eh1k7oxljy7ixmfo&dl=0",
+    "y_pos": 18.5
+  },
+  {
+    "id": "bnf_dagon",
+    "license_id": "bnf_dagon",
+    "source": "HORUS",
+    "license_level": 2,
+    "name": "DAGON",
+    "mechtype": [
+      "Controller",
+      "Defender"
+    ],
+    "variant": "",
+    "description": "<div>Originating from a disastrous expedition by Union into the YTHLEI Metavault, the Dagon's schematic was immediately distributed across the Omninet when the vault was breached, with Horus collectives across the galaxy managing to copy it down for underground circulation after Union contained the transmission. Worryingly, it seems to periodically communicate with the Eidolon inside the YTHLEI metavault, sending seemingly useless data regardless of its current position, even after the metavault has been resealed and quarantined.</div><div>It is an enigma by all possible definitions, running on a code base never before seen and incomprehensible to all within real space. Merely attempting to scan Dagon overloads processors with a tide of indecipherable information, trying to make sense of what exactly it is. Several system locks are in place to prevent its own pilot from diving too deep into its systems. But as with all things circulated by Horus, systems are meant to be circumvented, and those who descend regardless into the workings of Dagon rarely return in one piece.</div>",
+    "mounts": [
+      "Flex",
+      "Main"
+    ],
+    "stats": {
+      "size": 3,
+      "structure": 4,
+      "stress": 4,
+      "armor": 0,
+      "hp": 12,
+      "evasion": 6,
+      "edef": 12,
+      "heatcap": 5,
+      "repcap": 4,
+      "sensor_range": 3,
+      "tech_attack": 1,
+      "save": 11,
+      "speed": 3,
+      "sp": 8
+    },
+    "traits": [
+      {
+        "name": "Gaze Into The Abyss",
+        "use": "",
+        "description": "<div>If the Dagon is within Sensor Range of a character, that character is considered to be within Sensor Range of the Dagon. The Dagon always knows the Sensor Range of all characters.</div>"
+      },
+      {
+        "name": "Prescence of Dagon",
+        "use": "",
+        "description": "<div>Enemies within the Dagon’s Sensor Range and Line of Sight must make a contested System Check when making a tech attack. On a failure, the tech attack is directed at the Dagon instead.</div>"
+      },
+      {
+        "name": "Incomprehensible",
+        "use": "",
+        "description": "<div>Gain the Forceful Insight reaction:</div>",
+        "actions": [
+          {
+            "name": "Forceful Insight",
+            "activation": "Reaction",
+            "detail": "<div>The enemy makes a System Save. On a failure, they are Impaired again until the end of their next turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "1/round",
+            "init": "",
+            "trigger": "<div>An Impaired enemy within your Sensor Range stops being Impaired.</div>"
+          }
+        ]
+      }
+    ],
+    "core_system": {
+      "name": "Enlightenment",
+      "active_name": "PRY_THEM_OPEN",
+      "active_effect": "<p>The Dagon and all allied mechs have 50 Sensor Range for the rest of the scene.</p>",
+      "activation": "Protocol",
+      "description": "<p>\"Come and See.\"</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/cu9gbgap9hsx3bb1cq2xp/dagon_trans-1.png?rlkey=vsgauuzhxuc1j02fnw6or2wl2&dl=0",
+    "y_pos": 30
+  },
+  {
+    "id": "bnf_frundsberg",
+    "license_id": "bnf_frundsberg",
+    "source": "HA",
+    "license_level": 2,
+    "name": "FRUNDSBERG",
+    "mechtype": [
+      "Defender",
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>The Frundsberg is the brainchild of one of the HA Weapon Development Lab's head researchers, Gottfried Zimmermann, developed in response to an unreasonable amount of after action reports of Lancers installing thrusters and melee weapons on the venerable Barbarossa plattform. Rather than dismissing these as pilot shenanigans, or distributing a manual on how to use the Barbarossa as his colleagues suggested, Gottfried got to work designing a colossal close combat machine based on the Barbarossa, spawning the Frundsberg in the process, pushing it ahead as his pet project much to the protest of his colleagues.</div><div>While still an experimental mech and thus, not available on the open market or for regular requisition, the Frundsberg has made a name for itself amongst veteran melee specialist HA pilots who were able to acquire the mech through special request, proving to be a stalwart presence on the battlefield with its crushing size and colossal reach.</div>",
+    "mounts": [
+      "Main",
+      "Main",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 3,
+      "structure": 4,
+      "stress": 4,
+      "armor": 2,
+      "hp": 10,
+      "evasion": 6,
+      "edef": 6,
+      "heatcap": 7,
+      "repcap": 4,
+      "sensor_range": 5,
+      "tech_attack": -2,
+      "save": 10,
+      "speed": 3,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "At Arm's Length",
+        "use": "",
+        "description": "<div>The Frundsberg's melee weapons gain Knockback X equal to the weapons' Threat.</div>"
+      },
+      {
+        "name": "Pike Wall",
+        "use": "",
+        "description": "<div>Gain the Push of Pike Reaction:</div>",
+        "actions": [
+          {
+            "name": "Push of Pike",
+            "activation": "Reaction",
+            "detail": "<div>Skirmish with that weapon against that enemy, interrupting their movement on hit.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "1/round",
+            "init": "",
+            "trigger": "<div>An enemy enters the Threat range of one of your melee weapons.</div>"
+          }
+        ]
+      },
+      {
+        "name": "Heavy Frame",
+        "use": "",
+        "description": "<div>The Frundsberg can’t be pushed, pulled, knocked Prone, or knocked back by smaller characters.</div>"
+      },
+      {
+        "name": "Crashing Blow",
+        "use": "",
+        "description": "<div>When you fall adjacent to an enemy, you may immediately Skirmish/Barrage with one equipped melee weapon against that enemy, obeying all restrictions and still costing the appropriate action as normal.</div><div>On hit, in addition to all the normal effects of the melee attack, the enemy takes the fall damage you would have taken instead.</div><div>On miss, you take fall damage as usual.</div><div>The Frundsberg may immediately fall to the ground as a free action whenever it is airborne.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Forlorn Hope",
+      "active_name": "Forlorn Hope",
+      "active_effect": "<p>Fly up to your Speed in any direction, then become Immobilized. For the rest of the scene you are Immobilized and cannot be moved by any means, gain Resistance to all damage from beyond Range 3, gain +1 Threat to all melee weapons, and 1/turn may take 2 Heat to make a second Reaction. You may end this effect as a Quick Action.</p>",
+      "activation": "Quick",
+      "description": "<p>Based on the Siege Stabilizer, Forlorn Hope protocol deploys integrated supporting beams and servos to anchor the Frundsberg to the ground. With its footing secured, all of the mech’s reactor power and processing capability can be solely devoted to its melee and defensive subroutines, turning the Frundsberg into a tower of blades. Despite its short history of service, Forlorn Hope has already made a name for itself as the “Martyrdom Button”, used by pilots to incredible effectiveness during desperate delaying action and choke point holding.</p>",
+      "deactivation": "Quick",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Indomitable",
+      "passive_effect": "<p>While this mech is Immobilized, Push of Pike loses its 1/round restriction. It can choose to become immobilized until the end of its next turn as a protocol.</p>",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/h3e10tl5ynzbq8pmbk4fh/Frundsberg-trans.png?rlkey=snzzs98xmod4w4vvkqj85bv2z&dl=0",
+    "y_pos": 32.25
+  },
+  {
+    "id": "bnf_geryon",
+    "license_id": "bnf_geryon",
+    "source": "HORUS",
+    "license_level": 2,
+    "name": "GERYON",
+    "mechtype": [
+      "Artillery",
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The result of a galactic game of telephone, the Geryon’s origin lies with the Volador. Harrison's Armory acquisition of its advanced blink space teleportation technology leads to the development of the Sunzi. This, in turn, leads to the Sunzi's R&amp;D project file being obtained by a Horus cell after a daring hack, and modified with esoteric technology to produce the Geryon. Where the Sunzi is developed to support its allies with multiple short blinkspace teleportation jumps, the Geryon is solely focused on maintaining a single stable localized blinkspace portal, a task which took up almost half the mech's weight to accomplish. In turn, the Geryon can draw immense power from this portal, turning it into a weapon by reallocating the portal to point to the heart of a star to decimate its enemies with the barely-contained power of the sun.</div>",
+    "mounts": [
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 2,
+      "structure": 4,
+      "stress": 4,
+      "armor": 2,
+      "hp": 8,
+      "evasion": 6,
+      "edef": 10,
+      "heatcap": 6,
+      "repcap": 4,
+      "sensor_range": 10,
+      "tech_attack": 1,
+      "save": 10,
+      "speed": 3,
+      "sp": 6
+    },
+    "traits": [
+      {
+        "name": "Solar Flare",
+        "use": "",
+        "description": "<div>While in the Danger Zone, whenever you inflict Heat on a hostile character, that character takes 1 Burn.</div>"
+      },
+      {
+        "name": "Heart Of A Dying Star",
+        "use": "",
+        "description": "<div>The Geryon's Danger Zone threshold is reduced by 1.</div>"
+      },
+      {
+        "name": "Reverse Thermodynamics",
+        "use": "",
+        "description": "<div>During a rest, you may spend one repair to reduce your Overcharge counter by 1.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Serrated Sun Wormhole Stabilizer",
+      "active_name": "THESUN",
+      "active_effect": "<p>Open the wormhole to the core of a nearby star. For the rest of the scene, you project a Burst 2 area around you that moves with you. Hostiles in your line of sight cannot draw Line of Sight through this area, except directly at you.</p>",
+      "activation": "Quick",
+      "description": "<p>Dozens of manipulators work tirelessly to maintain the containment field of this weapon, if it can even be called that, constantly repairing what is eaten away by the wormhole and re-calibrating the containment field on the fly. In exchange, a tiny pin-hole is all it needs to draw the unchecked power of the cosmos through to the battlefield.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Reconfigure Wormhole",
+      "passive_effect": "<p>At the start of the scene, you choose what profile the Serrated Sun Wormhole Stabilizer is in.</p><p>As a Protocol, you may take one heat to change the profile of your integrated Serrated Sun Wormhole Stabilizer.</p>",
+      "passive_actions": [
+        {
+          "name": "Reconfigure Wormhole",
+          "activation": "Protocol",
+          "detail": "<p>Take 1 heat, then choose a new profile for the Serrated Sun Wormhole Stabilizer.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_serrated_sun_wormhole_stabilizer"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/ao4ql6em94t27tjibv3xh/Geryon-Resized.png?rlkey=7z1hjj81tydg1y14aa9ijbqiw&dl=0",
+    "y_pos": 25.5
+  },
+  {
+    "id": "bnf_suleiman",
+    "license_id": "bnf_suleiman",
+    "source": "HA",
+    "license_level": 2,
+    "name": "SULEIMAN",
+    "mechtype": [
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The HA Suleiman is a civilian fork of the Napoleon, originally commissioned by the Union Science Bureau. Conceived as an all-terrain, all-weather exploration frame capable of dealing with the harshest environments the galaxy has to offer, the frame combines technology derived from deep-sea hardsuits and void-hardened mechs with the Napoleon's state of the art shielding system. Small, sturdy and surprisingly dense, the Suleiman is made to be able to retract its limbs system into its reinforced shell, temporarily becoming nigh-invulnerable. Its spherical form, meanwhile, allows it to harmlessly roll around when struck by great force, whether from unexpected landslides, sudden mega-storm gale winds, or an onslaught from charging xenofauna. Its cockpit is gyroscopically stabilized and reinforced with anti-gravity generators and momentum dampeners, allowing it to keep the pilot upright and their drinks unspilled, emerging not much worse for wear even as it is thrown around its operational environment.</div><div>Though envisioned for civilian roles, the Suleiman has recently attracted interest as a war-theater mech for use in extreme battlefield conditions; its small frame and sturdy construction making it surprisingly resilient, able to trudge through just about any hostile terrain with little to no impact on combat effectiveness.</div>",
+    "mounts": [
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 0.5,
+      "structure": 4,
+      "stress": 4,
+      "armor": 2,
+      "hp": 6,
+      "evasion": 8,
+      "edef": 8,
+      "heatcap": 7,
+      "repcap": 4,
+      "sensor_range": 3,
+      "tech_attack": 1,
+      "save": 11,
+      "speed": 3,
+      "sp": 7
+    },
+    "traits": [
+      {
+        "name": "Cannon Ball",
+        "use": "",
+        "description": "<div>The Suleiman counts as Size 3 when inflicting Knockback and Prone.</div>"
+      },
+      {
+        "name": "Clang!",
+        "use": "",
+        "description": "<div>The Suleiman has +1 Accuracy on Rams and Improvised Attacks.</div><div>Your Ram attacks can now Crit, Immobilizing the enemy until the end of their next turn on Crit.</div>"
+      },
+      {
+        "name": "Rolling Thunder",
+        "use": "",
+        "description": "<div>1/turn, when your non-standard movement (voluntary or involuntary) would be obstructed by a character or engagement, you may make a Ram attack against the obstructing character.</div><div>You ignore Engagement and Obstruction from Prone characters, being able to pass through but not ending your movement in their space.</div>"
+      },
+      {
+        "name": "Roll With The Punches",
+        "use": "",
+        "description": "<div>1/turn, when you are hit by an attack that deals any amount of Kinetic or Explosive damage, you may reduce its damage by 1 and force it to trigger Knockback 2. Against attacks from allies, you may reduce the damage by 2 and give it Knockback 4 instead.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Reactive Paneling",
+      "active_name": "Engage Capacitor",
+      "active_effect": "<p>For the rest of the scene, you gain a Charge Die – 1d6, starting at 1. Whenever you take heat or kinetic or explosive damage, even from yourself, increase the value of the Charge Die by 1.</p><p>Your Ram and Improvised Attacks deal bonus AP Explosive Damage equal to current charge + 2.</p><p>When the Charge Die reaches 6, your next Ram or Improvised Attack gain on hit: the enemy must succeed on an Engineering Save or be Stunned until the end of their next turn, resetting the Charge Die to 1 afterwards. Enemies can only be Stunned by this 1/scene.</p>",
+      "activation": "Protocol",
+      "description": "<p>The most striking feature of the Suleiman, its spherical form, is composed of dozens of panels and hatches connected to cutting edge suspension and force absorption modules. Designed with a quick release latch, it can quickly deploy and retract its limbs at a moment's notice, presenting an unassailable form protected from all angles. The absorption module is even capable of turning forces that it absorbed into energy, commonly used to re-charge the mech’s reactor on long expeditions, and reroute it back into the panel, to explosive effect.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Shifting Gear",
+      "passive_effect": "<p>The Suleiman has a second mode: <strong>Curled Up</strong>. As a Protocol or whenever you Brace, you may enter or exit this mode:</p><p>While Curled Up, the Suleiman:</p><ul><li><p>Gains 1 armor.</p></li><li><p>Has base speed 6 and is immune to Prone, Difficult and Dangerous Terrain.</p></li><li><p>Cannot make melee or ranged attacks except Rams and Improvised Attacks.</p></li><li><p>When you make a Ram or Improvised Attack, you may fly up to 3 spaces directly towards the targeted character before the attack. This movement ignores engagement and doesn’t provoke reactions.<br></p></li></ul>",
+      "passive_actions": [
+        {
+          "name": "Curl up",
+          "activation": "Protocol",
+          "detail": "<p>Enter or exit Curled Up mode.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [
+        {
+          "id": "charge_die",
+          "name": "Charge Die",
+          "min": "1",
+          "max": "6",
+          "default_value": "1"
+        }
+      ],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/rtscdvgx4p4z1c0z0sxkq/boomer_mech_resized.png?rlkey=bxqdx3tlgazg1lpmmzu1d4egg&dl=0",
+    "y_pos": 49
+  },
+  {
+    "id": "bnf_brudenell",
+    "license_id": "bnf_brudenell",
+    "source": "HA",
+    "license_level": 2,
+    "name": "BRUDENELL",
+    "mechtype": [
+      "Striker",
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>\"Winged Fortress\", \"Creighton's Fist\", \"Lord Thunder\", \"the Flying Brick\", \"Rocket Coffin\" are some of the many colorful names given to the Brudenell by its pilots. Originally designed as an aerial superiority fighter mech, JCH1's insistence that the mech not be stripped of HA's signature heavy armor and weaponry led the Think Tank to turn to a different avenue to achieve flight: “More Thrusters”, as well as the proprietary Kinetic Battery technology.</div><div>Though considered a failure to achieve its original purpose, being too heavy and clunky to truly challenge the sky against it's more agile contemporaries, the combination of armor, firepower and terrifying speed means that the Brudenell found new popularity as a linebreaker, crashing into enemy defenses with nigh-unstoppable momentum. \"In Thrust We Trust\" has been christened as its unofficial motto despite efforts to the contrary by Marketing, and it is often found written in many of its pilots' cockpits.</div>",
+    "mounts": [
+      "Flex",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 2,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 8,
+      "evasion": 8,
+      "edef": 8,
+      "heatcap": 8,
+      "repcap": 5,
+      "sensor_range": 3,
+      "tech_attack": -2,
+      "save": 10,
+      "speed": 3,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "Sonic Boom",
+        "use": "",
+        "description": "<div>1/round, when the Brudenell starts a move of at least 8 spaces, it ignores all reactions and engagement for the duration of the movement. Enemies in its path or adjacent to its path must succeed on a Hull Save or be knocked Prone.</div>"
+      },
+      {
+        "name": "Redline Thrusters",
+        "use": "",
+        "description": "<div>While the Brudenell is in the Danger Zone:</div><ul><li><div>The Brudenell can, and must, Fly whenever it moves or boosts.</div></li><li><div>Whenever the Brudenell spends Kinetic Battery charges, each charge is counted as two charges.</div></li></ul>"
+      },
+      {
+        "name": "Poor Handling",
+        "use": "",
+        "description": "<div>The Brudenell receives +1 difficulty on Agility checks and saves.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Kinetic Battery",
+      "active_name": "More Thrust",
+      "active_effect": "<p>Immediately max out your Kinetic Battery charges. Until the end of this turn, Kinetic Battery charges are not consumed when spent, and you may Boost as Free Action once.</p>",
+      "activation": "Protocol",
+      "description": "<p>Despite its long service history, the Kinetic Battery mechanism is still a mystery. Though batteries are not a new concept, a device capable of storing, and discharging, pure kinetic energy without any sort of medium or method of transfer is beyond the grasp of current scientific understanding, owing to its nature as a paracausal device formed by the Think Tank. When hooked up to a mech’s reactor and combined with an inertial dampener, it allows a Brudenell’s pilot to “gun the engine”, seemingly moving without moving to charge up the battery, and later discharge to accelerate their mech to breakneck speed in an instant.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Kinetic Battery",
+      "passive_effect": "<p>1/turn, if the Brudenell would move, voluntarily or involuntarily, it may negate that movement, taking heat equal to the distance it would have moved, and store Kinetic Charge equal to that distance, up to a cap of Grit+4.</p><p>Movement granted by Kinetic Battery cannot be used to charge Kinetic Battery.</p><ul><li><p>When the Brudenell makes any voluntary movement, it may spend all Kinetic Charge to move extra spaces equal to the amount of charges spent.</p></li><li><p>When the Brudenell hits with a melee attack, it may spend all Kinetic Charge to add Knockback equal to the amount of charges spent.</p></li></ul>",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [
+        {
+          "id": "kinetic_charge",
+          "name": "Kinetic Charge",
+          "min": "0",
+          "default_value": "0"
+        }
+      ],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/eahbwmnm70xqzhkp5vxio/HA_flyer_resized.png?rlkey=s222zdb35w5awc2vbtd5pgr8j&dl=0",
+    "y_pos": 25
+  },
+  {
+    "id": "bnf_arthur",
+    "license_id": "bnf_arthur",
+    "source": "HA",
+    "license_level": 2,
+    "name": "ARTHUR",
+    "mechtype": [
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>The HA Arthur bears the distinction of being the Harrison Armory’s flagship frame in its program to design and create chassis for the Albatross. Though IPS-N is long considered the official sponsor of Albatross, the defense of Abon VI saw Harrison Armory's Colonial Legion and Albatross’s Ash Wing response lance working closely together to defend the fledgling colony against the fallout of an internal power struggle from a nearby warlord state.</div><div>Eager to capitalize on this fledgling relationship, Harrison Armory unveiled the Arthur line dedicated to the Albatross, modeled after the knight in shining armor image that the Albatross is known for, and distributed its first test run to them, free of charge, as a sign of goodwill. Though it remains to be seen if this move would result in another sponsorship agreement, the Arthur frame itself has been proven quite popular, its capability for explosive action and speed at a moment’s notice lending itself well to the small-scale rapid response and insertion the Albatross is known for.</div>",
+    "mounts": [
+      "Flex",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 8,
+      "evasion": 8,
+      "edef": 8,
+      "heatcap": 8,
+      "repcap": 4,
+      "sensor_range": 10,
+      "tech_attack": 0,
+      "save": 10,
+      "speed": 3,
+      "sp": 6
+    },
+    "traits": [
+      {
+        "name": "Edge of Tomorrow",
+        "use": "",
+        "description": "<div>As a Quick Action, the Arthur charges up a strike. This Quick Action can only be taken if you do not Skirmish or Barrage this turn.</div><div>While charged, the Arthur can Skirmish as a Free Action or Barrage as a Quick Action, spending the charge while doing so.</div><div>The Arthur can only hold one charge at a time, but charges last for the rest of the scene or until used.<br></div>",
+        "actions": [
+          {
+            "name": "Edge of Tomorrow",
+            "activation": "Quick",
+            "detail": "<div>Charge up a strike. This quick action can only be taken if you do not Skirmish or Barrage this turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "Questing Chassis",
+        "use": "",
+        "description": "<div>1/round, when the Arthur Bolsters an allied character or is Bolstered by an allied character, it may move up to three spaces afterwards, ignoring engagement and reactions.</div>"
+      },
+      {
+        "name": "Servo Overcharge",
+        "use": "",
+        "description": "<div>If the Arthur does not make any voluntary movement on its turn, it may take 2 Heat to Boost once as a Free Action during its next turn.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "X-Caliber Plasmacore",
+      "active_name": "X-Caliber",
+      "active_effect": "<p>Until the end of this turn, you gain access to the <strong>X-Caliber Plasmacore</strong>. This ability is <strong>Efficient</strong> and will refund 1 Core Point at the end of any scene in which this ability was used.</p>",
+      "activation": "Protocol",
+      "description": "<p>The X-Caliber Plasmacore is an experimental battery system derived from the ZF4 SOLIDCORE. Far more powerful and unstable, it is capable of immense power output, but it is only capable of maintaining it for a brief period of time. Intended to be compatible with a wide variety of standard Armory equipment, hence its designation as X-Caliber, research and development is ongoing to create a power transfer method capable of withstanding this burst of power reliably. In the meantime, the most popular usage of the power source is to simply shunt the incredible power into a short-lived plasma blade, not too dissimilar from the Annihilator of Bradburry Rebellion’s fame.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_x_caliber_plasmacore"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/zubvqdaeznqy781blzqz8/HA_-_Arthur_trans_resized.png?rlkey=zf34sa394v5njhz8ie8dmfsnh&dl=0",
+    "y_pos": 28
+  },
+  {
+    "id": "bnf_mordred",
+    "license_id": "bnf_arthur",
+    "source": "HA",
+    "license_level": 2,
+    "name": "MORDRED",
+    "mechtype": [
+      "Striker",
+      "Controller"
+    ],
+    "variant": "ARTHUR",
+    "description": "<div>A new frame of officially unknown origin, the Mordred appeared in the Dawnline Shore in the hands of the ungrateful in the uprising of Callan IV, surprising even seasoned Armory legionnaires with its appearance. Though most of its systems bear resemblance to existing Harrison Armory frames and can be explained as a repurposed frankenstein chassis made out of salvaged parts of other Armory frames, the core Full-System Sync system bears the mark of much higher technological and manufacturing bases, often brand new compared to the rest of the mech. Whomever the true manufacturer of these machines are, the Mordred has made a name for itself in the Dawnline Shore as a brutally efficient machine, fighting until its last spark against the Armory's superiorly designed frames and dragging them into destruction alongside it, beloved by young revolutionaries full of fervor and old guards looking to go out in a blaze of glory alike.</div>",
+    "mounts": [
+      "Flex",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 3,
+      "hp": 6,
+      "evasion": 6,
+      "edef": 10,
+      "heatcap": 7,
+      "repcap": 4,
+      "sensor_range": 5,
+      "tech_attack": 1,
+      "save": 10,
+      "speed": 3,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "À mort",
+        "use": "",
+        "description": "<div>Gain the À Mort Quick Tech:</div>",
+        "actions": [
+          {
+            "name": "À Mort",
+            "activation": "Quick Tech",
+            "detail": "<div>Make a tech attack against an enemy within range 3 and line of sight. On hit, the enemy immediately Skirmishes against you, considering you within range for any attacks.</div><div>After the attack resolves, the Mordred then Skirmishes as a free action against that target (this skirmish only happens if an attack was made against the Mordred. If the attack is unable to be taken in any way, this action fails.)</div><div>An enemy can only be affected by this 1/round.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": true,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "Usurper",
+        "use": "",
+        "description": "<div>Engagement caused by the Mordred can never be ignored by hostile characters.</div>"
+      },
+      {
+        "name": "Undeniable",
+        "use": "",
+        "description": "<div>1/round, when successfully taking a tech action against a hostile target, the Mordred can move up to 3 spaces directly towards the target. If it is a successful tech attack, it may instead pull the target 3 spaces directly towards the Mordred.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Full-System Sync",
+      "active_name": "Destined Death",
+      "active_effect": "<p>For the rest of this scene, gain the Crownbreaker Full Action.</p>",
+      "activation": "Protocol",
+      "description": "<p>The Mordred Full-System Sync derives from data recovered from the Enkidu project, weaponizing the subjectivity override by siphoning it off from the mech itself and letting it bleed into hostile mechs, with the added benefit of lessening the psychological strain of the system. The raw power that once robbed the minds of pilots now also takes hold of its opponent, and the two engage in a self-destructive storm of violence until only one remains.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [
+        {
+          "name": "Crownbreaker",
+          "activation": "Full",
+          "detail": "<p>Target a character within range 3 and line of sight. Trigger the effect of À MORT repeatedly, until either the Mordred or the enemy take Structure damage, Reactor stress, is destroyed, or either one is unable to Skirmish the other. Neither you or your opponent can move or be moved in any way while this effect is active.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/qgas57zu1hr6cmfnex2vx/mordred_trans_resized.png?rlkey=95dfwul52hj5soil0sr963v1j&dl=0",
+    "y_pos": 16
+  },
+  {
+    "id": "bnf_kishka",
+    "license_id": "bnf_kishka",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "Kishka",
+    "mechtype": [
+      "Support",
+      "Artillery"
+    ],
+    "variant": "",
+    "description": "<div>IPS-N Kishka is IPS-N's line of scout mech, derived from loader exo-suits employed by engineers during megastructure construction projects. Although considered outdated in its method of flight compared to its contemporaries, the Kishka’s rugged VTOL rig inherits powerful lifting capacity and remarkable stability from its civilian counterpart, able to maintain stable altitude while carrying multi-ton payloads and sustain powerful recoil with minimal pushback. Often employed as outriders and logistics re-suppliers, the Kishka is often employed ahead of the main force, offering vision from a vantage point, all the while ferrying goods back and forth regardless of terrain or obstructions.</div>",
+    "mounts": [
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 0.5,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 6,
+      "evasion": 8,
+      "edef": 8,
+      "heatcap": 4,
+      "repcap": 4,
+      "sensor_range": 10,
+      "tech_attack": 0,
+      "save": 10,
+      "speed": 4,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "VTOL",
+        "use": "",
+        "description": "<div>The Kishka can hover when it moves.</div>"
+      },
+      {
+        "name": "Walking Fire",
+        "use": "",
+        "description": "<div>1/round, when the Kishka misses with a ranged attack that does not have Blast, Burst, Cone or Line, reroll it against a different target within range 3 of the original target (obeying line of sight and weapon range restrictions).</div>"
+      },
+      {
+        "name": "Eye In The Sky",
+        "use": "",
+        "description": "<div>Against targets at a lower elevation, the Kishka gains +1 Accuracy to Search rolls and may re-roll rolls to attack Invisible targets once per attack.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Power Loader Rig",
+      "active_name": "Wingman",
+      "active_effect": "<p>Attach yourself to an adjacent willing ally up to 2 sizes larger. While attached, you occupy their space, they move with you on your turn but cannot make their own movement while attached, and can still be attacked and targeted separately.</p><p>They gain all of your traits while attached and 1/round as a reaction to the attached ally making an attack, the Kishka can fire the ANGLER Missile at the same target after the attack resolves.</p><p>Either you or the ally can end this effect as a free action, floating harmlessly to the ground if they do so and resuming free movement.</p>",
+      "activation": "Quick",
+      "description": "<p>With its origin in civilian construction, the Power Loader Rig employs two massive ducted fans to generate enough lift to carry not only the frame itself, but heavy payload to sufficient altitude all the while maintaining a stable flight pattern. Additional stabilizers and supporting thrusters may be employed to lift even mechs in combat situations, turning any mech into a mobile airborne fortress.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_angler_missile"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/dezx9f3j6iyskwpl5cm3m/kishka_small.png?rlkey=nsmbvuu9b6cgqttz6lugz5pfn&dl=0",
+    "y_pos": 24.5
+  },
+  {
+    "id": "bnf_phasma",
+    "license_id": "bnf_phasma",
+    "source": "SSC",
+    "license_level": 2,
+    "name": "Phasma",
+    "mechtype": [
+      "Controller"
+    ],
+    "variant": "",
+    "description": "<div>The Phasma is a prototype model intended for SSC’s PROMETHEAN-Innovative line, representing the next step in spatial manipulation technology first debuted with the Mourning Cloak. The Phasma combines Firmament manipulation technology with data covertly harvested from the Stygos Grammaton’s Calendula to create a potent hyper-mobile frame capable of traversing through any obstacles to reach its intended target, and then drag them through the dimensional barrier. Though further research is underway by the Exotic Material Group into possible avenues for miniaturization of its on-board Location Matrix Injector, the MK1 model of the Phasma is available to hand-picked pilots for field testing.</div>",
+    "mounts": [
+      "Flex",
+      "Main"
+    ],
+    "stats": {
+      "size": 3,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 10,
+      "evasion": 8,
+      "edef": 8,
+      "heatcap": 6,
+      "repcap": 3,
+      "sensor_range": 10,
+      "tech_attack": 0,
+      "save": 10,
+      "speed": 5,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "Ghostwalk",
+        "use": "",
+        "description": "<div>Gain the Ghostwalk Quick Action:</div>",
+        "actions": [
+          {
+            "name": "Ghostwalk",
+            "activation": "Quick",
+            "detail": "<div>Become Intangible until the end of your turn and move your full Speed in a straight line. If you would end this movement overlapping another character or object, you may take 1d3 AP energy damage to extend this movement until you are no longer overlapping, or else stop as usual.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "Transposition",
+        "use": "",
+        "description": "<div>You may grapple and be grappled, regardless of you or your enemy’s Intangible status.</div><ul><li><div>As long as you are in control of the Grapple, both you and the enemy mech are Intangible.</div></li><li><div>As long as you are not in control of the Grapple, both you and the enemy are Tangible.</div></li></ul>"
+      },
+      {
+        "name": "Chilling Presence",
+        "use": "",
+        "description": "<div>When you move through a hostile character while Intangible for the first time in a round, that character must succeed on a Systems save or become Slowed until the end of their next turn.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Location Matrix Injector",
+      "active_name": "Sunset Mantle",
+      "active_effect": "<p>For the rest of the scene:</p><ul><li><p>Chilling Presence triggers once per round per character.</p></li><li><p>Ghostwalk no longer forces you to move at full Speed or in a straight line.</p></li><li><p>When you trigger Ghostwalk, mark your original position until the end of this turn. As a Free Action, you may move directly toward the marked position until you occupy the original position or are otherwise obstructed.</p></li></ul>",
+      "activation": "Protocol",
+      "description": "<p>A closely guarded secret, the Location Matrix Injector is an experimental piece of technology derived from information obtained by SSC from the Stygos Grammaton. Cladding the mech in an omni-bending field, the injector may push the mech through the gap in the space-time continuum, existing briefly in a non-space state. Interactions when matter occupies the same space in this state is still under study.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/ox0zopaq5m7bbj682gdc1/Phasma-resized.png?rlkey=fpobziohufwu7kliaj7gdbqqm&dl=0",
+    "y_pos": 11
+  },
+  {
+    "id": "bnf_yermak",
+    "license_id": "bnf_yermak",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "Yermak",
+    "mechtype": [
+      "Controller",
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>Originally a heavy mech used for salvaging ships, the Yermak was pushed into military service after a battle with pirates on the salvaging station orbiting Sollis IV, where it was realized that a fusion cutter capable of slicing through several meters of thick bulkhead is also capable of dismembering enemy mech with eases and cutting holes clean through enemy ship hulls. It is now one of the IPS-N's premier frontline mechs for space combat and boarding actions, utilizing its dozens of plasma cutters to methodically dismember all opposition and cut through enemy ships to make way for boarding parties.</div><div>It is now closely associated with the \"Surprise Safety Inspection\", a tactic oft-used by Trunk security teams where the Yermak will install a MULE harness to carry an entire boarding team of Calibans with it, silently float up to a ship, and then cut its way through the hull with its plasma cutters in order to deposit said Calibans directly into the ship's deck.</div>",
+    "mounts": [
+      "Flex",
+      "Heavy"
+    ],
+    "stats": {
+      "size": 3,
+      "structure": 4,
+      "stress": 4,
+      "armor": 2,
+      "hp": 10,
+      "evasion": 6,
+      "edef": 6,
+      "heatcap": 6,
+      "repcap": 4,
+      "sensor_range": 10,
+      "tech_attack": -2,
+      "save": 10,
+      "speed": 3,
+      "sp": 5
+    },
+    "traits": [
+      {
+        "name": "Zero-G Rig",
+        "use": "",
+        "description": "<div>The Yermak can fly in and is not Slowed by low- or zero-gravity and underwater environments.</div>"
+      },
+      {
+        "name": "Shipbreaker",
+        "use": "",
+        "description": "<div>Whenever the Yermak consumes Lock-on as part of an attack, the consuming attack becomes Armor Piercing and ignores resistance.</div>"
+      },
+      {
+        "name": "Chop Shop",
+        "use": "",
+        "description": "<div>Whenever the Yermak deals any amount of energy damage to a mech, give that mech one Dismember token. A mech can only gain a Dismember token this way 2/round.</div><div>At 3 tokens, all tokens are consumed and the mech suffers a System Trauma.</div><div>This cannot become a Direct Hit.</div>"
+      },
+      {
+        "name": "Slow",
+        "use": "",
+        "description": "<div>The Yermak receives +1 difficulty on Agility checks and saves.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Y-898 \"Icebreaker\" Salvager Array",
+      "active_name": "Salvager Beam",
+      "active_effect": "<p>The Yermak becomes Immobilized and cannot be moved in any way, then fires a Line 50 Salvager Beam.</p><p>Characters within the Line receive 2 Dismember tokens and must succeed on an Agility Save or take 2d6 AP Energy Damage, halved on a success. Objects and Terrain within the Line take 20 AP Energy Damage.</p><p>When characters enter one of these spaces for the first time in a round, they take 1d6 AP Energy Damage and receive 1 Dismember Token. At the start of the Yermak's turn, all Objects and Terrain within the Line take a further 20 AP Energy Damage.</p><p>The effect and Line last until canceled as a Quick Action, or until the Yermak is Jammed, Stunned or knocked Prone.</p>",
+      "activation": "Full",
+      "description": "<p>Mounted on the Yermak’s left shoulder, the Y-898 is an array of countless fusion cutters stored in a large and bulky housing unit, giving the Yermak its signature hunchbacked look. Each with its own full articulated motor, scanner system and rudimentary AI, the Y-898 is capable of locating structural weakness in less than a second, and directing a cutting beam at the precise location to dismantle the structure before it. Though it is rooted in ship salvaging operations, it is now used to dismantle enemy mechs and turn them into salvage all the same.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_y898_icebreaker_salvager_array"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/wl1in2tyrctsuuj52upw2/deadspacemech_resized.png?rlkey=rsd2soy04ioekyoji74vznla2&dl=0",
+    "y_pos": "16.5"
+  },
+  {
+    "id": "bnf_subutai",
+    "license_id": "bnf_subutai",
+    "source": "HA",
+    "license_level": 2,
+    "name": "Subutai",
+    "mechtype": [
+      "Support",
+      "Artillery"
+    ],
+    "variant": "",
+    "description": "<div>The HA Subutai is the Armory’s dedicated commander frame, usually issued to field commanders and generals. Containing a host of sensors and mobility tools, it allows a pilot to control the battlefield as easily as moving a stone on a Go board, orchestrating grand assaults in real time as it moves enemies and allies alike into optimal positions.</div>",
+    "mounts": [
+      "Flex",
+      "Main"
+    ],
+    "stats": {
+      "size": 2,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 8,
+      "evasion": 6,
+      "edef": 8,
+      "heatcap": 7,
+      "repcap": 4,
+      "sensor_range": 20,
+      "tech_attack": 1,
+      "save": 11,
+      "speed": 3,
+      "sp": 7
+    },
+    "traits": [
+      {
+        "name": "Omen",
+        "use": "",
+        "description": "<div>Whenever the Subutai fires an Arcing/Seeking weapon, it may delay its impact, giving it Blast 1 if it does not have Line, Cone or Blast, or increasing its Blast value by 1 if it already has Blast, and marking the space it would have hit.&nbsp;</div><div>At the end of the next round, all enemies in the marked area are automatically hit.</div>"
+      },
+      {
+        "name": "Emissary",
+        "use": "",
+        "description": "<div>Whenever the Subutai makes a standard move, you may allow any willing ally within your Sensors to move instead, spending your movement points, even if the Subutai is Immobilized.</div>"
+      },
+      {
+        "name": "Parthian Field",
+        "use": "",
+        "description": "<div>Allies starting their turn in spaces adjacent to or entering spaces adjacent to the Subutai for the first time in a turn gain +2 Speed until the end of the turn.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Kheshig Auxiliary Thrusters",
+      "active_name": "Defeat in Detail",
+      "active_effect": "<p>You may not make your standard Move action this turn. Instead, every willing ally in Sensors may move a distance equal to your Speed. This action is <strong>Efficient</strong>, and refunds 1 Core Power at the end of any scene in which it is used.</p>",
+      "activation": "Quick",
+      "description": "<p>The Kheshig is the Armory’s solution to upping the mobility of existing frames without having to go through retooling. Each a self-contained thruster attached to a high-stress clamp, able to securely attach itself to almost any surface, the Kheshig Auxiliary Thrusters allow the Subutai to add a hefty amount of thrust to an ally's movement, or conversely, hamper an enemy’s advance with opposing thrust.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "Kheshig Auxiliary Thrusters",
+      "passive_effect": "<p>[LIMITED 3]</p><p>As a Quick Action, spend any amount of charges to grant Kheshig Counters to any number of characters in Sensors, the total amount of counters granted equalling the number of charges spent. Whenever a Kheshig Counter is removed for any reason, restore charges equal to the number of Counters removed.</p><p>Kheshig Counters are removed when the target is destroyed or passes an Engineering Save as a Quick Action, or when you recall them as a free action.</p><p>1/turn, when a character in your Sensor Range with Kheshig Counters moves (involuntarily or otherwise), you may increase or decrease the value of their movement by the number of Counters they have.</p>",
+      "passive_actions": [
+        {
+          "name": "Deploy Thrusters",
+          "activation": "Quick",
+          "detail": "<p>Spend any amount of charges to grant Kheshig Counters to any number of characters in Sensors, the total amount of counters granted equalling the number of charges spent.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        },
+        {
+          "name": "Recall Thrusters",
+          "activation": "Free",
+          "detail": "<p>Select a character with any amount of Kheshig Counters. Remove any number of Kheshig Counters from that character, restoring charges equal to the number of Counters removed.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/87nsb2xeqxaam1g76oh2w/subutai_trans_resized.png?rlkey=6gin6pjm42y3elondojd0o49o&dl=0",
+    "y_pos": 31.5
+  },
+  {
+    "id": "bnf_morgan",
+    "license_id": "bnf_morgan",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "Morgan",
+    "mechtype": [
+      "Striker",
+      "Defender"
+    ],
+    "variant": "",
+    "description": "<div>On paper, the IPS-N Morgan is an in-development project for a new frame built off of the Blackbeard chassis. This is, in truth, a cover, and the Morgan is both finished and never going to be finished. The ongoing development fund for the Morgan project, which has never produced a frame and is eternally in development, provides cover for the cost of production and distribution of the actual Morgan chassis, which does not exist on any of IPS-N's logbooks.</div><div>Built as a deniable asset frame, the Morgan springboards off of the Blackbeard and Kidd specs to create a frame ramshackle in appearance, but extremely rugged and modular in design, operating independently without backup or official support for extended periods of time by interfacing with most weapons and being able to jerry-rig combat contraptions in the field.</div><div>To most outsiders, the Morgan appears as a run-of-the-mill, cobbled together frame, welded and riveted together by pirates in dimly lit shacks. IPS-N off-book operatives play into this fact as it provides the perfect cover for their wetwork, intentionally presenting a dinged up chassis barely able to support its own weapons, utilizing improvised explosives and overpowered scatterguns to make up for its cracked optics and bottom-barrel targeting systems.</div>",
+    "mounts": [
+      "Flex",
+      "Flex",
+      "Main/Aux"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 0,
+      "hp": 12,
+      "evasion": 8,
+      "edef": 6,
+      "heatcap": 4,
+      "repcap": 5,
+      "sensor_range": 10,
+      "tech_attack": -2,
+      "save": 10,
+      "speed": 5,
+      "sp": 7
+    },
+    "traits": [
+      {
+        "name": "Ransack",
+        "use": "",
+        "description": "<div>The Morgan deals double damage to non-characters.</div>"
+      },
+      {
+        "name": "Broadside",
+        "use": "",
+        "description": "<div>1/round, when attacking with either Cone, Burst, Blast or Line, the attacking weapon gains Reliable 3.</div>"
+      },
+      {
+        "name": "Corsair Claw",
+        "use": "",
+        "description": "<div>Gain the Corsair Claw Quick Action.</div>",
+        "actions": [
+          {
+            "name": "Corsair Claw",
+            "activation": "Quick",
+            "detail": "<div>Target an adjacent target.</div><ul><li><div>If it is a character, they must succeed on a contested Hull check or become Shredded until the start of your next turn.</div></li><li><div>If it is a piece of terrain up to size 1, deployable, or other loose object, you may throw it to another free space within Sensor Range.</div></li></ul>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "Exposed Reactor",
+        "use": "",
+        "description": "<div>The Morgan receives +1 Difficulty on ENGINEERING checks and saves.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "K-Eg Jerry-rigged Reactor",
+      "active_name": "Black Flag",
+      "active_effect": "<p>Until the start of your next turn, whenever the Morgan would use a template for any attacks or effects (including effects from its deployables and drones), it may increase it by the following:</p><ul><li><p>Cone: +2</p></li><li><p>Line: +5</p></li><li><p>Blast and Burst: +1</p></li></ul>",
+      "activation": "Protocol",
+      "description": "<p>Taking notes from the Fuel Rod Gun, the Titan–Enceladus Field Project created the K-Eg as another method of weaponizing reactors and fuel rods, rigging those deemed spent or past their expiration date to blow up in a spectacular explosion when damaged. Instructions on how to construct these are distributed under the guise of manuals on how to properly dispose of spent field rods and not turn them into explosive devices.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "K-Eg Jerry-rigged Reactor",
+      "passive_effect": "<p>As a Quick Action, deploy a K-Eg to a free space within Sensor Range. At the end of your turn, the K-Eg becomes Armed. If it is already Armed, it automatically destroys itself instead.</p><p>Armed K-Egs explode in a Burst 2 area when destroyed. Characters within the affected area must succeed on an Agility Save or take 3 Explosive + 3 Burn Damage. On a success, they take half damage and Burn.&nbsp;</p><p>Objects and Deployables automatically take 10 AP Explosive Damage instead.</p>",
+      "passive_actions": [
+        {
+          "name": "Deploy K-Eg",
+          "activation": "Quick",
+          "detail": "<p>Deploy a K-Eg to a free space within Sensor Range.</p>",
+          "cost": 0,
+          "pilot": false,
+          "damage": [],
+          "range": [],
+          "synergy_locations": [],
+          "tech_attack": false,
+          "frequency": "Unlimited",
+          "init": "",
+          "trigger": ""
+        }
+      ],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [
+        {
+          "name": "K-Eg Jerry-rigged Reactor",
+          "type": "Bomb",
+          "detail": "<p>At the end of your turn, the K-Eg becomes Armed. If it is already Armed, it automatically destroys itself instead.</p><p>Armed K-Egs explode in a Burst 2 area when destroyed. Characters within the affected area must succeed on an Agility Save or take 3 Explosive + 3 Burn Damage. On a success, they take half damage and Burn.&nbsp;</p><p>Objects and Deployables automatically take 10 AP Explosive Damage instead.</p>",
+          "size": 1,
+          "activation": "Quick",
+          "hp": "5",
+          "evasion": "6",
+          "edef": "6"
+        }
+      ],
+      "counters": [],
+      "integrated": [],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropbox.com/scl/fi/bxfzrezovnpsqkg1gcyyz/pirate_resized.png?rlkey=ujyu5m7tsmnlr15gq8c5hsk9t&st=g7yedhbq&dl=0",
+    "y_pos": 10
+  },
+  {
+    "id": "bnf_togo",
+    "license_id": "bnf_togo",
+    "source": "IPS-N",
+    "license_level": 2,
+    "name": "Togo",
+    "mechtype": [
+      "Striker"
+    ],
+    "variant": "",
+    "description": "<div>The Togo is a staple of the IPS-N chassis catalog, despite never having been released. It has occupied the up-and-coming project spot for over 150 years. Originally intended as the flagship of an upcoming line of mechs, the Togo has fallen victim to a vicious cycle of project creep due to its designation as “the cutting edge”. An executive would, upon being handed the reigns of the project, demand a new experimental feature to be added, so that it would bear their name as a flagship product when released. Then, by the time IPS-N Northstar Robotics figured out how to semi-reliably implement the feature, the old executive would have either retired or been promoted, and a new executive would have taken their place, with their own revolutionary idea that they, in turn, demanded to be implemented.</div><div>Nicknamed “The Eternal Prototype”, the Togo has a polarizing reputation amongst Northstar Robotics researchers. Some consider it a dead-end position that once they are assigned to can never leave, where their work will never see the light of day. Others consider it a blank check to do whatever they want with an effectively unlimited budget, as long as they can justify whatever it is they are adding to the chassis as “new and improved” to the board.</div><div>Despite dozens of other chassis having been released based on technology and systems that were tested on the Togo, the Togo itself has only seen live combat a handful of times, either as mandated field-testing, or when their source code leaked and a curious freelancer on the other side of the galaxy took it for a joyride. Whatever the case, the Togo is a temperamental chassis, and pilots need to carefully balance the whole host of experimental and poorly-documented features stacked on top of its aging reactor like a house of cards, barely capable of keeping up with the dozens of new systems it is attached to.</div>",
+    "mounts": [
+      "Main/Aux",
+      "Main/Aux",
+      "Aux/Aux"
+    ],
+    "stats": {
+      "size": 1,
+      "structure": 4,
+      "stress": 4,
+      "armor": 1,
+      "hp": 10,
+      "evasion": 9,
+      "edef": 8,
+      "heatcap": 5,
+      "repcap": 5,
+      "sensor_range": 3,
+      "tech_attack": -2,
+      "save": 10,
+      "speed": 4,
+      "sp": 6
+    },
+    "traits": [
+      {
+        "name": "Gun The Engine",
+        "use": "",
+        "description": "<div>After entering the Danger Zone, the Togo may immediately move 3 spaces. This movement ignores engagement and does not provoke reactions.</div>"
+      },
+      {
+        "name": "Fan The Flame",
+        "use": "",
+        "description": "<div>When the Togo exits the Danger Zone, it deals 1 Heat to all characters within a Burst 1 area.</div>"
+      },
+      {
+        "name": "Ride The Line",
+        "use": "",
+        "description": "<div>Whenever the Togo triggers Overkill, it may choose to clear 1 Heat instead of carrying out Overkill’s regular effect. This still counts as triggering Overkill but cannot cause further dice rolls.</div>"
+      }
+    ],
+    "core_system": {
+      "name": "Prototype C-58",
+      "active_name": "The Proving Ground",
+      "active_effect": "<p>Create an ongoing Burst 3 zone of hyper-reactive particles, lasting until the end of the scene. This zone counts as Soft Cover, and hostile characters within this zone cannot draw line of sight to spaces outside of the zone, and cannot clear Heat except by Overheating.</p><p><br>The Togo gains resistance to all Heat from hostile sources, ignores engagement and reactions when it moves, and deals 1 Burn whenever it deals Heat to a character inside the zone.</p>",
+      "activation": "Quick",
+      "description": "<p>The latest in the line of experimental weapons to be installed on the Togo, Prototype C-58 is for all intents and purposes a pair of chainsaw claws mounted on the frame's arms, with nanocarbon teeth, reinforced chains and an upsized engine. Though its proposed marketing campaign calls it a military version of the common D-50 industrial chainsaw, inspired by its use by loggers in the heroic defense of Ka Pershin; it is, in truth, built from the ground up to abide by Marketing research that shows chainsaw claws would be very popular amongst IPS-N's user base. They were right.</p>",
+      "deactivation": "",
+      "use": "",
+      "active_actions": [],
+      "active_bonuses": [],
+      "active_synergies": [],
+      "passive_name": "",
+      "passive_effect": "",
+      "passive_actions": [],
+      "passive_bonuses": [],
+      "passive_synergies": [],
+      "deployables": [],
+      "counters": [],
+      "integrated": [
+        "bnw_chain_claws"
+      ],
+      "special_equipment": [],
+      "tags": []
+    },
+    "image_url": "https://dl.dropboxusercontent.com/scl/fi/4c5qbdb7cg2jpflt9hjx0/ipsn_togo_resized.png?rlkey=ulecr4pjd7cic5fm2uz35hih0&st=62bnpue0&dl=0",
+    "y_pos": 38
+  }
+]

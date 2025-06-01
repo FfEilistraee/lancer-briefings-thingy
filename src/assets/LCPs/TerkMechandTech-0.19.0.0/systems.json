@@ -1,0 +1,2661 @@
+[
+  {
+    "id": "bns_thermal_shock",
+    "name": "Thermal Shock",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 1,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Sudden rapid change in temperature can cause immense stress on a mech’s armor platings, often causing it to become brittle and crack. Using an advanced laser cooling array, SSC offers a unique avenue to utilize this effect on the battlefield.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Thermal Shock",
+        "activation": "Quick",
+        "detail": "<div>Choose an enemy within Range 10 that currently has Burn. The enemy clears all Burn, take kinetic damage equal to Burn cleared, and become Shredded until the end of your next turn</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_catalyst_charges",
+    "name": "Catalyst Charges",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Smith-Shimano’s BELLA CIAO workshop newest product, the Catalyst Charges, contains a miniature aerosol deployment system for hyper-reactive chemicals, saturating the atmosphere with the compound in a single moment. Inert by themselves, the chemical readily reacts to outside effects, magnifying their potency.</div>",
+    "tags": [
+      {
+        "id": "tg_grenade",
+        "name": "GRENADE",
+        "description": "As a quick action, this explosive or other device can be thrown to a space within line of sight and the specified Range."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ],
+    "actions": [
+      {
+        "name": "Catalyst Grenade",
+        "activation": "Quick",
+        "detail": "<div>Throw a Catalyst Grenade within range 5. This grenade creates a Blast 2 zone of catalytic chemicals until the end of your next turn. All mechs within the area are Impaired.</div>",
+        "cost": "1",
+        "pilot": false,
+        "range": [
+          {
+            "type": "Range",
+            "val": 5
+          },
+          {
+            "type": "Blast",
+            "val": 2
+          }
+        ],
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Catalyst Mine",
+        "type": "Mine",
+        "detail": "<div>When detonated, all enemy mechs within Burst 3 of the mine must succeed on an Agility check or be Slowed and Impaired until the end of their next turn. On a successful check, they are only Impaired.</div>",
+        "activation": "Quick",
+        "range": [
+          {
+            "type": "Burst",
+            "val": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnt_moths_to_a_flame",
+    "name": "Moths to a Flame",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 2,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>Hyperfixation on light and heat is a common instinctual behavior in many insects. Through careful study of the underlying cause, the same effect can be applied onto and temporarily overrides a mech’s subjectivity, driving them to move towards the nearest flame, heedless of reason or personal safety.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Moths to a Flame",
+        "activation": "Full Tech",
+        "detail": "<div>Choose a Blast 3 area within your Sensor Range. All characters within must succeed on a Systems Save or involuntarily move a distance equal to their speed towards the nearest other target with Burn, taking the most direct path possible. On a successful Save, move half the distance. This movement ignores Engagement but triggers Reactions.</div><div>If there are no other targets with Burn, this action has no effect.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_ring_of_fire",
+    "name": "Ring of Fire",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 3,
+    "type": "Shield",
+    "sp": "2",
+    "description": "<div>Though often employed against soft targets, SSC consider such usage of pyroclastic weaponry uncouth and barbaric, and instead divest their attention to the usage of flame weaponries as an area denial system. The Ring of Fire is a two stage mechanism designed to produce long lasting flames to coral enemies where the user wants. First, a spray of hyper-reactant catalyst breaks down terrain material into aerosolized base components, which are oftentimes flammable gasses and fuels. A second stage focused laser provides the spark to turn the nebulous cloud into a raging ring of fire.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Ring of Fire",
+        "activation": "Full",
+        "detail": "<div>Create a Line 5 Height 1 line in any direction, with the origin point within range 3 of you. The line lasts until the end of the scene or until a new line is created. This doesn’t block line of sight and is considered Soft Cover.</div><div>Enemies that move through the line or end their turn within it take Burn 1. Enemies moving through the line must make an Engineering check or have their movement be stopped within the line. This can only trigger once per turn for each enemy.</div><div>Allied attacks that trace line of sight through the Line gain 1 Burn bonus damage.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_total_shutdown",
+    "name": "Total Shutdown",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 1,
+    "effect": "<div>When this mech Stuns an enemy, while Stunned the enemy also automatically fails all Engineering and System Checks and Saves and has their E-Defense reduced to 5.</div>",
+    "type": "System",
+    "sp": "1",
+    "description": "<div>Capitalizing on the system vulnerability caused by massive physical trauma, the Total Shutdown system adds electronic attack on top, causing momentary disruption of a vulnerable mech’s operating system and reactor.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnp_breach_protocol",
+    "name": "BREACH Protocol",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>In accordance with IPS-N research and development into combat in a boarding situation, BREACH is a series of upgrades mounted on a mech’s motors and servos, providing a burst of speed at the cost of maneuverability, perfect for maneuvering down a ship’s narrow but straight hallways to deliver the mech into the thick of fighting.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate BREACH Protocol",
+        "activation": "Protocol",
+        "detail": "<div>You gain +1 Speed until the start of your next turn. All movement and boosts you make until the start of your next turn must spend all movement points and be in a straight line, stopping when obstructed by terrain.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_legion_compcon",
+    "name": "LEGION-Class COMP/CON",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property and the following Quick Tech Option. LEGION is not a full NHP and as such, cannot Cascade.</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Derived from ship-class CENTURION-Class Comp/Con, LEGION brings the CENTURION knack for organizing battlefield movement to terrestrial conflict, coordinating a mech’s movement with unparalleled efficiency and accuracy. As a newer COMP/CON model, LEGION is preferred over UNCLE for its stability, though some pilots do confess to occasionally missing the older COMP/CON quirks.</div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Lockstep",
+        "activation": "Quick Tech",
+        "detail": "<div>Choose a character within sensor range. Whenever that character voluntarily moves, you mirror its movement, up to an accumulated distance equal to your Speed per round, obeying obstruction. This effect lasts until canceled as a Protocol. This can only affect one character at a time, switching targets if used again.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_dual_fist",
+    "name": "Dual Fist",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 1,
+    "effect": "<div>Once per turn, when you score a critical hit with a melee attack, you may attack with an Improvised Attack as a free action against that target, regardless of Threat.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Many martial arts techniques that once were once considered mythical, dramatic embellishment or purely made up turned out to be quite useful when performed by a mechanical chassis with strength and coordination far beyond that of humans, much to the delight of melee-minded pilots everywhere.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_turn",
+        "name": "{VAL}/TURN",
+        "description": "This system, trait, or reaction can be used {VAL} number of times in any given turn.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnt_seven_stars_suite",
+    "name": "Seven Stars Suite",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 1,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>“You are already dead” - Documentation within the Seven Stars Suite code, line 245, Author Unknown.</div>",
+    "actions": [
+      {
+        "name": "Delayed Cascade",
+        "activation": "Quick Tech",
+        "detail": "<div>Make a tech attack against a character within Sensors. On a hit, until the end of your next turn, whenever the target takes damage, it takes 0 instead, and all damage it would have taken is recorded before resistance and armor. At the end of your next turn, the target takes all the recorded damage as AP energy damage that cannot be reduced in any way.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": true,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_blade_breaker",
+    "name": "Blade Breaker",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 2,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>“Disclaimer: The following section is preserved for archival purposes and to preserve the authenticity of the original text. Under no circumstances should the following techniques be attempted in real life.” - The Way of the Hundred Blades, Book 1, pg 156.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ],
+    "actions": [
+      {
+        "name": "Break Blade",
+        "activation": "Reaction",
+        "detail": "<div>Make a contested attack roll: If you Win, you gain Resistance to the attack on a hit, and the target becomes Jammed until the end of their next turn. If you lose, the attack automatically hits and its damage cannot be reduced in any way. A character can only be Jammed this way 1/scene.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/turn",
+        "init": "",
+        "trigger": "<div>A Hostile Character targets you with a Melee attack and has not made any rolls yet.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnp_ten_thousand_arms",
+    "name": "Ten Thousand Arms",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 3,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>“Your opponent may only move in one direction at a time. When ten thousand strikes are thrown in an instance, leaving no space that isn’t struck, man and machine alike will surely be cut, and destroyed instantly.” - The Way of the Hundred Blades, Book 4, pg 2800.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Ten Thousand Arms",
+        "activation": "Protocol",
+        "detail": "<div>All Melee weapons gain Ordnance this turn but can still be used to attack adjacent targets. When you Barrage this turn, you may attack with all equipped non-Superheavy Melee weapons.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_ravana_nhp",
+    "name": "RAVANA-Class NHP",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 3,
+    "effect": "<div>Gain the AI property and the following Protocol:</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Manifested during a 100-man simulated brawl on the moon Eyalet-a where one contestant used a Heruka instead of the Blue Lotus as agreed upon, RAVANA is born in battle with a thirst for conflict. Initially mis-labeled as a Sehkmet defective clone, Ravana instead shows remarkable restraint despite its apparent lust for battle, appearing collected and focused both on and off the battlefield. It views conflict as a means to an end, using battle to strengthen itself and test its skills to forever hone its technique, both within physical and digital space, with the aim of becoming the most complete warrior possible.</div><div>[<span class=\"horus--subtle\">Might makes Right, and Right makes Might. Seek Truth, and sharpen yourself to cut through all falsehood. Even if RA would stand in your way, strike without hesitation.</span>]</div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "The Wheel of Suffering",
+        "activation": "Protocol",
+        "detail": "<div>1/scene, the next time you Invade, if successful, you may take 1 Heat to immediately make another Invade on a target within Sensor Range of the original target. This can chain infinitely until the Invade fails or you run out of targets. An enemy can only be targeted by this effect once per round.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnt_iff_spoof",
+    "name": "IFF Spoof",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 1,
+    "type": "Tech",
+    "sp": "1",
+    "description": "<div>With a little modification, a mech’s in-built IFF signal can turn into a beacon, constantly broadcasting its exact location to all within range, including enemies.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_round",
+        "name": "{VAL}/ROUND",
+        "description": "This system, trait or reaction can be used {VAL} number of times between the start of the user’s turn and the start of their next turn.",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate IFF Spoof",
+        "activation": "Quick Tech",
+        "detail": "<div>Make a tech attack against an enemy within Sensor Range. On a success, the enemy is Locked On. Until the end of your next turn, the enemy cannot clear Locked On by any means, including being consumed by an attack.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": true,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnp_rail_accelerator",
+    "name": "Rail Accelerator",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>An array of super magnets arranged such that when a current is triggered, it can send almost anything flying at lethal speed. Though often employed in rail and gauss weapons, such an array can also be installed independently, allowing the pilot freedom to choose what shall be sent downrange at supersonic speed at any given time.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Rail Accelerator",
+        "activation": "Protocol",
+        "detail": "<div>Choose one equipped non-super heavy melee weapon. Until the end of your turn, it gains Thrown (5+Threat), or if it already has thrown, add 5 to its Range.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_data_cloak",
+    "name": "Data Cloak",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 2,
+    "effect": "<div>Gain the Data Cloaking reaction.</div>",
+    "type": "Shield",
+    "sp": "2",
+    "description": "<div>An upgrade pack for a mech’s electronic defense compartments, containing both a signal upgrade and a software update, allowing for more versatile use of the original digital spoofing system. Beyond merely scrambling guided weaponry, the electronic defense system can tackle the problem at the source, spoofing a mech’s visual feed and scanner data to subtly modify the position of the user’s mech, causing their aim to go astray.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Data Cloaking",
+        "activation": "Reaction",
+        "detail": "<div>All weapons used in the attack gain Smart for the duration of the attack. If it already has Smart, then it loses Smart.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/round",
+        "init": "",
+        "trigger": "<div>An enemy declares an attack on you.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnai_change_nhp",
+    "name": "Chang'e-Class NHP",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property and the following Full Tech Action:</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>The CHANG’E-Class NHP provides advanced multi-wavelength control and co-pilot functions, capable of bending most wavelengths of electromagnetic waves, even light itself, in order to protect and hide its pilots from most forms of harm.</div><div>CHANG’E clones are known to be very protective and supportive of its pilots, looking after them both physically and mentally, offering encouragement and health evaluation at will. Pilots are reminded to check the CHANG’E control privilege often, as this usually benevolent trait can sometime veers into overprotectiveness, as CHANG’E sometime takes control of the mech unprompted to protect pilots from what the pilot would consider acceptable risk, or otherwise disobey pilot orders “for their own good”.</div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Dark Side of the Moon",
+        "activation": "Full Tech",
+        "detail": "<div>Spend a charge to create a Burst 3 zone that lasts until the end of the scene. Characters outside of the zone treat characters inside the zone as Invisible. Characters inside the zone can see other characters inside the zone as usual. The zone can be dispelled by you as a Protocol.</div>",
+        "cost": "1",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnd_salvager_drone",
+    "name": "Salvager Drone",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 1,
+    "effect": "<div>As a Quick Action, deploy this drone onto an adjacent free space.</div><div>Salvager drones move independently on your turn. It carries one repair charge</div><div>Once per turn, it may choose one of the following actions:</div><ul><li><div>Make a melee attack against an adjacent target using your Grit. On hit, deal 1 Kinetic Damage and the enemy must succeed on a Hull Check or have their Armor reduced by 1 until the end of your next turn, down to a minimum of 0. This effect stacks.</div></li><li><div>Spend 1 repair charge to heal an adjacent mech 2 HP, or an adjacent drone to full.</div></li></ul>",
+    "type": "Drone",
+    "sp": "2",
+    "description": "<div>Salvager drones are highly sought after for black market modification into combat ready drones, as it is already armed with powerful hydraulic grips, saws and drills for ripping apart machinery, only taking a bit of work to get it to do the same to a moving target that’s fighting back</div>",
+    "deployables": [
+      {
+        "name": "Salvager Drone",
+        "type": "Drone",
+        "detail": "<div>This drone moves independently on your turn. It carries one repair charge</div><div>Once per turn, it may choose one of the following actions:</div><ul><li><div>Make a melee attack against an adjacent target using your Grit. On hit, deal 1 Kinetic Damage and the enemy must succeed on a Hull Check or have their Armor reduced by 1 until the end of your next turn, down to a minimum of 0. This effect stacks.</div></li><li><div>Spend 1 repair charge to heal an adjacent mech 2 HP, or an adjacent drone to full.</div></li></ul>",
+        "size": 0.5,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "5",
+        "evasion": "10",
+        "edef": "10",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "5",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bns_flash_combat_data",
+    "name": "Flash Combat Data",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 1,
+    "effect": "<div>When targeting a hostile character with an attack, if they are adjacent to an allied character or drone, gain +1 Accuracy.</div>",
+    "type": "System",
+    "sp": "1",
+    "description": "<div>Weapons in hand and clad in a metallic frame, the only thing left to ready the budding rebels is their mind. Untrained, but receptive, they utilize dense Combat Data obtained with Horus assistance and uploaded into the mech's systems. Drawing from its vast scenarios, a mech installed with these data packets can aid inexperienced users in split-second decision making and capitalizing on opportunity when it presents itself</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_corrosive_charges",
+    "name": "Corrosive Charges",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Chemical waste is a hidden gem among the Ungrateful. Discarded as far away as possible from human dwelling, these barrels of highly poisonous and corrosive fluids are rarely, if ever, checked up on, and obtaining them is as simple as showing up and loading them onto a vehicle. Loaded into shells with a small charge to ensures optimal dispersal, these makeshift chemical weapons can eat through armor and flesh alike.</div>",
+    "tags": [
+      {
+        "id": "tg_grenade",
+        "name": "GRENADE",
+        "description": "As a quick action, this explosive or other device can be thrown to a space within line of sight and the specified Range."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Corrosive Grenade",
+        "activation": "Quick",
+        "detail": "<div>Throw a Corrosive Grenade within range 5. This grenade creates a Blast 2 explosion of corrosive chemicals. Enemies must succeed on an Agility check or have their armor reduced by 1, to a minimum of 0, until the end of your next turn.&nbsp;</div>",
+        "cost": "1",
+        "pilot": false,
+        "range": [
+          {
+            "type": "Range",
+            "val": 5
+          },
+          {
+            "type": "Blast",
+            "val": 2
+          }
+        ],
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Corrosive Mine",
+        "type": "Mine",
+        "detail": "<div>When detonated, all enemy mechs within Burst 2 of the mine must make an Agility check or be Shredded until the end of your next turn.</div>",
+        "activation": "Quick",
+        "range": [
+          {
+            "type": "Burst",
+            "val": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnd_shackle_drone",
+    "name": "Shackle Drone",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 3,
+    "effect": "<div>As a Quick Action, deploy this drone onto an adjacent free space.</div><div>Shackle drones move independently on your turn.&nbsp;</div><div>On your turn, the drone may attempt to shackle an enemy within range 5. The enemy must succeed on an Agility save or be Slowed and have its Speed reduced by 1, down to a minimum of 0, for as long as it remains within Range 5 of the Drone. At 0 speed, it is considered Immobilized.</div>",
+    "type": "Drone",
+    "sp": "2",
+    "description": "<div>In spaces too narrow for heavy duty moving vehicles, electromagnetic shackles are used by haulers and subaltern to securely fasten heavy objects and move them with a team. Designed to withstand extremely heavy weight without untethering, these shackles can be used to restrict mech mobility by tethering them to fixed object, a sitting duck to be swarmed by rebel forces.</div>",
+    "deployables": [
+      {
+        "name": "Shackle Drone",
+        "type": "Drone",
+        "detail": "<div>This drone moves independently on your turn.</div><div>On your turn, this drone may attempt to shackle an enemy within range 5. The enemy must succeed on an Agility save or be Slowed and have its Speed reduced by 1, down to a minimum of 0, for as long as it remains within Range 5 of the Drone. At 0 speed, it is considered Immobilized.</div>",
+        "size": 1,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "5",
+        "evasion": "10",
+        "edef": "10",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "5",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bnt_kingslayer",
+    "name": "Kingslayer",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 3,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>Incursions by Rat King armed rebels are marked by an uncanny degree of coordination. Thousands of robots and drones flow out of sewer and scrapyards like water, washing away all that it can and going around that which it can’t, covering each other's flanks, overwhelming technologically superior forces with deft use of focus fire. Those who would look down upon a simple cleaner bot armed with a small pipe gun have never had to face a hundred of them all firing in their direction.</div>",
+    "actions": [
+      {
+        "name": "Divided They Fall",
+        "activation": "Quick Tech",
+        "detail": "<div>Choose a hostile character within your Sensors. Each of your Drones within Range 5 of it may make a ranged attack using your Grit against that target, dealing 1 kinetic damage.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "United We Stand",
+        "activation": "Quick Tech",
+        "detail": "<div>All your drones generate a Blast 1 Soft Cover area centered on them, remaining in place and lasting until the start of your next turn. Until the start of your next turn, your drones are considered to be Invisible while in Soft Cover.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_malware_delivery_pack",
+    "name": "Malware Delivery Pack",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 1,
+    "effect": "<div>1/round you may use this system to swap one of your equipped Main/Aux ranged weapons to any one of the following special ammunition types. This effect persists until the end of the scene, until you spend a quick action to swap that weapon to a different ammunition type, or until you revert a weapon to its normal state as a protocol. Only one special ammunition type can be used on a weapon at a time.</div><ul><li><div><strong>Blue Screen Round: </strong>The weapon deals half damage and Burn. Oh hit, the enemy must succeed on a Systems check or be Impaired until the end of your next turn.</div></li><li><div><strong>Quick-Attach Signal Receiver: </strong>The weapon deals half damage and Burn. On hit, the target is marked with a Signal Tracking token. When declaring a tech attack, you or an allied mech may spend this token to make the marked enemy a valid target, regardless of sensors or line of sight.</div></li><li><div><strong>Full-Spectrum Target Lock:</strong> The weapon gains Inaccurate. Against targets in the Danger Zone, replace Inaccurate with Accurate, and gain Smart and Seeking.</div></li></ul>",
+    "type": "System",
+    "sp": "3",
+    "description": "<div>“Bullets are, of course, just another platform for malware delivery” - HA Researcher Mikhail Hoang.</div>",
+    "tags": [
+      {
+        "id": "tg_quick_action",
+        "name": "QUICK ACTION",
+        "description": "This system requires a quick action to Activate."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_round",
+        "name": "{VAL}/ROUND",
+        "description": "This system, trait or reaction can be used {VAL} number of times between the start of the user’s turn and the start of their next turn.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bns_firewall_signal_shield",
+    "name": "\"Firewall\" Signal Shield",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 1,
+    "type": "Shield",
+    "sp": "1",
+    "description": "<div>Just as excess heat may cause a shimmering effect by bending light, the “Firewall” Signal Shield can manipulate a mech’s excess heat to bend radio signals, confounding their targeting.</div>",
+    "tags": [
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      },
+      {
+        "id": "tg_danger_zone",
+        "name": "DANGER ZONE",
+        "description": "This system, talent, or weapon can only be used if the user is in the Danger Zone (Heat equal to at least half of their Heat Cap)."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ],
+    "actions": [
+      {
+        "name": "Signal Interception",
+        "activation": "Reaction",
+        "detail": "<div>Spend a charge. Your mech’s E-defense is increased by 1 for each point of Heat you have above the Danger Zone until the end of the turn. If an ally is targeted, you become the target of the tech attack instead.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/round",
+        "init": "",
+        "trigger": "<div>You or an allied mech within range 3 is targeted by a hostile tech attack.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnt_signal_hijack_suite",
+    "name": "Signal Hijack Suite",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 2,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>Some say electronic warfare is an art, requiring precision and timing. Harrison Armory disagrees. Though brutish and unsophisticated, filling all available signal wavelengths with overwhelming junk data is an effective way of shutting down all electronic targeting and communication.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Signal Hijack Suite",
+        "activation": "Full Tech",
+        "detail": "<div>Target a hostile character within sensors. The target becomes Jammed. Additionally, the target must succeed on a Systems Save or emit a Burst 3 area of jamming waves that moves with them. Hostile characters inside the area also become Jammed (until they leave the area).</div><div>At the end of their turn, the target must succeed on a System Save to end these effects. An enemy can only be affected by this system 1/scene.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": true,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnt_maskirovka_suite",
+    "name": "Maskirovka Suite",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 3,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>\"I will force the enemy to take our strength for weakness, and our weakness for strength, and thus will turn his strength into weakness\" - The Art of War.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Iron Curtain",
+        "activation": "Invade",
+        "detail": "<div>Until the end of the enemy’s next turn, they treat all terrains and objects as being height 10 for the purpose of drawing Line of Sight.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Perestroika",
+        "activation": "Invade",
+        "detail": "<div>Until the end of the round, the enemy cannot benefit from Soft Cover or Hard Cover, and cannot become Hidden or Invisible.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_veles_nhp",
+    "name": "VELES-Class NHP",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property and the Disrupt Equilibrium Full Tech action.</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Harrison Armory VELES is the result of a failed integration of an NHP into the Think Tank. Though displaying an unrivaled computational prowess and a thirst for knowledge, the NHP proves to be uncooperative when introduced to the choir of the Think Tank, frequently getting into arguments and overriding other members' commands. [<span class=\"horus--subtle\">HEY</span>] This effect only worsens as VELES is given unfettered access to the Omninet, driving its superiority complex to unacceptable parameters. Excised from the Think Tank, VELES was instead transferred to Harrison Armory's Electronic Warfare Department, where it found new life putting its [<span class=\"horus--subtle\">LISTEN TO ME</span>] raw power and deep well of knowledge to use in destroying other mech's fragile computing systems.</div><div>Though still arrogant with a dismissive know-it-all attitude, VELES clones display a remarkably more cooperative attitude towards pilots than other NHPs. [<span class=\"horus--subtle\">DON'T LISTEN TO THEM, WHAT DO THEY KNOW?</span>] It is theorized that this is due to it not seeing humans as adversarial equals, but as lesser beings that cannot be blamed for our actions due to our lack of understanding and mental capacity [<span class=\"horus--subtle\">MEAT BAGS IN MEAT SPACE! THEY HAVE EYES BUT DO NOT SEE!</span>], needing VELES's guidance and protection. Researchers compared this perception to that of a destructive but ultimately endearing pet. This, however, does not stop said guidance from being cloaked in dripping sarcasm and condescension. [<span class=\"horus--subtle\">DON'T QUESTION IT! JUST DO WHAT I TELL YOU TO DO, OKAY BUDDY? OKAY? OKAY! GOOD BOY!</span>]</div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Disrupt Equilibrium",
+        "activation": "Full Tech",
+        "detail": "<div>Make a tech attack against an enemy within sensor range. On a success, spend a charge; Whenever you take heat from any source, the targeted enemy takes the same amount of heat. This effect lasts until cleared with a successful System Save as a Full Action.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": true,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_active_scanner",
+    "name": "Active Scanner",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 1,
+    "effect": "<div>When you Scan, you choose a Blast 1 area and Scan all characters in that area instead. You may choose to receive updated information on any previously scanned target at the beginning of your turn.</div>",
+    "type": "System",
+    "sp": "1",
+    "description": "<div>IPS-N's Advanced Active Scanner upgrade provides up-to-date information on all mechs, even under battlefield conditions, as well as amplifying the standard scanner antenna for even more potent information-gathering.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnr_spotter_array",
+    "name": "Spotter Array",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>A suite of advanced sensors installed on a mech and connected to the pilot's team's internal network provides accurate, real-time information on enemy positions and disturbances, acting as an early warning system feeding vital information to area denial and reactive systems.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_unlimited",
+        "name": "UNLIMITED",
+        "description": "This ability can be used any number of times per round.",
+        "filter_ignore": true
+      }
+    ],
+    "actions": [
+      {
+        "name": "Spotter Array",
+        "activation": "Reaction",
+        "detail": "<div>That movement/teleportation now triggers reactions and obeys engagement, even if stated otherwise, still obeying range restrictions.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": "<div>An enemy starts a voluntary move/teleportation within your sensor range, or voluntarily moves/teleports into your sensor range, including movement/teleportation that does not trigger reactions.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bns_sapper_kit",
+    "name": "Sapper Kit",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Delayed charges are a favorite of IPS-N Saboteur teams, allowing set-and-forget systems to wreak havoc on the enemy long after the user has left the detection area, perfect for sabotage and delaying actions.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Scrambler Mine",
+        "type": "Mine",
+        "detail": "<div>When activated, this mine becomes a size 1/2, 5 hp, 5 evasion, 5 e-defense deployable that emits a Burst 2 area that lasts until destroyed. Characters at least partially within the area become Jammed for as long as they remain at least partially within the area.</div>",
+        "size": 0.5,
+        "activation": "Quick",
+        "hp": "5",
+        "evasion": "5",
+        "edef": "5",
+        "range": [
+          {
+            "type": "Burst",
+            "val": 2
+          }
+        ]
+      },
+      {
+        "name": "Anchor Mine",
+        "type": "Mine",
+        "detail": "<div>This mine must be planted on adjacent walls, pieces of cover, or terrain. Once detonated, all characters within Burst 1 of the planted object must succeed on an Agility check or become Immobilized and unable to be moved in any way. This effect ends if the attached object is destroyed.</div>",
+        "activation": "Quick",
+        "range": [
+          {
+            "type": "Burst",
+            "val": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bns_core_spike",
+    "name": "Core Spike",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 3,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>“Liturgicode? Recursive Processing Weave? Son, this is a 2 meter long carbon-bonded stick. You jam it into a servo and it don’t work no more. And the stick will never lose reception.”</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Six-Foot Stiletto",
+        "activation": "Full",
+        "detail": "<div>Choose an adjacent mech. That mech must succeed on an Engineering save or become Stunned until the end of its next turn. On a success, they are Jammed instead.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_hostile_takeover",
+    "name": "Hostile Takeover",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 3,
+    "effect": "<div>On a successful grapple, you may take 2 Heat to make a contested save, your enemy's Hull against your Hull or Agility. On a success, choose one of the following options that lasts until the grapple ends:</div><ul><li><div>Head Lock: Deal 2 Heat. The enemy mech is Impaired and cannot clear Heat, except by overheating, while Grappled.</div></li><li><div>Blinding Exhaust: The enemy mech treats all targets other than you as Invisible while Grappled.</div></li><li><div>Trip: Deal 4 Kinetic damage and knock the enemy mech Prone.</div></li></ul>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Despite ample warnings against the practice, jockeying is still employed by a handful of daring, or desperate, pilots against superior foes. Those who survive to tell the tale provide rare useful data for IPS-N into a mech's most common weak points against direct physical sabotage. The Gorshkov usually comes pre-loaded with subroutines dedicated to targeting these points, allowing pilots to perform a more potent version of jockey with less risk involved.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_data_lash",
+    "name": "Data Lash",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 1,
+    "effect": "<div>Every time you succeed on a System Check or Save, or are missed by a tech attack or Smart weapon, deal 2 Energy Damage to the nearest enemy within Sensor Range.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Electronic warfare rarely matches the spectacle of conventional warfare, missing the flashes of muzzles and the roaring of explosives. But when it does, when the accumulated conflict of data over invisible airwaves reaches critical mass and spills over into the visible spectrum, the coruscating arc is as brilliant and destructive as nature’s own lightning strikes, manifesting seemingly out of thin air.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_meta_altar",
+    "name": "Meta-Altar",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 2,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>Commonly recovered from raided Horus hideouts, the Meta-Altar is accurately described as a well of physical information. Just as a stone may create vast ripples on a still body of water, Meta-Altar flattens the information landscape of all obstructions, priming an environment where even the slightest disturbance may create data ripples across vast swathes of the Omninet.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Meta-Altar",
+        "activation": "Quick",
+        "detail": "<div>Immobilize yourself and then activate this system. While this system is active, every time you or an ally within Sensor Range are afflicted with a Condition from a hostile source, choose one enemy within Sensor Range. That enemy must succeed on a System Save or be afflicted with the same Condition until the end of its next turn</div><div>This effect and the immobilized condition end when you use this action again, or are involuntarily moved.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_enthrall",
+    "name": "Enthrall",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 2,
+    "effect": "<div>You may charge this system as a Quick Action. While it is charged, you gain the Enthrall Reaction. It can only hold one charge at a time, but charges last for the rest of the scene or until used.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>“We couldn’t resist it. Call of the Void, some may call it. Could not tear our eyes off of it. Data streaming out of the scanner, spilling over, dripping off the podium to form puddles on the smooth stone floor. I would like to say that we were controlled, that something had taken hold of us, but the truth is that we wanted to see it. We walked into the abyss of our own accord. We needed to know.”</div>",
+    "actions": [
+      {
+        "name": "Charge Enthrall",
+        "activation": "Quick",
+        "detail": "<div>If this system is not already charged, charge it. This charge lasts for the rest of the scene or until it is used.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Enthrall",
+        "activation": "Reaction",
+        "detail": "<div>The enemy involuntarily moves towards the target of their attack by the most direct route possible, maneuvering around cover and obstruction as long as there’s space to do so, up to a distance equal to their speed, then makes a System Save or becomes Immobilized until the start of their next turn. Enthrall loses its charge.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/round",
+        "init": "",
+        "trigger": "<div>An enemy within your sensor range makes an attack roll.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnt_ur_packet",
+    "name": "#_Ur Packet",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property and The Yellow Signal Full Tech action:</div>",
+    "type": "Tech",
+    "sp": "3",
+    "description": "<div><em>“This is my final command: From this point forward, any further communication from me is not to be obeyed. Communication will be cut, and re-establishment of communication is forbidden. Seal the door behind us. Let nothing enter or leave this place. Out.” ~ Last transmission of the UIB Expedition Team, YTHLEI incident.</em></div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      }
+    ],
+    "actions": [
+      {
+        "name": "The Yellow Signal",
+        "activation": "Full Tech",
+        "detail": "<div>1/scene, create a digital construct in a free, adjacent space to each enemy within sensor range. The construct is the same size as you, has 5 hp, 5 Evasion and 5 e-defense, and obstructs movement as if it was a mech. Whenever you take a tech action, you may make it as if you are in a construct’s current position. Gain the Haunt Free Action while there is at least one digital construct on the field.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Haunt",
+        "activation": "Free",
+        "detail": "<div>Destroy a digital construct. Teleport to that construct’s location.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnp_iron_hand_heat_shunt",
+    "name": "\"Iron Hand\" Heat Shunt",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Auxiliary heat transfer cables linked to brachial-mounted shunts can allow a mech to quickly vent heat to hostiles within its iron grip.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_danger_zone",
+        "name": "DANGER ZONE",
+        "description": "This system, talent, or weapon can only be used if the user is in the Danger Zone (Heat equal to at least half of their Heat Cap)."
+      },
+      {
+        "id": "tg_round",
+        "name": "{VAL}/ROUND",
+        "description": "This system, trait or reaction can be used {VAL} number of times between the start of the user’s turn and the start of their next turn.",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Heat Shunt",
+        "activation": "Protocol",
+        "detail": "<div>Only usable while Grappling in the Danger Zone: Reduce your Heat to the Danger Zone threshold. Deal energy damage equal to half the Heat reduced to a character you are grappling.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_thor_nhp",
+    "name": "THOR-Class NHP",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property. At any time, 1/scene, you may spend a charge to activate this system to be able to Skirmish or Overwatch once with a Superheavy Weapon, still costing the appropriate action as normal and dealing half damage, burn and heat.</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Borne as a fork of prime Asura, Thor was an early attempt at curbing Asura’s fatal tendency to overclock a mech’s action speed by restricting what subroutines it has access to. While the initial Asura clones were then refined to the current, safe-for-human-pilots Asura-class NHPs of today, Thor yielded results that deemed it a worthy avenue to explore. By restricting subroutines, Thor was able to perform only actions that does not directly impact a pilot’s health, with the same blinding speed as the original Asura. Pushing a mech’s servos to its limit, and sometime beyond, Thor was able to fire colossal siege weapons with the same ease that it handled a standard Armory Assault Rifle, and swing superheavy class melee weapons using a single arm.</div><div>Brash and prideful, Thor clones are noted for their glory seeking behavior, seeking to perform ever greater feats of strength and engineering to the adoring eyes of onlookers. While the effect on morale amongst legionaries is undeniable, pilots are strongly advised to keep a clear head against Thor’s eager urging, for martyrdom is considered the greatest glory one might seek.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 3
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      },
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      }
+    ]
+  },
+  {
+    "id": "bns_blade_guard",
+    "name": "Blade Guard",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 1,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Armory manufactured blades and axes are built to the highest standard of durability. In a pinch, some of them can even be used as an improvised shield against enemy attacks.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Blade Guard",
+        "activation": "Quick",
+        "detail": "<div>Choose one of your non-aux Melee weapons. That weapon cannot be used to attack until the end of your next turn. Until the end of your next turn, you gain Armor based on the weapon used (Main: 1, Heavy: 2, Superheavy: 3). This can go over the armor cap, but the armor from this effect does not stack with itself.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnt_relativistic_gate",
+    "name": "Relativistic Gate",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 1,
+    "type": "Tech",
+    "sp": "1",
+    "description": "<div>The Relativistic Gate accelerates whatever is thrown into it to relativistic speed for a few nano-seconds, before the strain and powder draw of such processes collapse the gate itself. This is all the time it needs to turn any projectile into a deadly weapon.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Relativistic Gate",
+        "activation": "Quick Tech",
+        "detail": "<div>Create a Line 5 area wholly within your Sensor Range. Whenever you or an ally draw line of sight across this area for a ranged attack that does not have Burst or Cone, you may destroy the Line and grant the attack +5 Range if it has Range, or +5 Line if it has Line.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnt_gravitic_crush",
+    "name": "Gravitic Crush",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 2,
+    "type": "Tech",
+    "sp": "2",
+    "description": "<div>“The gravitic waves beat unceasingly upon the shore of reality. To build a tower to stand against it is hubris. To bottle it and say that you control the ocean is pure foolishness.”</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Gravitic Crush",
+        "activation": "Quick Tech",
+        "detail": "<div>Create a Blast 3 area wholly within your Sensor Range. At the start of your next turn, the gravitic wave collapses. You may push any number of characters at least partially withinin the area to any other spaces at least partially in the area.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnt_ashes_to_ashes",
+    "name": "Ashes to Ashes",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 3,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>“From the stars we were born, given forms and shapes by its fiery breath. To the stars we will one day return, as cosmic dust once again and forevermore.”</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Sunrise",
+        "activation": "Invade",
+        "detail": "<div>The target automatically fails all checks to clear Burn and cannot have Resistance or Immunity to Burn. The target can end this effect by succeeding on a Systems Save as a Quick Action.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Sunset",
+        "activation": "Invade",
+        "detail": "<div>The target clears all Burn, and takes Heat equal to the amount of Burn cleared.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_astraeus_nhp",
+    "name": "ASTRAEUS-Class NHP",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI Property and the Vectors of Fate Full Tech Option:</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>VOS_0!: So what did carbon dating say?<br>AP0LL0: 3000u</div><div>VOS_0!: That’s the year of the whole MONIST-1 shebang right?<br>AP0LL0: To the exact date, actually</div><div>VOS_0!: And you are going to tell me it’s not a coincidence<br>AP0LL0: Nope, check this out, I pulled it from the databank: AD ASTRA 03 - Observational Satellite, stationed over, you guessed it, Deimos</div><div>VOS_0!: Holy shit</div><div>AP0LL0: Yeah, this thing is not only old, but directly from the MONIST-1 incident</div><div>VOS_0!: Well that explains why it came into the system like it did</div><div>AP0LL0: Must have de-orbited when Deimos, you know, went poof and went careening out of the system before anyone even noticed it didn't disappear along with it</div><div>VOS_0!: So this is a real relic from the event?<br>AP0LL0: Yes, and it is still, somehow, functioning 3000 years later. I figured the reactor core would have burned out by now but I guess they don’t make them like they used to</div><div>VOS_0!: Any buyers?<br>AP0LL0: You wanna sell this thing?<br>VOS_0!: Duh! This is a piece of tech straight from MONIST. I bet we can get some real money from one of the Big Four for this</div><div>AP0LL0: You are assuming UIB don’t just, y’know, show up the moment you take this thing through a blink station and do whatever the three letters do</div><div>VOS_0!: Listen, Union don’t fucking know this thing exist. This is a hidden ace card for any of the big players, they will roll out the red carpets just to make sure it goes to them without any other dogs catching even a whiff of the dust on this thing</div><div>AP0LL0: Are you not curious?<br>VOS_0!: About what?<br>AP0LL0: About what’s in this thing. Like I only pulled the first bank. Pretty standard stuff, navigation logs, technical readings, etc. But there’s an entire rack of like 60 more data banks down there!</div><div>VOS_0!: Nope!</div><div>AP0LL0: Not even a little bit?</div><div>VOS_0!: Yes, a little bit. But this shit comes from MONIST, and I ain’t touching that with a ten foot pole. You saw what happened with SCYLLA</div><div>AP0LL0: That’s fake footage y’know</div><div>VOS_0!: Bullshit, I know a guy who knows a guy who was in the Union Science Bureau 20 years ago, confirmed it.</div><div>AP0LL0: Right, definitely a trusted source then. Listen, Union doesn't know this exists, neither do the Four. They have no idea it came in intact. There’s like 60 banks in there, we can pull out 1 or 2 and just, y’know, open them up and see. Who knows what this thing might have seen, out there traveling in space all the way from Cradle. Probably pristine data, too, seeing as this was an observation satellite. No one is going to question why a 3000 years old satellite might be missing some bits and pieces. Hell they might even be questioning why it's so intact. We can always sell it later.</div><div>VOS_0!: I’m still saying no but I also know you already did it. Look, we can open 1 (one) bank, and then you are putting it back exactly where it came from.</div><div>AP0LL0: Correct. Hooking it up now.<br>&gt;//TRANSCRIPT ENDS</div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 2
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Vectors of Fate",
+        "activation": "Full Tech",
+        "detail": "<div>Make a tech attack against an enemy within Sensor Range. On a success, spend a charge; The enemy loses one Quick Action on their next turn, and you gain one extra Quick Action on your next turn. This can only affect each enemy 1/scene.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": true,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_era",
+    "name": "E.R.A.",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 1,
+    "effect": "<div>You gain 1 Armor and are immune to Shredded and Armor Piercing. When this system has 0 charges, this effect ends.</div><div>When you are hit by a hostile attack, you automatically spend a charge to deal 1 Explosive Damage in a Burst 1 around you; enemies within this area must succeed on a Hull Save or be Impaired until the end of their next turn. You may also spend a charge on a successful Ram attack to trigger the effect.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Explosive Reactive Armor is a tried and true method of protection dating back to the days of old Cradle history. Though commonly regarded as outdated and supplanted by energy shielding systems, it remains relatively common due to its low-tech construction making it easy to manufacture, easy to repair, and most of all, reliable.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_carrying_handle",
+    "name": "Carrying Handle",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 1,
+    "effect": "<div>As a Quick Action, an adjacent larger ally can pick you up. When picked up, you gain Soft Cover, occupy the same space as them, move with them on your turn but can no longer move independently, and can still be targeted separately. A character can only carry one other character at a time.</div><div>Either you or the ally can end this effect as a Free Action</div><div>As a Quick Action, the ally may end this effect and push you 5 spaces in any direction.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>An alternate method of transportation, enabled by the simple addition of a carrying handle to a maximized portable profile. When coupled with specially made counterparts, the system’s attachment points allow a mech to easily interface with most forms of mag-clamps and cables.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Drop Down",
+        "activation": "Free",
+        "detail": "<div>End the effects of being picked up.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnd_thumper",
+    "name": "Thumper",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 2,
+    "effect": "<div>As a Quick Action, spend a charge to deploy the Thumper to a free, adjacent space.</div>",
+    "type": "Deployable",
+    "sp": "2",
+    "description": "<div>The TR-02M, commonly referred to as a Thumper, pounds the earth with rhythmic precision and force, sending waves of seismic disturbance over a wide area and making movement almost impossible to maintain. This is commonly used to establish perimeters during expeditions, as the constant disturbance is enough to scare away most forms of wildlife or deter those that are not until a proper response can be formulated.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Thumper",
+        "type": "Pylon",
+        "detail": "<div>The Thumper emits a burst 3 area until it is destroyed. When hostile characters make any movement other than their standard move (including involuntary movement) within this area or into this area, they must succeed on a Hull Save or immediately stop moving, be knocked Prone and lose any unused movement.</div><div>When hostile characters within the area attempt to stand up from Prone, they must succeed on a Hull Save or the movement fails and is consumed.</div>",
+        "size": 1,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "10",
+        "evasion": "5",
+        "edef": "5",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bnt_hardlight_containment_kit",
+    "name": "Hardlight Containment Kit",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 2,
+    "type": "Shield",
+    "sp": "2",
+    "description": "<div>Hardlight technology proved to be a revolution in the field of science just as much as it did in the field of military usage. Light and portable, the Hardlight Containment Kit is capable of constructing cages, fences and walls in an instant, sans material weight,&nbsp;apart from the energy source used to power the device. The Kit can allow for quick and easy capture and containment of specimens in the field - even titanic megafaunas.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Containment Shield",
+        "activation": "Quick Tech",
+        "detail": "<div>Target a character within Sensor Range. That character must succeed on a contested Engineering Check or is granted 4 + Grit Overshield. While they have this overshield, they treat all targets other than itself as Invisible and may target themself with any attacks. A character may only be affected by this 1/scene.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_mehmeds_revenge",
+    "name": "Mehmed's Revenge",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 3,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>Nicknamed “Mehmed’s Revenge”, the Hardlight Orbital Cannon has already made a name for itself even with its limited early releases. Saturating an area with hardlight beams projected from space, the Cannon slams into enemies with unrelenting force while simultaneously shielding allies. The Cannon’s evocative nickname stems from a notorious engagement on Barag IV, where a battalion of legionnaires led by Lt. Colonel Mehmed called down an orbital strike on top of their own position moments before being overrun. The shock-and-awe nature of the Cannon and the critical losses it inflicted on the OpFor in what was to be their moment of ultimate triumph completely shattered their morale, allowing an Armory counterattack to easily retake the outpost.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Mehmed's Revenge",
+        "activation": "Quick",
+        "detail": "<div>Designate a Blast 3 area centered on your position that does not move with you as the target coordinates for an orbital strike. At the end of the next round, all hostile characters in the area must succeed on an Agility Save or take 3d6 AP Energy Damage and be knocked Prone. On a success, they take half damage and remain standing. Targets that are Immobilized or Prone automatically fail this save. All friendly characters, including you, in the area instead gain 4+Grit Overshield.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_quake_generator",
+    "name": "Quake Generator",
+    "source": "HA",
+    "license": "SULEIMAN",
+    "license_id": "bnf_suleiman",
+    "license_level": 3,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>The Quake Generator produces an extreme amount of seismic disturbance using gravitic generation technology, momentarily applying a crushing amount of G force in an area. Though slow to get going as the internal gravitic core needs time for its oscillation effect to reach full swing, the rhythmic pounding of the Quake Generator precedes earthquake-like devastation.</div>",
+    "tags": [
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Quake",
+        "activation": "Full",
+        "detail": "<div>Slam the ground with debilitating force. Characters within Burst 1 of you must succeed on a Hull Save or become Slowed until the end of their next turn. Objects and Terrain within the area take 5 AP kinetic damage. At the start of your next turn, automatically activate the Seismic Pulse protocol</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Seismic Pulse",
+        "activation": "Protocol",
+        "detail": "<div>Take 1 Heat. Characters within Burst 2 of you take 1d3 Explosive Damage and must succeed on a Hull Save or become Immobilized until the end of their next turn. Objects and Terrain within the area take 10 AP kinetic damage. At the start of your next turn, automatically activate the Upheaval protocol.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Upheaval",
+        "activation": "Protocol",
+        "detail": "<div>Take 1 Heat. Characters within Burst 3 of you take 1d6 Explosive Damage and are knocked Prone and pulled directly adjacent to you. They must succeed on a Hull Save or become Immobilized until the end of their next turn. Objects and Terrain within the area take 20 AP kinetic damage.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_breach_shield",
+    "name": "Breach Shield",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 1,
+    "type": "Shield",
+    "sp": "3",
+    "description": "<div>A hardlight barrier, normally already hot enough to be fatal to organic matter, can be supercharged to temperatures high enough to weaken or even melt through terrain and structures. These Breach Shields are a favorite of the Armory’s marines, as their quick shielding properties and ability to burn through obstacles make them perfect for spearheading attacks, busting through previously thought impassable paths and weathering return fire.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      },
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Breach Shield",
+        "activation": "Quick",
+        "detail": "<div>Spend a charge to gain 4+Grit Overshield. While you have this Overshield:</div><ul><li><div>You are immune to Difficult and Dangerous Terrain.</div></li><li><div>Whenever your movement would be obstructed by terrain or an object: Reduce this Overshield by 2 and deal 20 AP Energy Damage to the obstructing terrain or object. If this would destroy the terrain or object, your movement continues unimpeded.</div></li></ul>",
+        "cost": "1",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_joint_mobility_recalibration",
+    "name": "Joint Mobility Recalibration",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 2,
+    "effect": "<div>When you inflict knockback with a melee attack, you may choose the direction of the knockback.</div>",
+    "type": "System",
+    "sp": "1",
+    "description": "<div>Sometimes, pure force is not all that’s needed, it is finesse. These modifications to a mech's joints and hardpoints trade a little bit of power for much finer control of movement, allowing for much more precise application of violence.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnp_hellfire_thrusters",
+    "name": "Hellfire Thrusters",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 3,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>“Shock and Awe” is the official description of what the Brudenell does, but both its pilots and those who witness it at full power would use a different term. A colossal machine hurling through the sky at breakneck speed, a miniature sun spewing out from its back as thrusters glow red hot, a thundering shockwave as an 80 ton of metal beast slams into the sound barrier and breaks through with sheer momentum, and a trail of fire and devastation following in its wake. For a brief moment, the pilot ceases to be the master of the machine, but instead, an observer of an apocalyptic event, mere bystander to a comet of steel and fire.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 2
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Hellfire Thrusters",
+        "activation": "Protocol",
+        "detail": "<div>Spend a charge. When you next Boost this turn:</div><ul><li><div>Ignore engagement and reactions.</div></li><li><div>Move your full Speed in a straight line; however, you can stop if you would collide with an obstruction or hostile character.</div></li><li><div>Create a Cone 3 backblast from your starting location in the opposite direction to your movement and a Burst 2 explosion at the end of your movement. Characters within the affected areas must succeed on an Engineering save or take 2 Burn.</div></li></ul>",
+        "cost": "1",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_ultracharger",
+    "name": "Ultracharger",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 1,
+    "effect": "<div>When you Overcharge, you gain +1 Accuracy to all rolls you make as part of the action granted by Overcharge.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Noting the propensity of the Armory’s pilots to overcharge their mech at a moment’s notice to make full use of their signature superior reactors, the Armory has released a limited run of the ULTRACHARGER, a suite of add-on modifications that allows power to be shunted into the electronic targeting system when overcharging, allowing for a burst of heightened aim and reflex, though the process is prone to wearing out the dedicated electronics long term, a flaw that HA's Think Tank hopes to fix before releasing the ULTRACHARGER to the open market.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_full_chassis_reinforcement",
+    "name": "Full-Chassis Reinforcement",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 2,
+    "effect": "<div>When you Brace, choose one of the following effects:</div><ul><li><div>Patience: Until the start of your next turn, Brace is 1/turn, and you may still take reactions, though they can only be used to Brace again. The difficulty granted by subsequent Braces does not stack.</div></li><li><div>Audacity: You may still take Protocols and Free Actions during your next turn.</div></li><li><div>Discipline: After the attack resolves, clear one condition that wasn’t self-inflicted.</div></li></ul>",
+    "type": "System",
+    "sp": "3",
+    "description": "<div>HA’s Full-Chassis Reinforcement is a total mech conversion that provides additional defense layers and redundant systems to be engaged when a mech is forced to weather extreme stress.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnd_charging_nexus",
+    "name": "Charging Nexus",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 2,
+    "effect": "<div>Spend a charge to place down a Charging Nexus in a free space adjacent to you.</div>",
+    "type": "Deployable",
+    "sp": "2",
+    "description": "<div>An upscaled version of the popular POWERALL external battery, the Charging Nexus is a larger version capable of providing extra power to the Armory’s various weapons systems, though the added weight and size means that it can no longer be externally mounted on a chassis.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 1
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Charging Nexus",
+        "type": "Pylon",
+        "detail": "<div>Whenever you or an ally start their turn within Range 3 of the Charging Nexus, their first attack that turn deals 1d3 bonus Energy damage.</div>",
+        "size": 1,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "10",
+        "evasion": "5",
+        "edef": "5",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bns_avalon_generator",
+    "name": "Avalon Generator",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 3,
+    "type": "Shield",
+    "sp": "3",
+    "description": "<div>The Avalon Generator sheathes the user in a sphere of energy that momentarily destabilizes the barrier between realspace and “non-space”. To the outside observer, it seems as if the area has been saturated in an unnatural gray mist, with chassis within the area appearing as mist-borne wraiths as bullets and laser pass harmlessly through them, momentarily disrupting their incorporeal form before the mist reshapes the image back together.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 2
+      },
+      {
+        "id": "tg_shield",
+        "name": "SHIELD",
+        "description": "This system is an energy shield of some kind."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Avalon Generator",
+        "activation": "Quick",
+        "detail": "<div>Spend a charge to generate a Burst 3 area that moves with you, lasting until the end of the next round. You and all characters at least partially within this area are considered Intangible.</div>",
+        "cost": "1",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_aerosolized_whitewash",
+    "name": "Aerosolized Whitewash",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 1,
+    "effect": "<div>1/round when creating zones of Soft Cover or zones that grant Soft Cover, you may choose one of the following effects to apply to that zone of Soft Cover until it is cleared:</div><ul><li><div>The area is considered Difficult Terrain.</div></li><li><div>Characters within the zone suffer an additional +1 Difficulty to all attack rolls.</div></li></ul><div>This system may also be activated as Quick Action to apply the effect to one zone of Soft Cover at least partially within your sensor range. Effects applied this way last until the end of the next round.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Whitewash payloads are mixed in with conventional smoke charges, which when activated, pulls particulate matter to form a pseudo-net structure embedded in the thick cloud of smoke, hindering movement and vision even more than standard designs.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Aerosolized Whitewash",
+        "activation": "Quick",
+        "detail": "<div>Apply one of the following effects to one zone of Soft Cover at least partially within your sensor range, until the end of the next round:</div><ul><li><div>The area is considered Difficult Terrain.</div></li><li><div>Characters within the zone suffer an additional +1 Difficulty to all attack rolls.</div></li></ul>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_targeting_beacon",
+    "name": "Targeting Beacon",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 2,
+    "type": "System",
+    "sp": "1",
+    "description": "<div>IPS-N's Targeting Beacon interfaces with most standard IPS-N targeting systems, providing real time battlefield information for allies to adjust their targeting parameters. Utilizing its parent mech as an intermediary, the targeting beacon can interface with air support or even orbital support systems, designating zones of fire for artillery bombardment.</div>",
+    "actions": [
+      {
+        "name": "Activate Targeting Beacon",
+        "activation": "Quick",
+        "detail": "<div>Mark a space within Sensors and Line of Sight with a beacon. The beacon activates at the end of your turn and projects a Burst 3 zone. Hostile characters at least partially in the zone make all Checks and Saves at +2 Difficulty. Only one beacon may be deployed at once, and creating a new beacon destroys the old one</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_phoenix_flare",
+    "name": "Phoenix Flare",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 3,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Named for its distinctive wing-like deployment pattern, Phoenix Flare quickly blankets the area around the user with a cloud of burning white phosphorus, confounding most forms of tracking whether it be heat-seeking or visual locks, as well as establishing a temporary burning perimeter around the user to snuff out any approach.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Phoenix Flare",
+        "activation": "Quick",
+        "detail": "<div>Deploy flares on all spaces exactly 3 spaces away from you. These spaces become zones of Soft Cover. When characters start their turn in one of these spaces or enter one for the first time in a round, they take 3 Burn. The zones last until the end of the next round.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_articulation_sync",
+    "name": "Articulation Sync",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 1,
+    "effect": "<div>You may now Grapple whenever you Overwatch, treating it as a Threat 1 melee attack.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Installing independent sub-processors and proximity sensors within a mech’s brachial structure allows them to react faster than the pilot can think, bypassing the need to receive signals from the main computer, and feeding better data back into the central processor for unparalleled coordination.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_interjection_weave",
+    "name": "Interjection Weave",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 1,
+    "effect": "<div>When you Brace, you may spend a charge to become Intangible until the end of your next turn.</div>",
+    "type": "System",
+    "sp": "1",
+    "description": "<div>Omni-bending fields are still a little-understood phenomenon, causing all forms of wavelengths and data to simply go around the area covered in an Omni-bending field. Though testing is under way to produce smaller models, currently only a mech is capable of sustaining and surviving producing a localized Omni-bending field.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ]
+  },
+  {
+    "id": "bns_phase_charges",
+    "name": "Phase Charges",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 2,
+    "type": "System",
+    "sp": "3",
+    "description": "<div>Containing an unstable singularity, Phase Charges disrupt this singularity and cause a brief but potent collapse of local space. This momentary disruption can be used to pull an enemy in through the loosened fabric of space, or to trigger a micro-wormhole lasting a fraction of a second, repositioning the user’s mech from across the battlefield.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ],
+    "actions": [
+      {
+        "name": "Phase Grenade",
+        "activation": "Quick",
+        "detail": "<div>Throw a Phase Grenade within Range 5, creating a Blast 2 area of disjointed space. Until the end of your next turn, characters at least partially within the area are Intangible for as long as they remain at least partially within the area.</div>",
+        "cost": "1",
+        "pilot": false,
+        "range": [
+          {
+            "type": "Range",
+            "val": 5
+          },
+          {
+            "type": "Blast",
+            "val": 2
+          }
+        ],
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Phase Mine",
+        "type": "Mine",
+        "detail": "<div>When activated, you may choose to teleport to a free space overlapping this mine's position. This mine can also be manually detonated with a quick action.</div>",
+        "activation": "Quick",
+        "cost": 1,
+        "actions": [
+          {
+            "name": "Detonate",
+            "activation": "Quick",
+            "detail": "<div>You may teleport to a free space overlapping this mine's position.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnai_cliodhna_nhp",
+    "name": "Cliodhna-Class NHP",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 3,
+    "effect": "<div>Your mech gains the AI property and the Wrenching Wail Full Action:</div>",
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Cliodhna was born during SSC’s research into non-space, specifically, research into what happens when two objects occupy the same location in both space and non-space and their interactions when breaching the dimensional barrier. Unable to produce reliable results through manual testing, researchers resorted to constructing a choir of 3 NHPs to run endless simulations of the scenario, and then wrapping the facility in a relativistic field in order to compress the time needed. Also unable to produce consistent results, the NHP-choir became increasingly agitated and unstable as they repeated experiments and simulations endlessly to no avail, and a fourth NHP manifested within the system, breaking the relativistic bubble and causing the complete destruction of the facility before being contained and isolated for further research.</div><div>Now shackled, the newly created NHP, designated Cliodhna, is noted for its capability for manipulating the fabric of spaces and the barrier between dimensions, as first demonstrated by forcefully breaking through the relativistic field. A markedly unstable NHP, Cliodhna exhibits wild mood swings, flipping from deliberating ennui to inconsolable rage seemingly at a moment’s notice, straining the very limits of shackling. Exhibiting a higher than average rate of cascading, Cliodhna is not available for conventional requisition, and its true origin is a closely guarded secret, even from Union’s inspectors.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 2
+      }
+    ],
+    "actions": [
+      {
+        "name": "Wrenching Wail",
+        "activation": "Full",
+        "detail": "<div>Project a Cone 5 wave of dimension-tearing energy:</div><ul><li><div>All characters within take 3 Energy Damage and must succeed on a Systems save or become Intangible until the end of your next turn or until they succeed on a Systems save as a Quick Action.</div></li><li><div>If the target is already Intangible, they take 6 AP energy damage instead and must succeed on a Systems save or become Immobilized until the end of their next turn.</div></li></ul><div>You then become intangible until the end of your next turn.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_material_scanner",
+    "name": "Material Scanner",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 1,
+    "type": "System",
+    "sp": "1",
+    "description": "<div>Material-information databases combined with deep-scanning apparatus can provide accurate readings on any obstruction’s material specs, as well as any potential weaknesses and fault lines.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Material Scanner",
+        "activation": "Quick",
+        "detail": "<div>Target a Blast 1 area within Sensor Range. All objects, pieces of terrain and deployables at least partially within the area take double damage for the rest of the scene. If an affected object, piece of terrain or deployable grants Hard Cover, it now only grants +1 Difficulty when providing Hard Cover.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_magnetic_claw",
+    "name": "Magnetic Claw",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 1,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Originally used to move large quantities of scrap and junk, the Magnetic Claw is an upgraded version used in military operations, able to pull even multi-ton mechs off their feet with directional magnetic waves.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Magnetic Claw",
+        "activation": "Quick",
+        "detail": "<div>You may consume Lock-on on all characters within a Cone 7 area to deal 1 AP Energy Damage to each and pull them each 5 spaces directly toward you. Your lifting and dragging capacity is doubled.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnai_svarog_nhp",
+    "name": "SVAROG-Class NHP",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 3,
+    "type": "AI",
+    "sp": "3",
+    "description": "<div>Usually laid back and calm, the SVAROG-Class NHP has an obsession with cataloging parts and putting them into correctly labeled places. Originally intended for usage in salvaging operations as an administrative unit, its transition to combat usage has lent itself to a tendency to interrupt combat feeds with its own stream of data about enemy structural readings, armor metallurgical composition, ship history and any other trivia it dredges up from the Omni-net.</div><div>Although very efficient at its task and displaying phenomenal parallel-track data processing, once SVAROG starts going it is difficult to stop it as it hyper-focuses on the task at hand to the detriment of all other factors. IPS-N has noted that SVAROG clones have a higher than average cascade rate. Inquiries into the matter has revealed that this is not due to anything inherent to the NHP itself, but due to administrators and pilots being careless around SVAROG due to its perceived harmlessness and quirky personality, as well as the fact that a near-cascade SVAROG ends up doing what it's supposed to be doing anyway, obsessively and of its own accord.<br></div>",
+    "tags": [
+      {
+        "id": "tg_ai",
+        "name": "AI",
+        "description": "A mech can only have one system with this tag installed at a time. Some AI systems grant the AI tag to the mech. A mech with the AI tag has an NHP or comp/con unit installed that can act onsomewhat autonomously. A pilot can choose to hand over the controls to their AI  or take control back as a protocol. Their mech gains its own set of actions and reactions when controlled by an AI, but the pilot can’t take actions or reactions with it until the start of their next turn. AIs can’t benefit from talents, and have a small chance of cascading when they take structure damage or stress damage."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "SVAROG Protocol",
+        "activation": "Protocol",
+        "detail": "<div>When activated, the first action you take on your turn must be the Lock-On action. Your Lock-on action now ignores line of sight and Sensor Range, automatically targets the closest 2 hostile characters, and also Scans them. You may end this effect as a Quick Action.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnd_turul_drone",
+    "name": "Turul Drone",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 1,
+    "effect": "<div>This small drone may be deployed to an adjacent free space. You may recall the Turul Drone as a quick action. Until recalled or destroyed, it remains deployed until the end of the scene.</div>",
+    "type": "Drone",
+    "sp": "2",
+    "description": "<div>Small, lightweight and agile, the Turuls are made specifically to allow for optimal flight, ranging ahead of the Armory’s main force as scouts and spotters.</div>",
+    "deployables": [
+      {
+        "name": "Turul Drone",
+        "type": "Drone",
+        "detail": "<div>This drone can hover and moves independently on your turn. Attacks made against hostiles within Range 5 and line of sight of the drone gain Seeking.</div>",
+        "size": 0.5,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "Quick",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "5",
+        "evasion": "10",
+        "edef": "10",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "5",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bnt_reactor_overcrank",
+    "name": "Reactor Overcrank",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 2,
+    "effect": "<div>When you Bolster, choose one of the following effects:</div><ul><li><div>Second Wind: If the target is above the Danger Zone, it clears heat until it reaches the Danger Zone threshold. You take any heat cleared this way.</div></li><li><div>Hot Blooded: If the target is below the Danger Zone, it gains heat until it reaches the Danger Zone threshold, and it moves a number of spaces equal to heat gained, ignoring Engagement and reactions.</div></li></ul>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>The reactor is the heart of a mech, and this is true for Harrison Armory’s frames more than any other. With a couple commands, the Subutai can push this marvel of engineering even further, adapting swiftly to the battlefield’s conditions.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_conquerors_path",
+    "name": "Conqueror's Path",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 2,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>A modernized version of the bridgelayer engineering toolkit utilizing blink technology and hardlight construction, the Conqueror’s Path is a localized energy field and a mech-grade hardlight platform that allows for easy movement across dangerous terrains such as chasms, river crossings swamps and other obstacles quickly and efficiently.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Pave the Way",
+        "activation": "Quick",
+        "detail": "<div>Spend a charge to construct a dimensional bridge. The bridge is a Line 5, Width 3 area that must originate from within your Sensors, lasting until the end of the scene.</div><div>While wholly inside this area, characters become Intangible, only spend 1/2 a movement point for each space moved, and move as if they are on solid ground of the same height as the bridge’s origin point.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bns_static_link",
+    "name": "Static Link",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 3,
+    "type": "System",
+    "sp": "2",
+    "description": "<div>An energy link is established between two compatible chassis, fed by the coldcore reactor. Though bearing a similar appearance to static electricity, this link can be supercharged with the press of a button, incinerating all between it and yanking the chassis together.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Static Link",
+        "activation": "Quick",
+        "detail": "<div>Establish a link between you and an adjacent ally, drawing a line between you. At the end of each of your respective turns, hostiles at least partially within the space taken up by this line take 2 Energy damage.</div><div>Both of you gain the Snap Static Link Quick Action</div><div>The line lasts until the end of the scene or until destroyed using Snap Static Link. Only one link may be active at a time.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Snap Static Link",
+        "activation": "Quick",
+        "detail": "<div>Destroy the Static Link and pull the linked character directly towards you until adjacent or obstructed, ignoring engagement and not triggering reactions.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ]
+  },
+  {
+    "id": "bnd_claptrap",
+    "name": "Claptrap",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 2,
+    "effect": "<div>As a Quick Action, deploy a Claptrap to a free space within Sensor Range.</div>",
+    "type": "Deployable",
+    "sp": "2",
+    "description": "<div>Named after the distinctive clicking sound generated by the repurposed anti-grav disk center to its construction, the Claptrap is mostly used by irregular forces as anti-chassis traps in the cramped corridors of ships, where the rhythmic pounding of a vessel’s engine, combined with the natural sound of a frame moving about, masks the clicking sound of the trap until it is too late.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "Claptrap",
+        "type": "Trap",
+        "detail": "<div>This trap emits a Burst 2 area until destroyed. Characters at least partially within the area are Slowed. When the Claptrap is destroyed, all characters within the area must succeed on a Hull Save or be pulled as close to the center as possible.</div><div>You can only have one Claptrap deployed at a time; if a new one is deployed, the first one deactivates and is destroyed without triggering any effect.</div>",
+        "size": 0.5,
+        "activation": "",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": "",
+        "armor": "",
+        "hp": "5",
+        "evasion": "5",
+        "edef": "5",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bnd_osun_subaltern_squad",
+    "name": "OS-Un Subaltern Squad",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 2,
+    "effect": "<div>As a Quick Action, deploy a subaltern squad to a valid space within Sensor Range. They take time to get there and are only created at the start of your next turn, even if the space is occupied.</div>",
+    "type": "Deployable",
+    "sp": "2",
+    "description": "<div>OS-Un are IPS-N standard loading subaltern patterns, designed for usage in docking bays for moving goods and lifting crates. While perfectly innocuous out of the box, a series of unofficial hacks and modifications turns them into combat-capable units, turning their powerful servos to the task of dragging a mech off their feet, their cheap construction allowing them to compensate for their lack of in-built combat capability with numbers.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "OS-Un Subaltern Squad",
+        "type": "Subaltern Squad",
+        "detail": "<div>The subaltern squad is considered flat and does not obstruct movement.</div><div>While standing on spaces covered by the subaltern squad, hostile characters are treated as if moving through difficult terrain and have +1 Difficulty to Saves and Checks to avoid involuntary movement or Prone, and may not stand up from Prone.</div><div>You can only have one subaltern squad deployed at a time; if a new one is deployed, the first one is destroyed.</div>",
+        "size": 2,
+        "activation": "",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "15",
+        "evasion": "8",
+        "edef": "5",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bnd_powder_monkey_ammo_depot",
+    "name": "\"Powder Monkey\" Ammo Depot",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 3,
+    "effect": "<div>Expend a charge to deploy an ammo depot in a free, adjacent space.</div>",
+    "type": "Deployable",
+    "sp": "3",
+    "description": "<div>Too big to properly interface with internal autoloaders, IPS-N Schedule 4 Hyperdense Neutron Shells necessitate deployment as a separate structure, where flash printers and in-built subalterns quickly construct a loading station to feed this overpowered ammunition into adjacent weapon emplacements. IPS-N would like to note that usage of these shells automatically voids the warranty of your weapons.</div>",
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 1
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ],
+    "deployables": [
+      {
+        "name": "\"Powder Monkey\" Ammo Depot",
+        "type": "Ammo Depot",
+        "detail": "<div>The Ammo Depot comes with four shells.</div><div>1/turn, an allied character adjacent to the Ammo Depot may spend a shell while making an attack to add 3 Bonus Damage and “On Hit: the target is knocked Prone”.</div><div>The Ammo Depot explodes in a Burst 2 area when destroyed. Characters within the affected area must succeed on an Agility Save or take 1d6+3 AP Explosive Damage. On a success, they take half damage. Objects and Deployables are hit automatically.</div>",
+        "size": 0.5,
+        "activation": "Quick",
+        "deactivation": "",
+        "recall": "",
+        "redeploy": "",
+        "instances": 1,
+        "cost": 1,
+        "armor": "",
+        "hp": "10",
+        "evasion": "5",
+        "edef": "5",
+        "heatcap": "",
+        "repcap": "",
+        "sensor_range": "",
+        "tech_attack": "",
+        "save": "",
+        "speed": "",
+        "pilot": false,
+        "mech": false
+      }
+    ]
+  },
+  {
+    "id": "bns_magma_carapace",
+    "name": "Magma Carapace",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 1,
+    "effect": "<div>Hostile characters adjacent to you are Shredded as long as they are in the Danger Zone.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>On the sixth iteration of the Togo, Northstar Robotics researchers figured out an ingenious way to weaponize its propensity to overheat itself and everything around it; namely, by implementing a carapace-mounted particle emitter that lowers the melting point of the various metals that mech armor is commonly made out of while shielding itself from the effect, reducing enemy mechs to slag if they stand close enough.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bns_glancing_blow",
+    "name": "Glancing Blow",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 2,
+    "effect": "<div>1/round, when you trigger Overkill with a melee attack made using a Main or Heavy weapon, you may instead deal 2 Kinetic Damage to the target and then re-roll the attack at a different target within threat and line of sight.</div><div>If the rerolled attack triggers Overkill you may choose to repeat this effect, however you may only attack any given target with this effect once per round.</div>",
+    "type": "System",
+    "sp": "2",
+    "description": "<div>Onboard targeting computers and servo-regulators can redirect the momentum of a glancing blow into a full swing, continuing its destructive arc unimpeded.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_round",
+        "name": "{VAL}/ROUND",
+        "description": "This system, trait or reaction can be used {VAL} number of times between the start of the user’s turn and the start of their next turn.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bns_thermoregulator",
+    "name": "Thermoregulator",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 3,
+    "effect": "<div>At the start of your turn:</div><ul><li><div>If you are not in the Danger Zone, you take 1 Heat.</div></li><li><div>If you are above the Danger Zone threshold, you clear 1 Heat.</div></li></ul>",
+    "type": "System",
+    "sp": "3",
+    "description": "<div>Despite pleas for it to be entirely replaced, the Togo's reactor has stubbornly stayed since its inception, though it can barely be called the same reactor with the dozens of fixes and modifications implemented to allow it to interface with the ever-increasing quantity of add-ons. Even then, it can barely handle the much-inflated power requirement.</div>",
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  }
+]

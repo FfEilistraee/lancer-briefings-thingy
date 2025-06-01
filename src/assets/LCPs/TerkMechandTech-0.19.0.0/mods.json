@@ -1,0 +1,164 @@
+[
+  {
+    "id": "bnm_carbine_conversion_kit",
+    "name": "Carbine Conversion Kit",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 3,
+    "effect": "<div>The weapon gains Inaccurate, Threat 3, and is also considered a CQB weapon. This mod cannot be applied to weapons that already have Inaccurate.</div>",
+    "sp": "3",
+    "description": "<div>Cut down barrels, foregrips, laser sights, and bullpup configurations are some of the many modifications used by IPS-N marine pilots to turn a full sized Rifle into a Carbine, trading some of its long range capability for superior handling in tight corridors.</div>",
+    "allowed_types": [
+      "Rifle"
+    ],
+    "allowed_sizes": [
+      "Auxiliary",
+      "Main",
+      "Heavy",
+      "Superheavy"
+    ],
+    "restricted_sizes": [],
+    "added_damage": [],
+    "added_range": [],
+    "added_tags": [
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      }
+    ]
+  },
+  {
+    "id": "bnm_unbalancing_blow",
+    "name": "Unbalancing Blow",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 2,
+    "effect": "<div>This weapon gains On Crit: Knockback 1</div><div>Whenever you inflict Knockback X with this weapon, you may spend a charge to instead force the enemy to make a Hull Check with -X to the roll. On a failure, they are knocked Prone.</div>",
+    "sp": "2",
+    "description": "<div>Advanced computing subroutines can almost-instantaneously locate a hostile’s center of gravity, and direct powerful attacks to unbalance this fragile equilibrium.</div>",
+    "allowed_types": [
+      "Rifle",
+      "Cannon",
+      "Launcher",
+      "CQB",
+      "Nexus",
+      "Melee"
+    ],
+    "allowed_sizes": [
+      "Main",
+      "Heavy",
+      "Superheavy"
+    ],
+    "restricted_sizes": [],
+    "added_damage": [],
+    "added_range": [],
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 3
+      }
+    ]
+  },
+  {
+    "id": "bnm_rocket_attachment",
+    "name": "Rocket Attachment",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 2,
+    "effect": "<div>1/round, when you attack with this weapon, you may take Heat depending on the weapon’s size (Main/aux: 1, Heavy: 2, Superheavy: 3) to fly up to 3 spaces directly towards the targeted character before the attack. This movement ignores engagement and doesn’t provoke reactions.</div>",
+    "sp": "2",
+    "description": "<div>The spare rocket thrusters that comes with the Brudenell’s Standard Repair Kit have a habit of going missing, only to later resurface strapped to an oversized melee weapon by an enterprising pilot.</div>",
+    "allowed_types": [
+      "Melee"
+    ],
+    "allowed_sizes": [
+      "Auxiliary",
+      "Main",
+      "Heavy",
+      "Superheavy"
+    ],
+    "restricted_sizes": [],
+    "added_damage": [],
+    "added_range": [],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnm_autonomous_edge_alignment",
+    "name": "Autonomous Edge Alignment",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 1,
+    "effect": "<div>On Attack: The weapon gains Reliable equal to the value of its final Accuracy dice, if it applies. If it already has Reliable, use whichever is higher.</div>",
+    "sp": "2",
+    "description": "<div>Harrison Armoy EDGEMASTR combines state of the art probability and spatial mapping to bring you the finest in bladed weapon accessory. With a rugged AI unit integrated in the hilt unit and an autonomously controlled gyroscope housed inside the blade, there’s no such thing as a glancing blow with the EDGEMASTR, for every strike you make will strike true with mathematical precision.</div>",
+    "allowed_types": [
+      "Melee"
+    ],
+    "allowed_sizes": [
+      "Main",
+      "Heavy",
+      "Superheavy"
+    ],
+    "restricted_sizes": [],
+    "added_damage": [],
+    "added_range": [],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnm_mk3_beam_diffuser",
+    "name": "MK3 Beam Diffuser",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 3,
+    "effect": "<div>Choose a ranged weapon that does energy damage and does not have Cone, Burst or Blast. That weapon gains Heat 2 (self) and changes its template to Cone, depending on its original range/line. If it has both Range and Line, the Line takes precedence, and is the part that is converted.</div><ul><li><div>Range 0-10/Line 0-5: Cone 3</div></li><li><div>Range 11-20/Line 6-10: Cone 5</div></li><li><div>Range&gt;20/Line &gt;10: Cone 7</div></li></ul>",
+    "sp": "3",
+    "description": "<div>Utilizing a diffusing crystal mounted upon the muzzle, the MK3 Beam Diffuser can be calibrated to split a single beam of energy into a dizzying fusillade of beams blanketing a wide area. Though powerful, it remains in the prototype phase, due to the attachment's reliance on a rare crystal to withstand the energy output of most mil-spec energy weapons, as well as the attachment’s propensity to melt itself through heavy usage.</div>",
+    "allowed_types": [
+      "Rifle",
+      "Cannon",
+      "Launcher",
+      "CQB",
+      "Nexus"
+    ],
+    "allowed_sizes": [
+      "Auxiliary",
+      "Main",
+      "Heavy",
+      "Superheavy"
+    ],
+    "restricted_types": [
+      "Melee"
+    ],
+    "restricted_sizes": [],
+    "added_damage": [],
+    "added_range": [],
+    "added_tags": [
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 2
+      }
+    ]
+  }
+]

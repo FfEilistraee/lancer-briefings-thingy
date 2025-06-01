@@ -1,0 +1,2223 @@
+[
+  {
+    "id": "bnw_thermobaric_cloud_deployment_rail",
+    "name": "Thermobaric Cloud Deployment Rail",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Heavy",
+    "type": "Launcher",
+    "sp": 0,
+    "effect": "<div></div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_attack": "<div>Cover the blast area in Soft Cover cloud until the end of the next round, slowing any characters within it. If any mech currently affected by Burn enters the cloud or starts their turn in it, the cloud explodes, clearing the target’s Burn<strong>, </strong>ending the area effect, and deals 1d6+3 AP Explosive Damage to all characters within the cloud. Characters can only be damaged by one cloud per explosion. Multiple overlapping clouds are counted as one cloud for the purpose of detonation.</div>",
+    "range": [
+      {
+        "type": "Range",
+        "val": 15
+      },
+      {
+        "type": "Blast",
+        "val": 2
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_ordnance",
+        "name": "ORDNANCE",
+        "description": "This weapon can only be fired before the user moves or takes any other actions on their turn, excepting Protocols. The user can still act and move normally after attacking. Additionally, because of its size, this weapon can’t be used against targets in engagement with the user’s mech, and cannot be used for Overwatch."
+      },
+      {
+        "id": "tg_arcing",
+        "name": "ARCING",
+        "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+      }
+    ]
+  },
+  {
+    "id": "bnw_flare_gun",
+    "name": "Flare Gun",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 1,
+    "description": "<div>Normally a tool for signaling allies and revealing enemies, the SSC All-Weather Flare Gun contains specialized flares that can stick to any surfaces, burn in any weather condition and produce intense light and heat in small packages. This also makes it a viable weapon in a pinch, as the flare proves difficult to get rid of once it has attached itself to an enemy mech and started burning.</div>",
+    "mount": "Auxiliary",
+    "type": "Launcher",
+    "sp": 0,
+    "effect": "<div>This weapon can be loaded as a free action whenever you load another weapon or stabilize.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Burn",
+        "val": 1
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 10
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_loading",
+        "name": "LOADING",
+        "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+      },
+      {
+        "id": "tg_arcing",
+        "name": "ARCING",
+        "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_hou_yi_gauss_crossbow",
+    "name": "Hou Yi Gauss Crossbow",
+    "source": "SSC",
+    "license": "DRAGONTAIL",
+    "license_id": "bnf_dragontail",
+    "license_level": 3,
+    "description": "<div>An elegant, if not archaic weapon design, brought up to speed with the battlefield of tomorrow through the use of bespoke technology, the Hou Yi trades raw power for unparalleled versatility, with its electromagnetic capacitors capable of accelerating almost any object to lethal speed, delivering specialized payload into the heart of the enemy’s formation in but an instance.</div>",
+    "mount": "Main",
+    "type": "Launcher",
+    "sp": "2",
+    "profiles": [
+      {
+        "name": "Suneater Warhead",
+        "effect": "<div>At the start of the scene and when this weapon is loaded, chose one of the following profiles to apply to this weapon’s next shot</div><ul><li><div>Suneater Warhead: Blast 2, 1 Energy, 3 Burn.</div></li><li><div>Throughbore Monomolecular Broadhead: 1d6+1 AP Kinetic Damage, Knockback 3, convert to Line.</div></li><li><div>Explosive Clamp: 1d3+1 Explosive Damage. Choose an equipped system with the Grenade Tag. Spend one charge to throw the grenade at the targeted enemy position, hit or miss.</div></li></ul>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": 1
+          },
+          {
+            "type": "Burn",
+            "val": 3
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 15
+          },
+          {
+            "type": "Blast",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_loading",
+            "name": "LOADING",
+            "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+          },
+          {
+            "id": "tg_arcing",
+            "name": "ARCING",
+            "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+          }
+        ]
+      },
+      {
+        "name": "Throughbore Monomolecular Broadhead",
+        "effect": "<div>At the start of the scene and when this weapon is loaded, chose one of the following profiles to apply to this weapon’s next shot</div><ul><li><div>Suneater Warhead: Blast 2, 1 Energy, 3 Burn.</div></li><li><div>Throughbore Monomolecular Broadhead: 1d6+1 AP Kinetic Damage, Knockback 3, convert to Line.</div></li><li><div>Explosive Clamp: 1d3+1 Explosive Damage. Choose an equipped system with the Grenade Tag. Spend one charge to throw the grenade at the targeted enemy position, hit or miss.</div></li></ul>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "1d6+1"
+          }
+        ],
+        "range": [
+          {
+            "type": "Line",
+            "val": 15
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_ap",
+            "name": "ARMOR-PIERCING (AP)",
+            "description": "Damage dealt by this weapon ignores Armor."
+          },
+          {
+            "id": "tg_knockback",
+            "name": "KNOCKBACK {VAL}",
+            "description": "On a hit, the user may choose to knock their target {VAL} spaces in a straight line directly away from the point of origin (e.g., the attacking mech or the center of a Blast). Multiple Knockback effects stack with each other. This means that an attack made with a Knockback 1 weapon and a talent that grants Knockback 1 counts as having Knockback 2.",
+            "val": 3
+          },
+          {
+            "id": "tg_loading",
+            "name": "LOADING",
+            "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+          },
+          {
+            "id": "tg_arcing",
+            "name": "ARCING",
+            "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+          }
+        ]
+      },
+      {
+        "name": "Explosive Clamp",
+        "effect": "<div>At the start of the scene and when this weapon is loaded, chose one of the following profiles to apply to this weapon’s next shot</div><ul><li><div>Suneater Warhead: Blast 2, 1 Energy, 3 Burn.</div></li><li><div>Throughbore Monomolecular Broadhead: 1d6+1 AP Kinetic Damage, Knockback 3, convert to Line.</div></li><li><div>Explosive Clamp: 1d3+1 Explosive Damage. Choose an equipped system with the Grenade Tag. Spend one charge to throw the grenade at the targeted enemy position, hit or miss.</div></li></ul>",
+        "barrage": true,
+        "skirmish": true,
+        "on_attack": "<div>Choose an equipped system with the Grenade Tag. Spend one charge to throw the grenade at the targeted enemy position, hit or miss.</div>",
+        "damage": [
+          {
+            "type": "Explosive",
+            "val": "1d3+1"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 15
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_loading",
+            "name": "LOADING",
+            "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+          },
+          {
+            "id": "tg_arcing",
+            "name": "ARCING",
+            "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_caestus",
+    "name": "Caestus",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 1,
+    "description": "<div>IPS-N's Caestus is designed as a quick and easy to access melee weapon for close quarter mechs, being able to fit comfortably on top of a mech’s brachial structure without interfering with weapon manipulation, amplifying a mech’s already prodigious strength with even more blunt force trauma.</div>",
+    "mount": "Auxiliary",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>Gain the And Stay Down reaction.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "And Stay Down",
+        "activation": "Reaction",
+        "detail": "<div>Attack with this weapon against that character. On a hit, the character must succeed on a contested Hull Check or be knocked prone, again. This does not count against the reaction limit.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": "<div>An adjacent enemy attempts to stand up from Prone.</div>"
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnw_arc_suppressor",
+    "name": "Arc Suppressor",
+    "source": "IPS-N",
+    "license": "DUILIUS",
+    "license_id": "bnf_dulius",
+    "license_level": 2,
+    "description": "<div>Adapted from non-lethal stun gun designs, the Arc Suppressor discards all pretenses of safety and peacekeeping purposes to discharge extremely high voltage bursts of destructive electricity from rows of heavy duty capacitors. Though slow to charge, it can fry the system of an entire squad of mechs in one burst, making it a potent tool for crowd control.</div>",
+    "mount": "Heavy",
+    "type": "CQB",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "on_crit": "<div>The target must succeed on a System Save or be Stunned until the start of their next turn.</div>",
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "2d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Cone",
+        "val": 7
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_loading",
+        "name": "LOADING",
+        "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_dharmachakra",
+    "name": "Dharmachakra",
+    "source": "HORUS",
+    "license": "HERUKA",
+    "license_id": "bnf_heruka",
+    "license_level": 2,
+    "description": "<div>A strange weapon, shaped like that of a wheel. Beneath its simple construction lies a powerful kinetic battery system capable of storing the energy of each turn of the wheel, allowing mechs to power up this weapon in the field with no external power source needed. At a moment’s notice, all the stored energy may be released, causing devastating damage.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "profiles": [
+      {
+        "name": "0 Charges",
+        "effect": "<div>As a Quick Action, you can charge this weapon, up to 3 charges. With each charge, reduce your speed by 1 to a minimum of 0 and increase the damage of this weapon by 1d6. At 3 charges, gain AP. All charges are expended when you attack with this weapon. This Quick Action can be repeated multiple times a turn.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "1d6+2"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 1
+          }
+        ],
+        "actions": [
+          {
+            "name": "Charge Dharmachakra",
+            "activation": "Quick",
+            "detail": "<div>Add a charge to this weapon, up to a maximum of 3 charges. You can repeat this Quick Action multiple times per turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "1 Charge",
+        "effect": "<div>As a Quick Action, you can charge this weapon, up to 3 charges. With each charge, reduce your speed by 1 to a minimum of 0 and increase the damage of this weapon by 1d6. At 3 charges, gain AP. All charges are expended when you attack with this weapon. This Quick Action can be repeated multiple times a turn.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "2d6+2"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 1
+          }
+        ],
+        "actions": [
+          {
+            "name": "Charge Dharmachakra",
+            "activation": "Quick",
+            "detail": "<div>Add a charge to this weapon, up to a maximum of 3 charges. You can repeat this Quick Action multiple times per turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "2 Charges",
+        "effect": "<div>As a Quick Action, you can charge this weapon, up to 3 charges. With each charge, reduce your speed by 1 to a minimum of 0 and increase the damage of this weapon by 1d6. At 3 charges, gain AP. All charges are expended when you attack with this weapon. This Quick Action can be repeated multiple times a turn.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "3d6+2"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 1
+          }
+        ],
+        "actions": [
+          {
+            "name": "Charge Dharmachakra",
+            "activation": "Quick",
+            "detail": "<div>Add a charge to this weapon, up to a maximum of 3 charges. You can repeat this Quick Action multiple times per turn.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ]
+      },
+      {
+        "name": "3 Charges",
+        "effect": "<div>As a Quick Action, you can charge this weapon, up to 3 charges. With each charge, reduce your speed by 1 to a minimum of 0 and increase the damage of this weapon by 1d6. At 3 charges, gain AP. All charges are expended when you attack with this weapon. This Quick Action can be repeated multiple times a turn.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "4d6+2"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 1
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_ap",
+            "name": "ARMOR-PIERCING (AP)",
+            "description": "Damage dealt by this weapon ignores Armor."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_redrose_guided_javelin_array",
+    "name": "\"RedRose\" Guided Javelin Array",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Auxiliary",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>Gain the Guided Javelin reaction.</div><div>You can choose not to retrieve this weapon.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "actions": [
+      {
+        "name": "Guided Javelin",
+        "activation": "Reaction",
+        "detail": "<div>The weapon is automatically thrown at the Enemy.</div><div>If the weapon has been thrown and not retrieved, Guided Javelin is made from the weapon’s space&nbsp;.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/turn",
+        "init": "",
+        "trigger": "<div>A Hostile character within Throw Range of the weapon is successfully hit with a tech attack.</div>"
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_thrown",
+        "name": "THROWN {VAL}",
+        "description": "This melee weapon can be thrown at targets within {VAL} spaces. Thrown attacks follow the rules for melee attacks but are affected by cover; additionally, a thrown weapon comes to rest in an adjacent space to its target and must be retrieved as a free action while adjacent to that weapon before it can be used again.",
+        "val": 5
+      }
+    ]
+  },
+  {
+    "id": "bnw_blackjack_cabled_dagger",
+    "name": "Blackjack Cabled Dagger",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 1,
+    "description": "<div>When enemy signal defense proves unassailable, sometimes, a more direct and physical approach to electronic warfare is needed. A magnetic blade attached to a high bandwidth reinforced cable, the Blackjack attaches itself to whatever its blade hits and establishes a direct connection between its user and the enemy mech, allowing them to upload code attacks directly into the enemy’s system.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>1/round, when you make a tech attack against the Tethered target, treat it as having its E-def halved. The Tether can be broken by succeeding on an Engineering Check as a quick action, you releasing it as a free action, you loading the weapon, or the Painted Lady becoming further than threat from the target.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>The target is Tethered and records its distance to you. When Tethered, it cannot move such that its distance to you exceeds the recorded distance.</div>",
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6+1"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 5
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_loading",
+        "name": "LOADING",
+        "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+      },
+      {
+        "id": "tg_accurate",
+        "name": "ACCURATE",
+        "description": "Attacks made with this weapon receive +1 Accuracy."
+      }
+    ]
+  },
+  {
+    "id": "bnw_th2_tomahawk",
+    "name": "TH2 Tomahawk",
+    "source": "SSC",
+    "license": "PAINTED LADY",
+    "license_id": "bnf_painted_lady",
+    "license_level": 3,
+    "description": "<div>Delicately balanced through precise design and manufacturing, the TH2 Tomahawk is an upgrade to the standard issue TH1 Tomahawk, boasting lighter weight, a more ergonomic design, a re-designed shape to facilitate the throwing of the weapon, and an integrated magtech retriever in the handle for quick retrieval under ideal circumstances.</div>",
+    "mount": "Auxiliary",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>When you retrieve this weapon after it has been thrown, make an Agility Check. On a success, you may immediately throw this weapon again as a free action at +1 Difficulty. This check can only trigger 1/round off of each retrieval method.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_crit": "<div>Immediately retrieve this weapon.</div>",
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_thrown",
+        "name": "THROWN {VAL}",
+        "description": "This melee weapon can be thrown at targets within {VAL} spaces. Thrown attacks follow the rules for melee attacks but are affected by cover; additionally, a thrown weapon comes to rest in an adjacent space to its target and must be retrieved as a free action while adjacent to that weapon before it can be used again.",
+        "val": 5
+      }
+    ]
+  },
+  {
+    "id": "bnw_flechette_shotgun",
+    "name": "Flechette Shotgun",
+    "source": "HORUS",
+    "license": "RAT KING",
+    "license_id": "bnf_rat_king",
+    "license_level": 2,
+    "description": "<div>“This morning the city police department confiscated five firearms during a raid on an Ungrateful cell within District 5. Among the obtained contrabands were two assault shotguns, modified from the common pattern approved for hunting. Look at these shells: Hundreds of tiny fin stabilized needles. Ladies and Gentleman, this is a weapon designed for assassination, solely to kill people, if you need any further proof of the barbarity of these extremist movements”</div>",
+    "mount": "Main",
+    "type": "CQB",
+    "sp": 0,
+    "effect": "<div>Against targets with 0 armor or Shredded, this gains +3 damage.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 5
+      },
+      {
+        "type": "Threat",
+        "val": 3
+      }
+    ]
+  },
+  {
+    "id": "bnw_karpov_shortwave_ads",
+    "name": "Karpov Shortwave Area-Denial System",
+    "source": "HA",
+    "license": "TUKHACHEVSKY",
+    "license_id": "bnf_tukhachevsky",
+    "license_level": 2,
+    "description": "<div>Commonly referred to as “The Microwave”, the Karpov was developed as an offshoot from the Fischer Shortwave Area-Denial System, commonly used for less-than-lethal crowd control and breaking up riots on worlds newly integrated into the Purview. The Karpov is an up-scaled and upgunned version of the Fischer intended for combat, cooking mechs from the inside out with electromagnetic waves, and rendering devastating damage to soft targets.</div>",
+    "mount": "Main",
+    "type": "CQB",
+    "sp": 0,
+    "effect": "<div>Attacks made with this weapon against biological targets automatically hit.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Energy",
+        "val": 1
+      },
+      {
+        "type": "Heat",
+        "val": 2
+      }
+    ],
+    "range": [
+      {
+        "type": "Cone",
+        "val": 5
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 2
+      }
+    ]
+  },
+  {
+    "id": "bnw_detonator",
+    "name": "Detonator",
+    "source": "IPS-N",
+    "license": "GORSHKOV",
+    "license_id": "bnf_gorshkov",
+    "license_level": 1,
+    "description": "<div>Adapted from civilian mining triggers, the Detonator fires a beam of invisible subatomic particles calibrated to agitate potentially explosive and flammable material, allowing users to detonate set charges or vulnerable equipment from a safe distance. It also sees common use with peacekeeping forces as a mine clearing device.</div>",
+    "mount": "Main",
+    "type": "Rifle",
+    "sp": 0,
+    "effect": "<div>This weapon detonates/activates any mines within its template</div><div>This weapon deals 10 AP damage to deployables.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Explosive",
+        "val": "1d3+1"
+      }
+    ],
+    "range": [
+      {
+        "type": "Line",
+        "val": 10
+      }
+    ]
+  },
+  {
+    "id": "bnw_behold",
+    "name": "Behold",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 1,
+    "description": "<div>Sometimes, physical information gathering is preferable to electronic scanning. A blast of subatomic particles is accelerated at the target, their small size allowing them to pass through shieldings and ricochet off of the target back at the sensor, providing accurate readings of the target's physical condition. That this blast of particles is disruptive to electronics is also a welcome bonus.</div>",
+    "mount": "Main",
+    "type": "CQB",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>The target is Scanned.</div>",
+    "on_crit": "<div>The target must succeed on a System Save or become Impaired until the end of their next turn.</div>",
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Cone",
+        "val": 5
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnw_sacrificial_spear",
+    "name": "Sacrificial Spear",
+    "source": "HORUS",
+    "license": "DAGON",
+    "license_id": "bnf_dagon",
+    "license_level": 3,
+    "description": "<div>Study of the recovered artifact is only to be conducted in the designated air-gapped testing chamber. Personnel are forbidden from bringing electronics into the testing chamber. The testing facility, too, is to be air-gapped, with no network connection to the outside permitted. All data transfer, if necessary, will be conducted physically via the printing of the data onto paper, to be transcribed at a later date once sanitized.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": "3",
+    "effect": "<div>Your mech gains the AI property and the Obsession Protocol. This does not count toward your AI cap.<br>This weapon automatically hits when targeting allied mechs.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>The targeted mech activates the <strong>Obsession </strong>protocol.</div>",
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "1d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 3
+      }
+    ],
+    "actions": [
+      {
+        "name": "Obsession",
+        "activation": "Protocol",
+        "detail": "<div>Clear all non self-inflicted conditions. For each condition cleared, take 2 AP Energy Damage. This Protocol can be activated even while Stunned or Jammed.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_thrown",
+        "name": "THROWN {VAL}",
+        "description": "This melee weapon can be thrown at targets within {VAL} spaces. Thrown attacks follow the rules for melee attacks but are affected by cover; additionally, a thrown weapon comes to rest in an adjacent space to its target and must be retrieved as a free action while adjacent to that weapon before it can be used again.",
+        "val": 5
+      }
+    ]
+  },
+  {
+    "id": "bnw_fusion_pike",
+    "name": "Fusion Pike",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 1,
+    "description": "<div>A long sturdy shaft, topped with a miniature fusion torch. A simple weapon, early versions of the Fusion Pike hooked directly into a mech’s power reactor. The current version now contains a portable integrated battery while still maintaining the ability to siphon power from a mech’s reactor for extra power.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>While in the Danger Zone, this weapon gains Armor Piercing.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "1d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 3
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_accurate",
+        "name": "ACCURATE",
+        "description": "Attacks made with this weapon receive +1 Accuracy."
+      }
+    ]
+  },
+  {
+    "id": "bnw_zweihander",
+    "name": "Zweihander",
+    "source": "HA",
+    "license": "FRUNDSBERG",
+    "license_id": "bnf_frundsberg",
+    "license_level": 3,
+    "description": "<div>A Zweihander is a brutal weapon of old Cradle history, brought to the modern era with all the bells and whistles of advanced material science. A colossal blade taller than a mech’s height, sheathed in corruscating powerfields that tear at the very atoms of whatever it comes into contact with. Combined with its prodigious weight and a mech’s overclocked servos, such a weapon can cleave even the heaviest mech in twain with but a single blow, and crush all defenses under blade.</div>",
+    "mount": "Superheavy",
+    "type": "Melee",
+    "sp": "2",
+    "profiles": [
+      {
+        "name": "Split",
+        "barrage": true,
+        "skirmish": true,
+        "on_crit": "<div>This weapon's damage cannot be reduced by any external means.</div>",
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "2d6"
+          },
+          {
+            "type": "Energy",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 2
+          },
+          {
+            "id": "tg_ap",
+            "name": "ARMOR-PIERCING (AP)",
+            "description": "Damage dealt by this weapon ignores Armor."
+          },
+          {
+            "id": "tg_accurate",
+            "name": "ACCURATE",
+            "description": "Attacks made with this weapon receive +1 Accuracy."
+          },
+          {
+            "id": "tg_overkill",
+            "name": "OVERKILL",
+            "description": "When rolling for damage with this weapon, any damage dice that land on a 1 cause the attacker to take 1 Heat, and are then rerolled. Additional 1s continue to trigger this effect."
+          },
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ],
+        "effect": "<div>You choose which of this weapon's profiles to use whenever you make an attack.</div>"
+      },
+      {
+        "name": "Cleave",
+        "effect": "<div>You choose which of this weapon's profiles to use whenever you make an attack.</div><div>This weapon attacks all targets within threat at once, and can still be used against adjacent targets.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "1d6"
+          },
+          {
+            "type": "Energy",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 2
+          },
+          {
+            "id": "tg_ap",
+            "name": "ARMOR-PIERCING (AP)",
+            "description": "Damage dealt by this weapon ignores Armor."
+          },
+          {
+            "id": "tg_inaccurate",
+            "name": "INACCURATE",
+            "description": "Attacks made with this weapon receive +1 Difficulty."
+          },
+          {
+            "id": "tg_ordnance",
+            "name": "ORDNANCE",
+            "description": "This weapon can only be fired before the user moves or takes any other actions on their turn, excepting Protocols. The user can still act and move normally after attacking. Additionally, because of its size, this weapon can’t be used against targets in engagement with the user’s mech, and cannot be used for Overwatch."
+          },
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_serrated_sun_wormhole_stabilizer",
+    "name": "\"Serrated Sun\" Wormhole Stabilizer",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Superheavy",
+    "type": "Cannon",
+    "sp": 0,
+    "profiles": [
+      {
+        "name": "DESTINATION: The Stars",
+        "effect": "<div>While in the Danger Zone, enemies hit with this weapon must succeed on a Systems Save or may only draw line of sight to adjacent spaces until the end of their next turn.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6"
+          },
+          {
+            "type": "Burn",
+            "val": 4
+          }
+        ],
+        "range": [
+          {
+            "type": "Line",
+            "val": 15
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 3
+          }
+        ]
+      },
+      {
+        "name": "DESTINATION: Unmarked Metavault",
+        "barrage": true,
+        "skirmish": true,
+        "on_hit": "<div>The target must succeed on a Systems Save or be moved 3 spaces in any direction of your choosing.</div>",
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6"
+          },
+          {
+            "type": "Heat",
+            "val": 3
+          }
+        ],
+        "range": [
+          {
+            "type": "Cone",
+            "val": 5
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 1
+          }
+        ]
+      },
+      {
+        "name": "DESTINATION: Asteroid Field",
+        "effect": "<div>Create 3 Size 1 pieces of terrain that grant hard cover in the Blast area. They have 10 HP and 5 Evasion. Enemies directly at the center of the Blast are knocked Prone.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "2d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 10
+          },
+          {
+            "type": "Blast",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_cosmic_knife",
+    "name": "Cosmic Knife",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 1,
+    "description": "<div>Star-harvesting is a process by which an infinitesimally small sliver of a star’s core is drawn out for use. Contained within a field that stimulates the crushing pressure at the center of a star, a Cosmic Knife weaponizes this ever glowing hot piece of space in terrestrial warfare.</div>",
+    "mount": "Auxiliary",
+    "type": "Melee",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": 1
+      },
+      {
+        "type": "Heat",
+        "val": 2
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      },
+      {
+        "id": "tg_danger_zone",
+        "name": "DANGER ZONE",
+        "description": "This system, talent, or weapon can only be used if the user is in the Danger Zone (Heat equal to at least half of their Heat Cap)."
+      }
+    ]
+  },
+  {
+    "id": "bnw_fusion_lance",
+    "name": "Fusion Lance",
+    "source": "HORUS",
+    "license": "GERYON",
+    "license_id": "bnf_geryon",
+    "license_level": 2,
+    "description": "<div>Plugging directly into a mech’s reactor, a fusion lance feeds on excess heat created by the overcharging processes to power its own weapon, turning what would otherwise be wasted energy into a beam of roiling devastation.</div>",
+    "mount": "Main",
+    "type": "Rifle",
+    "sp": 0,
+    "profiles": [
+      {
+        "name": "Fusion Lance",
+        "effect": "<div>When this weapon is used to attack as a part of an action granted by Overcharge, it uses the Overcharged Fusion Lance profile for the duration of the attack.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 8
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ]
+      },
+      {
+        "name": "Overcharged Fusion Lance",
+        "effect": "<div>When this weapon is used to attack as a part of an action granted by Overcharge, it uses the Overcharged Fusion Lance profile for the duration of the attack.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6"
+          },
+          {
+            "type": "Burn",
+            "val": 1
+          }
+        ],
+        "range": [
+          {
+            "type": "Line",
+            "val": 8
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_reverse_guillotine",
+    "name": "Reverse Guillotine",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 1,
+    "description": "<div>Much heavier than normal weapons, these blades, reminiscent of executioner swords of old, are clunky to swing and serve as more of an environmental hazard than a melee weapon. When thrown, they embed themselves into the ground firmly, presenting a slicing threat to all who treads near.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>After being thrown, this weapon obstructs all movement across the space that it landed in, regardless of size, as if it was a size 1 object immune to all damage and effects.</div><div>When this weapon obstructs a hostile’s involuntary movement, the target takes 1d3+3 Armor Piercing kinetic damage. This can only trigger once per character per round.</div><div>This weapon can only be picked up by moving adjacent to it.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_thrown",
+        "name": "THROWN {VAL}",
+        "description": "This melee weapon can be thrown at targets within {VAL} spaces. Thrown attacks follow the rules for melee attacks but are affected by cover; additionally, a thrown weapon comes to rest in an adjacent space to its target and must be retrieved as a free action while adjacent to that weapon before it can be used again.",
+        "val": 5
+      },
+      {
+        "id": "tg_ap",
+        "name": "ARMOR-PIERCING (AP)",
+        "description": "Damage dealt by this weapon ignores Armor."
+      }
+    ]
+  },
+  {
+    "id": "bnw_chicxulub_heavy_shock_gauntlet",
+    "name": "Chicxulub Heavy Shock Gauntlet",
+    "source": "HA",
+    "license": "BRUDENELL",
+    "license_id": "bnf_brudenell",
+    "license_level": 3,
+    "description": "<div>Crackling with barely contained energy, shimmering with heat and surrounded by arcing lightning, a Chicxulub Heavy Shock Gauntlet is the furthest thing possible from subtlety, and a testament to the Armory’s penchant for sheer power above all else. Piston driven servos, pneumatic knuckle-mounted capacitors and a dangerously unstable energy wreathe combines to make each hit of the Shock Gauntlet strike with apocalyptic force and power, the coruscating power field wrapping around the unfortunate victim and turning their hurtling chassis into a dangerous projectile of its own.</div>",
+    "mount": "Heavy",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>Enemies knocked back by this weapon may be knocked through spaces occupied by other characters.</div><div>Each time they pass through a character, they both take 2 AP Energy Damage.<br>If your target collides with an object or piece of terrain, they take 2 AP Energy Damage and deal 10 AP Energy Damage to the obstructing object or terrain. If this would destroy the object or piece of terrain, the movement continues.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "2d6"
+      },
+      {
+        "type": "Energy",
+        "val": 4
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_loading",
+        "name": "LOADING",
+        "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+      },
+      {
+        "id": "tg_knockback",
+        "name": "KNOCKBACK {VAL}",
+        "description": "On a hit, the user may choose to knock their target {VAL} spaces in a straight line directly away from the point of origin (e.g., the attacking mech or the center of a Blast). Multiple Knockback effects stack with each other. This means that an attack made with a Knockback 1 weapon and a talent that grants Knockback 1 counts as having Knockback 2.",
+        "val": 5
+      }
+    ]
+  },
+  {
+    "id": "bnw_x_caliber_plasmacore",
+    "name": "X-Caliber Plasmacore",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Superheavy",
+    "type": "Melee",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>You may immediately Bolster as a Free Action.</div>",
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "2d6+6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 4
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_ap",
+        "name": "ARMOR-PIERCING (AP)",
+        "description": "Damage dealt by this weapon ignores Armor."
+      },
+      {
+        "id": "tg_accurate",
+        "name": "ACCURATE",
+        "description": "Attacks made with this weapon receive +1 Accuracy."
+      }
+    ]
+  },
+  {
+    "id": "bnw_clarent",
+    "name": "Clarent",
+    "source": "HA",
+    "license": "ARTHUR",
+    "license_id": "bnf_arthur",
+    "license_level": 3,
+    "description": "<div>Produced specifically for the Arthur frame, the Clarent is one of the Armory’s few dedicated melee weapons, even rarer than the Torch. Considered a worthy rival to SSC’s legendary Terashima Blade by the few who have had the pleasure of using it, the Clarent is individually optimized to each user’s specific temperament, perfectly balanced, and will never dull owing to its proprietary nano-alloyed blade. It proudly displays the fact that it is not handmade, with marketing videos emphasizing the mechanical precision and engineering prowess of its construction and design, forged in the most cutting edge facilities on Ras Shamra and built, nanometer by nanometer, to the lowest tolerance of all its competitors.</div><div>Despite its short history, arguments amongst users about the merits of the Terashima Blade and the Clarent are a common sight on the Omninet.</div>",
+    "mount": "Heavy",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>When you Barrage, you may choose to attack with this weapon twice instead of firing two mounts. The second attack deals 1d6 kinetic damage, but gains +1 Accuracy.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6+3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 2
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_accurate",
+        "name": "ACCURATE",
+        "description": "Attacks made with this weapon receive +1 Accuracy."
+      }
+    ]
+  },
+  {
+    "id": "bnw_angler_missile",
+    "name": "ANGLER Missile",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Auxiliary",
+    "type": "Launcher",
+    "sp": 0,
+    "effect": "<div>Gain the Counterfire reaction.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>Create a Blast 1 zone of Soft Cover centered on the target, lasting until the start of your next turn.</div>",
+    "damage": [
+      {
+        "type": "Explosive",
+        "val": 2
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 15
+      }
+    ],
+    "actions": [
+      {
+        "name": "Counterfire",
+        "activation": "Reaction",
+        "detail": "<div>Skirmish with the ANGLER Missile against the attacking character, before the triggering attack rolls.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/round",
+        "init": "",
+        "trigger": "<div>A hostile attack draws Line of Sight through a Burst 3 area around the Kishka</div>"
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_smart",
+        "name": "SMART",
+        "description": "This weapon has self-guidance systems, self-propelled projectiles, or even nanorobotic ammunition. These systems are effective enough that its attacks can’t simply be dodged – they must be scrambled or jammed. Because of this, all attacks with this weapon – including melee and ranged attacks – use the target’s E-Defense instead of Evasion. Targets with no E-Defense count as having 8 E-Defense."
+      },
+      {
+        "id": "tg_seeking",
+        "name": "SEEKING",
+        "description": "This weapon has a limited form of self-guidance and internal propulsion, allowing it to follow complicated paths to its targets. As long as it’s possible to draw a path to its target, this weapon ignores cover and doesn’t require line of sight."
+      }
+    ]
+  },
+  {
+    "id": "bnw_chaingun",
+    "name": "Chaingun",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 1,
+    "description": "<div>Conventional air-defense Chainguns are often mounted on mechs expected to enter heavily contested air-space, drawing power from the coldcore reactor to fuel its onboard targeting supercomputer. Within a certain range, tracking is absolute, and the chaingun creates an invisible defensive dome where aircraft dare not enter.</div>",
+    "mount": "Main",
+    "type": "Cannon",
+    "sp": 0,
+    "effect": "<div>As a Quick Action, you may activate this weapon’s stabilizer: while Stabilized, you are Immobilized and this weapon gains <strong>Threat 5</strong>. You may end this effect as a Protocol.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6+2"
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 10
+      }
+    ],
+    "actions": [
+      {
+        "name": "Activate Stabilizer",
+        "activation": "Quick",
+        "detail": "<div>You activate the weapon's stabilizer, becoming immobilized and giving the weapon Threat 5.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      },
+      {
+        "name": "Deactivate Stabilizer",
+        "activation": "Protocol",
+        "detail": "<div>End the effects of the stabilizer, losing Immobilized (if granted by this weapon) and returning the weapon to its regular Threat value.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "Unlimited",
+        "init": "",
+        "trigger": ""
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      }
+    ]
+  },
+  {
+    "id": "bnw_ember_thermobaric_nexus",
+    "name": "EMBER Thermobaric Nexus",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 2,
+    "description": "<div>EMBER Thermobaric Nexi are deceptive in their size. Small and unassuming, the tiny computer-guided warhead can slip beneath detection systems to detonate at important locations, utilizing a hyper catalyst to convert air-borne particulates into aerosolized fuel that are then detonated by the warhead itself.</div>",
+    "mount": "Auxiliary",
+    "type": "Nexus",
+    "sp": 0,
+    "effect": "<div>Against targets in zones of Soft Cover or zones that grant Soft Cover, this weapon deals 2 Burn instead.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Explosive",
+        "val": 1
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 10
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_smart",
+        "name": "SMART",
+        "description": "This weapon has self-guidance systems, self-propelled projectiles, or even nanorobotic ammunition. These systems are effective enough that its attacks can’t simply be dodged – they must be scrambled or jammed. Because of this, all attacks with this weapon – including melee and ranged attacks – use the target’s E-Defense instead of Evasion. Targets with no E-Defense count as having 8 E-Defense."
+      },
+      {
+        "id": "tg_seeking",
+        "name": "SEEKING",
+        "description": "This weapon has a limited form of self-guidance and internal propulsion, allowing it to follow complicated paths to its targets. As long as it’s possible to draw a path to its target, this weapon ignores cover and doesn’t require line of sight."
+      }
+    ]
+  },
+  {
+    "id": "bnw_flak_cannon",
+    "name": "Flak Cannon",
+    "source": "IPS-N",
+    "license": "Kishka",
+    "license_id": "bnf_kishka",
+    "license_level": 3,
+    "description": "<div>Old but reliable, Flak Cannons fire canisters shots with a proximity fuze, detonating at optimal distance to blanket a wide area with millions of flechettes. Though penetration is poor, the sheer scale of the cloud of projectiles makes missing almost impossible. Though primarily used for air-defense, the flak cannon can be depressed to be used against ground targets, with particularly devastating effects against infantry and other soft targets.</div>",
+    "mount": "Main",
+    "type": "Cannon",
+    "sp": 0,
+    "profiles": [
+      {
+        "name": "Flak Cannon",
+        "effect": "<div>Against flying targets, this weapon has Threat equal to its range</div><div>As a Protocol, depress or raise the Flak Cannon. While depressed, your weapon profile changes to Depressed Flak Cannon.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Explosive",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 8
+          }
+        ],
+        "actions": [
+          {
+            "name": "Adjust Elevation",
+            "activation": "Protocol",
+            "detail": "<div>Depress or raise the Flak Cannon. While depressed, your weapon profile changes to Depressed Flak Cannon.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_inaccurate",
+            "name": "INACCURATE",
+            "description": "Attacks made with this weapon receive +1 Difficulty."
+          },
+          {
+            "id": "tg_reliable",
+            "name": "RELIABLE {VAL}",
+            "description": "This weapon has some degree of self-correction or is simply powerful enough to cause damage even with a glancing blow. It always does {VAL} damage, even if it misses its target or rolls less damage. Reliable damage inherits other tags (such as AP) and base damage type but not tags that require a hit, such as Knockback.",
+            "val": 3
+          }
+        ]
+      },
+      {
+        "name": "Depressed Flak Cannon",
+        "effect": "<div>As a Protocol, depress or raise the Flak Cannon. While depressed, your weapon profile changes to Depressed Flak Cannon.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Explosive",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 5
+          },
+          {
+            "type": "Cone",
+            "val": 3
+          }
+        ],
+        "actions": [
+          {
+            "name": "Adjust Elevation",
+            "activation": "Protocol",
+            "detail": "<div>Depress or raise the Flak Cannon. While depressed, your weapon profile changes to Depressed Flak Cannon.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_inaccurate",
+            "name": "INACCURATE",
+            "description": "Attacks made with this weapon receive +1 Difficulty."
+          },
+          {
+            "id": "tg_reliable",
+            "name": "RELIABLE {VAL}",
+            "description": "This weapon has some degree of self-correction or is simply powerful enough to cause damage even with a glancing blow. It always does {VAL} damage, even if it misses its target or rolls less damage. Reliable damage inherits other tags (such as AP) and base damage type but not tags that require a hit, such as Knockback.",
+            "val": 3
+          },
+          {
+            "id": "tg_loading",
+            "name": "LOADING",
+            "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bnw_blade_mantle",
+    "name": "Blade Mantle",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 2,
+    "description": "<div>Dozens of rows of hooks linked to a central coil, connected by steelsilk cables. Upon activation, the hooks lash out in a violent storm, puncturing armor and finding purchase in even the smallest nooks and crannies, wrapping around joints and severing servo tendons.</div>",
+    "mount": "Main",
+    "type": "CQB",
+    "sp": 0,
+    "effect": "<div>This weapon ignores ranged penalties from Engaged.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>If the enemy is Grappled, they receive 1 Hooked counter, which can stack up to 3 times. Enemies with at least 1 Hooked counter cannot end the grapple with a contested Hull check, and can spend one quick action to remove 1 Hooked counter.</div><div>All Hooked counters are removed if the grapple is broken by any other means.</div>",
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Burst",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnw_phase_tear",
+    "name": "Phase Tear",
+    "source": "SSC",
+    "license": "Phasma",
+    "license_id": "bnf_phasma",
+    "license_level": 3,
+    "description": "<div>The Phase Tear is a prototypical weapon of the PROMETHEAN-Innovative line; finicky but potent when used correctly. Though commonly shaped like a blade or small spear, the Phase Tear's true form is really that of a localized tear in the spatial continuum. Only a few molecules thin, the Phase Tear containment field must be calibrated before each mission according to local conditions down to the local humidity, in order to ensure its continued functionality. Calibrated correctly, the tear can scythe through most armor with ease by not truly cutting it but merely transporting whatever it touches outside of space.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": "1",
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>Create a Line 3 area of unstable energy, with the middle of the line at the targeted enemy's position and angled in any direction you choose, lasting until the end of the next round.</div><div><br>The area becomes difficult terrain. When characters enter one of these spaces for the first time in a round, they have their movement interrupted.</div>",
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "1d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 2
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_ap",
+        "name": "ARMOR-PIERCING (AP)",
+        "description": "Damage dealt by this weapon ignores Armor."
+      },
+      {
+        "id": "tg_unique",
+        "name": "UNIQUE",
+        "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+      }
+    ]
+  },
+  {
+    "id": "bnw_y898_icebreaker_salvager_array",
+    "name": "Y-898 \"Icebreaker\" Salvager Array",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Auxiliary",
+    "type": "CQB",
+    "sp": 0,
+    "effect": "<div>This weapon can attack two targets at a time.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Energy",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 5
+      }
+    ],
+    "actions": [
+      {
+        "name": "Identify Structural Weakness",
+        "activation": "Reaction",
+        "detail": "<div>Make one attack with this weapon against the triggering enemy.</div>",
+        "pilot": false,
+        "synergy_locations": [],
+        "tech_attack": false,
+        "frequency": "1/round",
+        "init": "",
+        "trigger": "<div>An enemy within line of sight and range is critically hit, or hit with an attack that consumes Lock-on.</div>"
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_accurate",
+        "name": "ACCURATE",
+        "description": "Attacks made with this weapon receive +1 Accuracy."
+      }
+    ]
+  },
+  {
+    "id": "bnw_kinetic_pick",
+    "name": "Kinetic Pick",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 2,
+    "description": "<div>Closely related to the Impact Lance as another mil-spec version of a common mining tool, the Kinetic Pick replaces its predecessor’s power field with an up-gunned version. Instead of always being on like its civilian counterpart, a Kinetic Pick’s powerfield activates a split second before impact, ensuring optimal penetration through even the thickest armor.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>Against Prone, Immobilized or Stunned targets, this weapon does 1d3 bonus Energy Damage and becomes Armor Piercing.</div><div>This weapon deals 10AP Energy Damage to objects, cover, terrain, and the environment.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6+1"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_heavy_fusion_cutter",
+    "name": "Heavy Fusion Cutter",
+    "source": "IPS-N",
+    "license": "Yermak",
+    "license_id": "bnf_yermak",
+    "license_level": 2,
+    "description": "<div>The standard armament of the Yermak, the Heavy Fusion Cutter has changed very little from its civilian counterpart. Utilizing two alignment blades and three guiding lasers, the Heavy Fusion Cutter allows users to place cutting lines with mechanical precision, rotating the weapon to line up the beam wherever it is needed.</div>",
+    "mount": "Heavy",
+    "type": "CQB",
+    "sp": "1",
+    "profiles": [
+      {
+        "name": "Dissect Mode",
+        "effect": "<div>This weapon can be fired in one of two modes.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 8
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_accurate",
+            "name": "ACCURATE",
+            "description": "Attacks made with this weapon receive +1 Accuracy."
+          }
+        ],
+        "on_attack": "<div>This weapon makes two attacks against the same target. If either attack consumes Lock-On, make a third attack against the same target.</div>"
+      },
+      {
+        "name": "Bisect Mode",
+        "effect": "<div>This weapon can be fired in one of two modes.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Energy",
+            "val": "1d6+2"
+          }
+        ],
+        "range": [
+          {
+            "type": "Range",
+            "val": 8
+          },
+          {
+            "type": "Line",
+            "val": 5
+          }
+        ],
+        "on_attack": "<div>Draw a Line 5 or shorter area in any direction within Range and Line of Sight, making attacks against all characters within it. The line cannot start or end beyond this Range.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnw_saturation_bombardier",
+    "name": "Saturation Bombardier",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 1,
+    "description": "<div>Smart locational beacons embedded in each shell allows the Saturation Bombardier to “walk” its artillery fire from any range, using the previous shells as guidance for the next, creating a creeping barrage that moves ever onward.</div>",
+    "mount": "Main",
+    "type": "Launcher",
+    "sp": 0,
+    "effect": "<div>After an attack with this weapon, mark the centre of the Blast area that this weapon hit.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "on_attack": "<div>You may instead center this weapon’s Blast on the mark, regardless of range, and add +1 to its Blast value, stacking up to Blast 3. All stacks are removed when the mark is moved by attacking a different space.</div>",
+    "damage": [
+      {
+        "type": "Explosive",
+        "val": "1d6"
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 15
+      },
+      {
+        "type": "Blast",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      },
+      {
+        "id": "tg_arcing",
+        "name": "ARCING",
+        "description": "This weapon can be fired over obstacles, usually by lobbing a projectile in an arc. Attacks made with this weapon don’t require line of sight, as long as it’s possible to trace a path to the target; however, they are still affected by cover."
+      },
+      {
+        "id": "tg_ordnance",
+        "name": "ORDNANCE",
+        "description": "This weapon can only be fired before the user moves or takes any other actions on their turn, excepting Protocols. The user can still act and move normally after attacking. Additionally, because of its size, this weapon can’t be used against targets in engagement with the user’s mech, and cannot be used for Overwatch."
+      }
+    ]
+  },
+  {
+    "id": "bnw_near_light_rail",
+    "name": "Near-light Rail",
+    "source": "HA",
+    "license": "Subutai",
+    "license_id": "bnf_subutai",
+    "license_level": 3,
+    "description": "<div>Though necessitating incredible power draw, reinforced construction and a suite of stabilizers and momentum dampeners, the Near-light Rail is both a useful tool and a potent weapon, utilizing rail technology to accelerate objects to near-light speed for a split second. When fully charged and with sufficient bracing, this can send even chassis careening across the battlefield, delivering them to the heart of the battle where they are needed, though this process is quite stressful on both the frame and the pilot.</div>",
+    "mount": "Main",
+    "type": "Launcher",
+    "sp": "1",
+    "profiles": [
+      {
+        "name": "",
+        "effect": "<div>You can deploy stabilizers as a Quick Action</div><div>While Stabilized, you are Immobilized. At the start of any of your turns while stabilized, this weapon gains the Charged profile.</div><div>This effect ends when you clear it as a free action, or are involuntarily moved, Grappled or Stunned.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "1d3"
+          }
+        ],
+        "range": [
+          {
+            "type": "Line",
+            "val": 10
+          }
+        ],
+        "actions": [
+          {
+            "name": "Deploy Stabilizers",
+            "activation": "Quick",
+            "detail": "<div>Deploy your stabilizers, becoming Immobilized.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          },
+          {
+            "name": "Retract Stabilizers",
+            "activation": "Free",
+            "detail": "<div>Retract your stabilizers, clearing Immobilized if caused by this weapon.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ]
+      },
+      {
+        "name": "Near-light Rail (Charged)",
+        "barrage": true,
+        "skirmish": true,
+        "on_attack": "<div>An adjacent, willing ally may be pushed along the path of this weapon, ignoring engagement and reactions and passing through all characters, ending the movement in a free space overlapping the end of the Line or upon becoming obstructed by terrain or objects.</div><div>When they pass through a hostile character, they make a Ram attack against them.</div>",
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "1d3"
+          }
+        ],
+        "range": [
+          {
+            "type": "Line",
+            "val": 10
+          }
+        ],
+        "actions": [
+          {
+            "name": "Deploy Stabilizers",
+            "activation": "Quick",
+            "detail": "<div>Deploy your stabilizers, becoming Immobilized.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          },
+          {
+            "name": "Retract Stabilizers",
+            "activation": "Free",
+            "detail": "<div>Retract your stabilizers, clearing Immobilized if caused by this weapon.</div>",
+            "pilot": false,
+            "synergy_locations": [],
+            "tech_attack": false,
+            "frequency": "Unlimited",
+            "init": "",
+            "trigger": ""
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          },
+          {
+            "id": "tg_heat_self",
+            "name": "HEAT {VAL} (SELF)",
+            "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+            "val": 2
+          }
+        ],
+        "effect": "<div>You can deploy stabilizers as a Quick Action</div><div>While Stabilized, you are Immobilized. At the start of any of your turns while stabilized, this weapon gains the Charged profile.</div><div>This effect ends when you clear it as a free action, or are involuntarily moved, Grappled or Stunned.</div>"
+      }
+    ]
+  },
+  {
+    "id": "bnw_flintlock_disposable_cannon",
+    "name": "\"Flintlock\" Disposable Cannon",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 1,
+    "description": "<div>The Flintlock is a fire-and-forget cannon built off a power cell rigged to explosively discharge, which is then freely discarded. Dead simple in construction and requiring almost no mounting, these are popular as a backup anti-armor weapons for infantry units, and are sometimes used by mechs as an additional disposable weapon.</div>",
+    "mount": "Auxiliary",
+    "type": "Cannon",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": 3
+      }
+    ],
+    "range": [
+      {
+        "type": "Line",
+        "val": 10
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_limited",
+        "name": "LIMITED {VAL}",
+        "description": "This weapon or system can only be used {VAL} times before it requires a Full Repair. Some Limited systems, like Grenades, describe these uses as “charges”. To use the system, the user expends a charge.",
+        "val": 4
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_jaywalker_shotgun",
+    "name": "HSS-025 \"Jaywalker\" Shotgun",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 1,
+    "description": "<div>Cheekily named Jaywalker by marines who are issued the weapon, the HSS-025 is a simple semi-automatic shotgun using repurposed cannon barrels. Accepting buckshot and slugs, the Jaywalker is an overpowered package crammed into a small firearm, with a habit of leaping out of a user's hand if not properly braced or mounted on a chassis as an auxiliary near threat deterrence weapon.</div>",
+    "mount": "Auxiliary",
+    "type": "CQB",
+    "sp": 0,
+    "effect": "<div>This weapon ignores ranged penalties from Engaged, and gains an additional 2 Knockback against adjacent targets.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Range",
+        "val": 3
+      },
+      {
+        "type": "Threat",
+        "val": 3
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      },
+      {
+        "id": "tg_knockback",
+        "name": "KNOCKBACK {VAL}",
+        "description": "On a hit, the user may choose to knock their target {VAL} spaces in a straight line directly away from the point of origin (e.g., the attacking mech or the center of a Blast). Multiple Knockback effects stack with each other. This means that an attack made with a Knockback 1 weapon and a talent that grants Knockback 1 counts as having Knockback 2.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_hss_reaver_shotgun",
+    "name": "HSS-100 \"Reaver\" Shotgun",
+    "source": "IPS-N",
+    "license": "Morgan",
+    "license_id": "bnf_morgan",
+    "license_level": 3,
+    "description": "<div>Created for those who felt the HSS-075 traded too much of the Daisy Cutter’s power for control, the HSS-100 brought back much of that capability by replacing the Flayer’s barrel and extended magazine with a larger 100mm reinforced barrel and breech-loading mechanism. While standard scatter-shells are provided as a baseline, more advanced sabot or airburst ammunition may be requested.</div>",
+    "mount": "Main",
+    "type": "CQB",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d6+3"
+      }
+    ],
+    "range": [
+      {
+        "type": "Cone",
+        "val": 5
+      },
+      {
+        "type": "Threat",
+        "val": 3
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_loading",
+        "name": "LOADING",
+        "description": "This weapon must be reloaded after each use. Mechs can reload with Stabilize and some systems."
+      },
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      }
+    ]
+  },
+  {
+    "id": "bnw_chain_claws",
+    "name": "Chain Claws",
+    "source": "",
+    "license": "",
+    "license_id": "",
+    "license_level": 1,
+    "description": "",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "barrage": true,
+    "skirmish": true,
+    "on_hit": "<div>You may make a secondary attack, targeting either the same character or another within Threat. Doing so incurs this weapon’s Heat cost, but does not trigger further secondary attacks.</div>",
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3+2"
+      },
+      {
+        "type": "Heat",
+        "val": 1
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_overkill",
+        "name": "OVERKILL",
+        "description": "When rolling for damage with this weapon, any damage dice that land on a 1 cause the attacker to take 1 Heat, and are then rerolled. Additional 1s continue to trigger this effect."
+      },
+      {
+        "id": "tg_heat_self",
+        "name": "HEAT {VAL} (SELF)",
+        "description": "Immediately after using this weapon or system, the user takes {VAL} Heat.",
+        "val": 1
+      }
+    ]
+  },
+  {
+    "id": "bnw_chain_blades",
+    "name": "Chain Blades",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 1,
+    "description": "<div>Effectively an auxiliary motor attached to lengths of toothed chain, Chain Blades are ad-hoc modifications using spare saw chains wrapped around regular weapons, giving them an extra “bite” without consuming precious system space.</div>",
+    "mount": "Auxiliary",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>You cannot attack with this weapon normally. Instead, when mounted on an Aux/Aux, Flex or Main/Aux mount, give the other weapon on the mount Overkill.</div><div><br>Whenever the other weapon on the mount triggers Overkill, in addition to Overkill’s regular effects, make an attack with this weapon against the target if within threat. This can only trigger once per dice per attack and is the only way you can attack with this weapon.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": 2
+      },
+      {
+        "type": "Heat",
+        "val": 1
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 1
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_ap",
+        "name": "ARMOR-PIERCING (AP)",
+        "description": "Damage dealt by this weapon ignores Armor."
+      }
+    ]
+  },
+  {
+    "id": "bnw_chain_glaive",
+    "name": "Chain Glaive",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 2,
+    "description": "<div>Taking inspiration from logging tools, the Chain Glaive is a polearm pattern of IPS-N's line of chain weapons, mounted on a reinforced pole about as long as a mech is tall. Although unwieldy, the Chain Glaive's reach allows users to sweep a massive arc across the battlefield, scything down foes like weeds.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "effect": "<div>This weapon’s Threat cannot be modified, and its base damage becomes 1d6+2 Kinetic Damage instead against targets at exactly Threat 3.</div>",
+    "barrage": true,
+    "skirmish": true,
+    "damage": [
+      {
+        "type": "Kinetic",
+        "val": "1d3+2"
+      }
+    ],
+    "range": [
+      {
+        "type": "Threat",
+        "val": 3
+      },
+      {
+        "type": "Cone",
+        "val": 3
+      }
+    ],
+    "tags": [
+      {
+        "id": "tg_overkill",
+        "name": "OVERKILL",
+        "description": "When rolling for damage with this weapon, any damage dice that land on a 1 cause the attacker to take 1 Heat, and are then rerolled. Additional 1s continue to trigger this effect."
+      },
+      {
+        "id": "tg_inaccurate",
+        "name": "INACCURATE",
+        "description": "Attacks made with this weapon receive +1 Difficulty."
+      }
+    ]
+  },
+  {
+    "id": "bnw_thresher",
+    "name": "Thresher",
+    "source": "IPS-N",
+    "license": "Togo",
+    "license_id": "bnf_togo",
+    "license_level": 3,
+    "description": "<div>With its roaring engine plugged straight into the heart of a mech, the Thresher necessitated an on-board flash printer to constantly manufacture new teeth, for even IPS-N's heavy duty nano-carbon blades cannot withstand the immense strain generated by this powerful weapon for long.</div>",
+    "mount": "Main",
+    "type": "Melee",
+    "sp": 0,
+    "profiles": [
+      {
+        "name": "Thresher",
+        "effect": "<div>As a Quick Action, you may rev this weapon's engine. While revved, it uses the Revved profile, and you take 1 Heat at the start of your turn. You may end this effect as a Protocol.</div>",
+        "barrage": true,
+        "skirmish": true,
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "2d3"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          }
+        ]
+      },
+      {
+        "name": "Thresher (Revved)",
+        "barrage": true,
+        "skirmish": true,
+        "on_hit": "<div>If you roll the highest possible result for this weapon's base damage, or if its damage is otherwise maximized, you may make a secondary attack with it, targeting another character within Threat. After the secondary attack, this weapon then ceases to be Revved.</div>",
+        "damage": [
+          {
+            "type": "Kinetic",
+            "val": "4d3"
+          }
+        ],
+        "range": [
+          {
+            "type": "Threat",
+            "val": 2
+          }
+        ],
+        "tags": [
+          {
+            "id": "tg_unique",
+            "name": "UNIQUE",
+            "description": "This weapon or system cannot be duplicated – each character can only have one copy of it installed at a time."
+          },
+          {
+            "id": "tg_overkill",
+            "name": "OVERKILL",
+            "description": "When rolling for damage with this weapon, any damage dice that land on a 1 cause the attacker to take 1 Heat, and are then rerolled. Additional 1s continue to trigger this effect."
+          },
+          {
+            "id": "tg_inaccurate",
+            "name": "INACCURATE",
+            "description": "Attacks made with this weapon receive +1 Difficulty."
+          }
+        ]
+      }
+    ]
+  }
+]
