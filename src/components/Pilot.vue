@@ -226,7 +226,7 @@ export default {
       return [...ktbData.bonds, ...shadowOfTheWolfData.bonds]
     },
     frames() {
-      return [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, ...winterScarData.frames,intercorpData.frames, ...terkmechandtechData.frames,]
+      return [...lancerData.frames, ...ktbData.frames, ...nrfawData.frames, ...longrimData.frames, ...dustgraveData.frames, ...gmsCrisisData.frames, ...legionnaireData.frames, ...solsticeRainData.frames, ...sirensSongData.frames, ...enhancedCombatData.frames, ...shadowOfTheWolfData.frames, ...winterScarData.frames, ...intercorpData.frames, ...terkmechandtechData.frames,]
     },
     mechManufacturerIcon() {
       if (this.activeMech.manufacturer)
