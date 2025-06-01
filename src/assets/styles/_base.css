@@ -390,7 +390,9 @@ section.section-container#pilots .rhombus-back {
 	left: -2em;
 }
 
-.pilot-list-container {}
+.pilot-list-container {
+    height:661px;
+}
 
 section .section-header {
 	background-color: var(--primary-color);
