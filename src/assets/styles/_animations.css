@@ -144,7 +144,7 @@ header[class*="animate"] div.location-info {
 
 /* section-containers on /pilots and /events views */
 section.section-container[class*="animate"]#events-logs,
-section.section-container[class*="animate"]#pilots, {
+section.section-container[class*="animate"]#pilots {
 	animation: flickerIn 0.8s ease;
 	animation-fill-mode: both;
 }
