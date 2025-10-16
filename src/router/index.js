@@ -3,6 +3,7 @@ import { createMemoryHistory, createWebHistory, createRouter } from "vue-router"
 import Status from "@/views/StatusView.vue";
 import Pilots from "@/views/PilotsView.vue";
 import Events from "@/views/EventsView.vue";
+import World from "@/views/WorldView.vue";
 import Config from "@/assets/info/general-config.json";
 
 const DEFAULT_TITLE = Config.defaultTitle;
@@ -32,6 +33,13 @@ const routes = [
 		props: true,
 		meta: { title: `${DEFAULT_TITLE} EVENTS LOG` },
 	},
+	{
+        path: "/world",
+        name: "World",
+        component: World,
+        meta: { title: `${DEFAULT_TITLE} World` },
+        props: true,
+    },
 ];
 
 const router = createRouter({
