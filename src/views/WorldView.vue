@@ -1,5 +1,5 @@
 <template>
-  <div id="worldView" :class="{ animate }" class="content-container">
+  <div id="worldView" :class="{ animate: props.animate }" class="content-container">
     <!-- LIST / GLOSSARY -->
     <section id="world" class="section-container">
       <div class="section-header clipped-medium-backward">
@@ -26,7 +26,7 @@
             v-for="entry in filteredEntries"
             :key="entry.slug"
             :entry="entry"
-            :animate="animate"
+            :animate="props.animate"
             @select-entry="selectEntry"
           />
         </div>
@@ -55,59 +55,50 @@
   </div>
 </template>
 
-<script>
-import VueMarkdownIt from '@f3ve/vue-markdown-it';
-import WorldEntry from '@/components/WorldEntry.vue';
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import VueMarkdownIt from '@f3ve/vue-markdown-it'
+import WorldEntry from '@/components/WorldEntry.vue'
 
-export default {
-  name: 'WorldView',
-  components: { VueMarkdownIt, WorldEntry },
-  props: {
-    animate: { type: Boolean, required: true },
-  },
-  data() {
-    return {
-      entries: [],
-      selectedEntry: null,
-      query: '',
-      typeFilter: '',
-    };
-  },
-  created() {
-    const modules = import.meta.glob('@/assets/world/*.md', { query: '?raw', import: 'default' });
-    this.importEntries(modules);
-  },
-  computed: {
-    filteredEntries() {
-      const q = this.query.trim().toLowerCase();
-      return this.entries
-        .filter(e => !this.typeFilter || (e.type || '').toLowerCase() === this.typeFilter.toLowerCase())
-        .filter(e => !q || (e.name + ' ' + (e.type || '') + ' ' + (e.tags || []).join(' ') + ' ' + (e.content || '')).toLowerCase().includes(q));
-    },
-  },
-  methods: {
-    async importEntries(files) {
-      const filePromises = Object.values(files).map(fn => fn());
-      const modules = await Promise.all(filePromises);
-      modules.forEach(mod => {
-        const raw = typeof mod === 'string' ? mod : mod.default;
-        const lines = (raw || '').split('
-');
-        const entry = {
-          slug: (lines[0] || '').trim(),
-          name: (lines[1] || '').trim(),
-          type: (lines[2] || 'NPC').trim(),
-          tags: (lines[3] || '').split(',').map(s => s.trim()).filter(Boolean),
-          thumbnail: (lines[4] || '').trim(),
-          content: lines.slice(5).join('
-'),
-        };
-        this.entries.push(entry);
-      });
-      this.entries.sort((a, b) => a.name.localeCompare(b.name));
-      this.selectedEntry = this.entries[0] || null;
-    },
-    selectEntry(entry) { this.selectedEntry = entry; },
-  },
-};
+const props = defineProps({
+  animate: { type: Boolean, required: true }
+})
+
+const entries = ref([])
+const selectedEntry = ref(null)
+const query = ref('')
+const typeFilter = ref('')
+
+const filteredEntries = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  return entries.value
+    .filter(e => !typeFilter.value || (e.type || '').toLowerCase() === typeFilter.value.toLowerCase())
+    .filter(e => !q || (e.name + ' ' + (e.type || '') + ' ' + (e.tags || []).join(' ') + ' ' + (e.content || '')).toLowerCase().includes(q))
+})
+
+function selectEntry(entry) {
+  selectedEntry.value = entry
+}
+
+async function importEntries() {
+  const modules = import.meta.glob('@/assets/world/*.md', { query: '?raw', import: 'default' })
+  const loaded = await Promise.all(Object.values(modules).map(fn => fn()))
+  loaded.forEach(mod => {
+    const raw = typeof mod === 'string' ? mod : mod.default
+    const lines = (raw || '').split('\n')
+    const entry = {
+      slug: (lines[0] || '').trim(),
+      name: (lines[1] || '').trim(),
+      type: (lines[2] || 'NPC').trim(),
+      tags: (lines[3] || '').split(',').map(s => s.trim()).filter(Boolean),
+      thumbnail: (lines[4] || '').trim(),
+      content: lines.slice(5).join('\n')
+    }
+    entries.value.push(entry)
+  })
+  entries.value.sort((a, b) => a.name.localeCompare(b.name))
+  selectedEntry.value = entries.value[0] || null
+}
+
+onMounted(importEntries)
 </script>
