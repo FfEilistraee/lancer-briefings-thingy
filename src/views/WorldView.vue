@@ -58,7 +58,7 @@
                 <template v-if="Array.isArray(m.value)">
                   <span v-for="(v,i) in m.value" :key="i">
                     <a href="#" @click.prevent="query = String(v)">{{ v }}</a><span v-if="i < m.value.length - 1">, </span>
-                  </span>
+                  </span>\n
                 </template>
                 <template v-else>{{ m.value }}</template>
               </div>
@@ -80,7 +80,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import matter from 'gray-matter'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
 
@@ -123,6 +122,81 @@ const displayMeta = computed(() => {
   return out
 })
 
+// ---------- Tiny front-matter parser (no dependencies) ----------
+function parseFrontMatter(raw) {
+  // Looks for ---\n ... \n--- at the start
+  if (!raw.startsWith('---')) return { data: null, content: raw }
+  const end = raw.indexOf('\n---')
+  if (end === -1) return { data: null, content: raw }
+  const fm = raw.slice(3, end).trim()
+  const content = raw.slice(end + 4).replace(/^\s*\n/, '')
+
+  const data = {}
+  const lines = fm.split('\n')
+  let i = 0
+  while (i < lines.length) {
+    const line = lines[i].trim()
+    if (!line) { i++; continue }
+    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/)
+    if (!m) { i++; continue }
+    const key = m[1]
+    let val = m[2].trim()
+
+    // Support block lists:
+    // key:
+    //   - item1
+    //   - item2
+    if (val === '') {
+      const arr = []
+      let j = i + 1
+      while (j < lines.length) {
+        const li = lines[j]
+        const liTrim = li.trim()
+        if (liTrim.startsWith('- ')) {
+          arr.push(liTrim.slice(2).trim())
+          j++
+        } else if (li.startsWith('  ') || li.startsWith('\t')) {
+          // continuation line (ignored for now)
+          j++
+        } else {
+          break
+        }
+      }
+      if (arr.length) {
+        data[key] = arr
+        i = j
+        continue
+      }
+    }
+
+    // Inline array: [a, b, c]
+    if (val.startsWith('[') && val.endsWith(']')) {
+      const inner = val.slice(1, -1).trim()
+      data[key] = inner ? inner.split(',').map(s => s.trim()).filter(Boolean) : []
+      i++
+      continue
+    }
+
+    // Comma-separated fallback
+    if (val.includes(',') && !/^["']/.test(val)) {
+      data[key] = val.split(',').map(s => s.trim()).filter(Boolean)
+      i++
+      continue
+    }
+
+    // Remove surrounding quotes if present
+    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+      val = val.slice(1, -1)
+    }
+
+    data[key] = val
+    i++
+  }
+
+  return { data, content }
+}
+// ----------------------------------------------------------------
+
 function labelize(key) {
   return key
     .replace(/[_-]+/g, ' ')
@@ -154,17 +228,18 @@ async function importEntries() {
 
     let entry
     if (/^---[\s\S]*?\n---\s*/.test(raw)) {
-      // YAML front-matter present
-      const { data, content } = matter(raw)
+      // Front-matter present
+      const { data, content } = parseFrontMatter(raw)
+      const meta = data || {}
       entry = {
-        slug: data.slug || slugify(data.name),
-        name: data.name || 'Untitled',
-        type: data.type || 'NPC',
-        tags: normalizeArray(data.tags),
-        thumbnail: data.thumbnail || '',
+        slug: meta.slug || slugify(meta.name),
+        name: meta.name || 'Untitled',
+        type: meta.type || 'NPC',
+        tags: normalizeArray(meta.tags),
+        thumbnail: meta.thumbnail || '',
         content: content || '',
-        // spread all additional fields (gender, age, etc.)
-        ...Object.fromEntries(Object.entries(data).filter(([k]) => !['slug','name','type','tags','thumbnail'].includes(k)))
+        // include any additional fields
+        ...Object.fromEntries(Object.entries(meta).filter(([k]) => !['slug','name','type','tags','thumbnail'].includes(k)))
       }
     } else {
       // Fallback to old 5-line header
