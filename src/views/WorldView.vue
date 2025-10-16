@@ -42,34 +42,42 @@
       <div class="rhombus-back">&nbsp;</div>
 
       <div class="section-content-container extra-margins">
-        <div class="event">
+        <div class="wiki-article">
+          <!-- InfoBox (right side like Wikipedia) -->
+          <aside class="infobox">
+            <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
+            <table class="infobox-table">
+              <tbody>
+                <tr v-for="row in infoboxRows" :key="row.label">
+                  <th class="infobox-label">{{ row.label }}</th>
+                  <td class="infobox-value">
+                    <template v-if="Array.isArray(row.value)">
+                      <span v-for="(v,i) in row.value" :key="i">
+                        <a href="#" @click.prevent="query = String(v)">{{ v }}</a><span v-if="i < row.value.length - 1">, </span>
+                      </span>
+                    </template>
+                    <template v-else>{{ row.value }}</template>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </aside>
+
           <div class="name">
-            <h1>{{ selectedEntry.type }} <span v-if="selectedEntry.tags && selectedEntry.tags.length">// {{ selectedEntry.tags.join(', ') }}</span></h1>
-            <h2>{{ selectedEntry.name }}</h2>
+            <h1 class="entry-type">
+              {{ selectedEntry.type }}
+              <span v-if="selectedEntry.tags && selectedEntry.tags.length"> // {{ selectedEntry.tags.join(', ') }}</span>
+            </h1>
+            <h2 class="entry-title">{{ selectedEntry.name }}</h2>
           </div>
 
-          <img class="thumbnail" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" />
-
-          <!-- Auto-render metadata grid -->
-          <div v-if="displayMeta.length" class="meta-grid">
-            <div v-for="m in displayMeta" :key="m.key" class="meta-row">
-              <div class="meta-label">{{ m.label }}</div>
-              <div class="meta-value">
-                <template v-if="Array.isArray(m.value)">
-                  <span v-for="(v,i) in m.value" :key="i">
-                    <a href="#" @click.prevent="query = String(v)">{{ v }}</a><span v-if="i < m.value.length - 1">, </span>
-                  </span>\n
-                </template>
-                <template v-else>{{ m.value }}</template>
-              </div>
-            </div>
+          <!-- Body -->
+          <div class="markdown" @click="handleMarkdownClick">
+            <VueMarkdownIt :source="selectedEntry.content" class="markdown-body" />
           </div>
 
-          <!-- Markdown body -->
-          <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
-
-          <!-- Quick tag chips -->
-          <div v-if="selectedEntry.tags && selectedEntry.tags.length" style="margin-top:8px">
+          <!-- Tag chips -->
+          <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
             <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="query = t">{{ t }}</span>
           </div>
         </div>
@@ -83,9 +91,7 @@ import { ref, computed, onMounted } from 'vue'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
 
-const props = defineProps({
-  animate: { type: Boolean, required: true }
-})
+const props = defineProps({ animate: { type: Boolean, required: true } })
 
 const entries = ref([])
 const selectedEntry = ref(null)
@@ -101,7 +107,6 @@ const filteredEntries = computed(() => {
     .filter(e => {
       if (!q) return true
       const searchable = [e.name, e.type, ...(e.tags||[]), e.content]
-      // include all meta values too
       Object.entries(e).forEach(([k,v]) => {
         if (!baseKeys.has(k) && v) searchable.push(Array.isArray(v) ? v.join(' ') : String(v))
       })
@@ -109,22 +114,34 @@ const filteredEntries = computed(() => {
     })
 })
 
-const displayMeta = computed(() => {
+// infobox order (any other custom fields still searchable)
+const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
+const infoboxRows = computed(() => {
   if (!selectedEntry.value) return []
-  const out = []
-  for (const [k,v] of Object.entries(selectedEntry.value)) {
-    if (baseKeys.has(k)) continue
-    if (v === undefined || v === null) continue
-    const s = Array.isArray(v) ? v.join('').trim() : String(v).trim()
-    if (!s) continue
-    out.push({ key: k, label: labelize(k), value: v })
+  const s = selectedEntry.value
+  const rows = []
+  const used = new Set()
+  for (const k of INFOBOX_ORDER) {
+    const v = s[k]
+    const has = v !== undefined && v !== null && (Array.isArray(v) ? v.length : String(v).trim())
+    if (has) { rows.push({ label: labelize(k), value: v }); used.add(k) }
   }
-  return out
+  Object.entries(s).forEach(([k,v]) => {
+    if (baseKeys.has(k) || used.has(k)) return
+    if (v === undefined || v === null) return
+    const text = Array.isArray(v) ? v.join('').trim() : String(v).trim()
+    if (!text) return
+    rows.push({ label: labelize(k), value: v })
+  })
+  return rows
 })
 
-// ---------- Tiny front-matter parser (no dependencies) ----------
+function labelize(key) {
+  return key.replace(/[_-]+/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^\w|\s\w/g, c => c.toUpperCase())
+}
+
+// --- Tiny front-matter + Obsidian helpers (no deps) ---
 function parseFrontMatter(raw) {
-  // Looks for ---\n ... \n--- at the start
   if (!raw.startsWith('---')) return { data: null, content: raw }
   const end = raw.indexOf('\n---')
   if (end === -1) return { data: null, content: raw }
@@ -139,110 +156,170 @@ function parseFrontMatter(raw) {
     if (!line) { i++; continue }
     const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/)
     if (!m) { i++; continue }
-    const key = m[1]
-    let val = m[2].trim()
+    const key = m[1]; let val = m[2].trim()
 
-    // Support block lists:
-    // key:
-    //   - item1
-    //   - item2
+    // block list
     if (val === '') {
-      const arr = []
-      let j = i + 1
+      const arr = []; let j = i + 1
       while (j < lines.length) {
-        const li = lines[j]
-        const liTrim = li.trim()
-        if (liTrim.startsWith('- ')) {
-          arr.push(liTrim.slice(2).trim())
-          j++
-        } else if (li.startsWith('  ') || li.startsWith('\t')) {
-          // continuation line (ignored for now)
-          j++
-        } else {
-          break
-        }
+        const li = lines[j]; const t = li.trim()
+        if (t.startsWith('- ')) { arr.push(t.slice(2).trim()); j++; continue }
+        if (li.startsWith('  ') || li.startsWith('\t')) { j++; continue }
+        break
       }
-      if (arr.length) {
-        data[key] = arr
-        i = j
-        continue
-      }
+      if (arr.length) { data[key] = arr; i = j; continue }
     }
-
-    // Inline array: [a, b, c]
+    // inline array
     if (val.startsWith('[') && val.endsWith(']')) {
       const inner = val.slice(1, -1).trim()
       data[key] = inner ? inner.split(',').map(s => s.trim()).filter(Boolean) : []
-      i++
-      continue
+      i++; continue
     }
-
-    // Comma-separated fallback
-    if (val.includes(',') && !/^["']/.test(val)) {
+    // comma list (unless quoted)
+    if (val.includes(',') && !(val.startsWith('"') || val.startsWith("'"))) {
       data[key] = val.split(',').map(s => s.trim()).filter(Boolean)
-      i++
-      continue
+      i++; continue
     }
-
-    // Remove surrounding quotes if present
+    // strip quotes
     if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
       val = val.slice(1, -1)
     }
-
-    data[key] = val
-    i++
+    data[key] = val; i++
   }
-
   return { data, content }
 }
-// ----------------------------------------------------------------
 
-function labelize(key) {
-  return key
-    .replace(/[_-]+/g, ' ')
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/^\w|\s\w/g, c => c.toUpperCase())
+function slugify(s) {
+  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
-
 function normalizeArray(val) {
   if (!val) return []
   return Array.isArray(val) ? val : String(val).split(',').map(s => s.trim()).filter(Boolean)
 }
+function transformWikiLinks(md) {
+  // [[Target|Label]] or [[Target]]
+  return md.replace(/\[\[([^\]|#]+?)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
+    const t = String(target).trim()
+    const text = label ? String(label).trim() : t
+    const slug = slugify(t)
+    return `[${text}](wiki:${slug})`
+  })
+}
+function transformWikiImages(md) {
+  // ![[File.png|anything]] -> ![File](/world/File.png)
+  return md.replace(/!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/g, (_, file) => {
+    const name = String(file).trim()
+    const alt = name.replace(/\.[^/.]+$/, '')
+    return `![${alt}](/world/${name})`
+  })
+}
+function extractInfobox(md, meta) {
+  // Pull out > [!infobox] ... block (quoted lines) and parse table/key-values
+  const lines = md.split('\n')
+  const out = []; let i = 0; const collected = []
+  while (i < lines.length) {
+    const line = lines[i]
+    if (line.trim().startsWith('> [!infobox]')) {
+      i++
+      while (i < lines.length && lines[i].trim().startsWith('>')) { collected.push(lines[i]); i++ }
+      continue
+    }
+    out.push(line); i++
+  }
 
-function slugify(s) {
-  return String(s || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
+  const kv = {}
+  collected.forEach(l => {
+    const t = l.replace(/^>\s?/, '')
+    if (/^!\[\[/.test(t)) {
+      const m = t.match(/^!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/)
+      if (m) kv.__thumbnail = `/world/${m[1]}`
+      return
+    }
+    if (t.includes('|')) {
+      const parts = t.split('|').map(s => s.trim()).filter(Boolean)
+      if (parts.length === 2 && !/^[-]+$/.test(parts[0])) {
+        const key = slugify(parts[0]).replace(/-/g, ' ')
+        const label = key.replace(/\b\w/g, c => c.toUpperCase())
+        kv[label.toLowerCase()] = parts[1]
+      }
+    }
+  })
+
+  const merged = { ...meta }
+  const map = {
+    'other names': 'aliases',
+    'gender': 'gender',
+    'race': 'race',
+    'age': 'age',
+    'height': 'height',
+    'origin': 'origin',
+    'ethnicity': 'ethnicity',
+    'occupation': 'occupation',
+    'title': 'title',
+    'languages': 'languages',
+    'status': 'status',
+    'affiliations': 'affiliations',
+    'location': 'location',
+  }
+  Object.entries(map).forEach(([from, to]) => {
+    if (kv[from] !== undefined) {
+      merged[to] = /,/.test(kv[from]) ? kv[from].split(',').map(s => s.trim()).filter(Boolean) : kv[from]
+    }
+  })
+  if (kv.__thumbnail && !merged.thumbnail) merged.thumbnail = kv.__thumbnail
+  return { content: out.join('\n'), meta: merged }
+}
+// ---------------------------------------------------------------
+
+function handleMarkdownClick(e) {
+  const a = e.target.closest('a'); if (!a) return
+  const href = a.getAttribute('href') || ''
+  if (href.startsWith('wiki:')) {
+    const slug = href.slice(5)
+    const match = entries.value.find(en => en.slug === slug)
+    if (match) selectEntry(match)
+    else query.value = slug.replace(/-/g, ' ')
+    e.preventDefault()
+  }
 }
 
-function selectEntry(entry) {
-  selectedEntry.value = entry
-}
+function selectEntry(entry) { selectedEntry.value = entry }
 
 async function importEntries() {
-  const modules = import.meta.glob('@/assets/world/*.md', { query: '?raw', import: 'default' })
+  // Look under src/ and (optionally) repo-root assets
+  const modules = {
+    ...import.meta.glob('@/assets/world/**/*.md', { query: '?raw', import: 'default' }),
+    ...import.meta.glob('/src/assets/world/**/*.md', { query: '?raw', import: 'default' }),
+    ...import.meta.glob('/assets/world/**/*.md', { query: '?raw', import: 'default' }),
+  }
   const loaded = await Promise.all(Object.values(modules).map(fn => fn()))
   loaded.forEach(mod => {
     const raw = typeof mod === 'string' ? mod : mod.default
 
+    // 1) front-matter if present
+    let data = null, body = raw
+    if (raw.startsWith('---')) { const fm = parseFrontMatter(raw); data = fm.data; body = fm.content }
+
+    // 2) Obsidian transforms
+    body = transformWikiImages(body)
+    body = transformWikiLinks(body)
+    const inf = extractInfobox(body, data || {})
+    body = inf.content
+    const meta = inf.meta || {}
+
+    // 3) Build entry (fallback to 5-line header if no meta)
     let entry
-    if (/^---[\s\S]*?\n---\s*/.test(raw)) {
-      // Front-matter present
-      const { data, content } = parseFrontMatter(raw)
-      const meta = data || {}
+    if (meta && (meta.name || meta.slug)) {
       entry = {
         slug: meta.slug || slugify(meta.name),
         name: meta.name || 'Untitled',
         type: meta.type || 'NPC',
         tags: normalizeArray(meta.tags),
         thumbnail: meta.thumbnail || '',
-        content: content || '',
-        // include any additional fields
+        content: body || '',
         ...Object.fromEntries(Object.entries(meta).filter(([k]) => !['slug','name','type','tags','thumbnail'].includes(k)))
       }
     } else {
-      // Fallback to old 5-line header
       const lines = (raw || '').split('\n')
       entry = {
         slug: (lines[0] || '').trim(),
@@ -253,7 +330,6 @@ async function importEntries() {
         content: lines.slice(5).join('\n')
       }
     }
-
     entries.value.push(entry)
   })
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
@@ -264,8 +340,22 @@ onMounted(importEntries)
 </script>
 
 <style scoped>
-.meta-grid { display: grid; grid-template-columns: 160px 1fr; gap: 6px 12px; margin: 8px 0 16px; }
-.meta-label { font-weight: 600; opacity: .85; }
-.meta-value { opacity: .95; }
+/* Wikipedia-style layout */
+.wiki-article { position: relative; }
+.entry-type { font-size: 1rem; letter-spacing: .04em; opacity: .85; margin-bottom: .25rem; }
+.entry-title { font-size: 2rem; line-height: 1.2; margin: 0 0 .75rem; }
+
+/* Right-side infobox */
+.infobox { float: right; width: 300px; max-width: 40%; margin: 0 0 12px 16px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+.infobox-image { display:block; width:100%; height:auto; }
+.infobox-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.infobox-label { text-align:left; vertical-align: top; padding: 6px 8px; font-weight: 600; width: 34%; border-bottom: 1px solid rgba(255,255,255,.08); }
+.infobox-value { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,.08); }
+
+.tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
+
+@media (max-width: 900px) {
+  .infobox { float:none; max-width:100%; width:100%; margin:0 0 12px 0; }
+}
 </style>
