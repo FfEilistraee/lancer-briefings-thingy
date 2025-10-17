@@ -88,12 +88,21 @@
                 <tr v-for="row in infoboxRows" :key="row.label">
                   <th class="infobox-label">{{ row.label }}</th>
                   <td class="infobox-value">
-                    <template v-if="Array.isArray(row.value)">
-                      <span v-for="(v,i) in row.value" :key="i">
-                        <a href="#" @click.prevent="query = String(v)">{{ v }}</a><span v-if="i < row.value.length - 1">, </span>
-                      </span>
+                    <template v-if="row.tokens.length">
+                      <template v-for="(token, index) in row.tokens" :key="index">
+                        <template v-if="token.slug">
+                          <a
+                            :href="`wiki:${token.slug}`"
+                            :class="['wiki-link', token.resolved ? 'wiki-link-resolved' : 'wiki-link-unresolved']"
+                            @click.prevent="navigateToWikiSlug(token.slug, $event)"
+                          >
+                            {{ token.text }}
+                          </a>
+                        </template>
+                        <template v-else>{{ token.text }}</template>
+                        <span v-if="index < row.tokens.length - 1">{{ row.separator }}</span>
+                      </template>
                     </template>
-                    <template v-else>{{ row.value }}</template>
                   </td>
                 </tr>
               </tbody>
@@ -223,19 +232,23 @@ const tabs = computed(() =>
 const infoboxRows = computed(() => {
   if (!selectedEntry.value) return []
   const s = selectedEntry.value
+  const index = slugIndex.value
   const rows = []
   const used = new Set()
   for (const k of INFOBOX_ORDER) {
     const v = s[k]
     const ok = v !== undefined && v !== null && (Array.isArray(v) ? v.length : String(v).trim())
-    if (ok) { rows.push({ label: labelize(k), value: v }); used.add(k) }
+    if (ok) {
+      rows.push({ label: labelize(k), tokens: buildInfoboxTokens(v, index), separator: ', ' })
+      used.add(k)
+    }
   }
   Object.entries(s).forEach(([k, v]) => {
     if (BASE_KEYS.has(k) || used.has(k)) return
     if (v === undefined || v === null) return
     const text = Array.isArray(v) ? v.join('').trim() : String(v).trim()
     if (!text) return
-    rows.push({ label: labelize(k), value: v })
+    rows.push({ label: labelize(k), tokens: buildInfoboxTokens(v, index), separator: ', ' })
   })
   return rows
 })
@@ -291,45 +304,51 @@ function showTooltipForSlug(slug, position) {
 
 function attachWikiLinkEvents() {
   if (!selectedEntry.value) return
-  const container = document.querySelector('#world-detail .wiki-body')
-  if (!container) return
-  if (!container.dataset.tooltipBound) {
-    container.addEventListener('scroll', hideTooltip, { passive: true })
-    container.addEventListener('mouseleave', hideTooltip)
-    container.dataset.tooltipBound = 'true'
-  }
-  const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
-  links.forEach(link => {
-    const slug = link.getAttribute('href').slice(5)
-    const resolved = !!slugIndex.value[slug]
-    link.classList.toggle('wiki-link-resolved', resolved)
-    link.classList.toggle('wiki-link-unresolved', !resolved)
-    link.dataset.wikiResolved = resolved ? 'true' : 'false'
+  const containers = Array.from(document.querySelectorAll('#world-detail .wiki-body, #world-detail .infobox'))
+  if (!containers.length) return
 
-    if (!resolved) {
-      link.dataset.wikiBound = 'false'
-      return
+  containers.forEach(container => {
+    if (!container.dataset.tooltipBound) {
+      if (container.classList.contains('wiki-body')) {
+        container.addEventListener('scroll', hideTooltip, { passive: true })
+      }
+      container.addEventListener('mouseleave', hideTooltip)
+      container.dataset.tooltipBound = 'true'
     }
 
-    if (link.dataset.wikiBound === 'true') return
+    const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
+    links.forEach(link => {
+      const slug = link.getAttribute('href').slice(5)
+      const resolved = !!slugIndex.value[slug]
+      link.classList.toggle('wiki-link-resolved', resolved)
+      link.classList.toggle('wiki-link-unresolved', !resolved)
+      link.dataset.wikiResolved = resolved ? 'true' : 'false'
 
-    link.dataset.wikiBound = 'true'
-    link.addEventListener('mouseenter', event => {
-      const pos = {
-        x: event.clientX + 16,
-        y: event.clientY + 24
+      if (!resolved) {
+        link.dataset.wikiBound = 'false'
+        return
       }
-      showTooltipForSlug(slug, pos)
+
+      if (link.dataset.wikiBound === 'true') return
+
+      link.dataset.wikiBound = 'true'
+      link.addEventListener('mouseenter', event => {
+        const pos = {
+          x: event.clientX + 16,
+          y: event.clientY + 24
+        }
+        showTooltipForSlug(slug, pos)
+      })
+      link.addEventListener('mousemove', event => {
+        if (!tooltip.value.visible) return
+        tooltip.value = {
+          ...tooltip.value,
+          x: event.clientX + 16,
+          y: event.clientY + 24
+        }
+      })
+      link.addEventListener('mouseleave', hideTooltip)
     })
-    link.addEventListener('mousemove', event => {
-      if (!tooltip.value.visible) return
-      tooltip.value = {
-        ...tooltip.value,
-        x: event.clientX + 16,
-        y: event.clientY + 24
-      }
-    })
-    link.addEventListener('mouseleave', hideTooltip)
   })
 }
 
@@ -444,6 +463,48 @@ function extractInfobox(md, meta) {
   return { content: out.join('\n'), meta: merged }
 }
 
+function buildInfoboxTokens(value, index) {
+  const rawValues = Array.isArray(value) ? value : [value]
+  const tokens = []
+  rawValues.forEach(raw => {
+    if (raw === null || raw === undefined) return
+    const text = typeof raw === 'string' ? raw.trim() : String(raw)
+    if (!text) return
+
+    const markdownMatch = text.match(/^\[([^\]]+)\]\(wiki:([^)]+)\)$/)
+    if (markdownMatch) {
+      const slug = markdownMatch[2]
+      tokens.push({ text: markdownMatch[1], slug, resolved: !!index[slug] })
+      return
+    }
+
+    const obsidianMatch = text.match(/^\[\[([^\]|#]+?)(?:\|([^\]]+))?\]\]$/)
+    if (obsidianMatch) {
+      const slug = slugify(obsidianMatch[1])
+      const label = obsidianMatch[2] ? obsidianMatch[2] : obsidianMatch[1]
+      tokens.push({ text: label, slug, resolved: !!index[slug] })
+      return
+    }
+
+    const slug = slugify(text)
+    const resolved = !!index[slug]
+    tokens.push({ text, slug: resolved ? slug : null, resolved })
+  })
+  return tokens
+}
+
+function navigateToWikiSlug(slug, event) {
+  const match = slugIndex.value[slug]
+  if (!match) return
+  if (match.category === 'codex') {
+    const x = (event?.clientX || 0) + 16
+    const y = (event?.clientY || 0) + 24
+    showTooltipForSlug(slug, { x, y })
+    return
+  }
+  selectEntry(match)
+}
+
 function handleMarkdownClick(e) {
   const a = e.target.closest('a')
   if (!a) return
@@ -452,16 +513,11 @@ function handleMarkdownClick(e) {
 
   e.preventDefault()
   const slug = href.slice(5)
-  const match = slugIndex.value[slug]
-  if (!match) return
-  if (match.category === 'codex') {
-    showTooltipForSlug(slug, { x: e.clientX + 16, y: e.clientY + 24 })
-    return
-  }
-  selectEntry(match)
+  navigateToWikiSlug(slug, e)
 }
 
 function selectEntry(entry) {
+  hideTooltip()
   selectedEntry.value = entry
 }
 
@@ -706,6 +762,11 @@ loadEntries()
 .entry-title { font-size: 2rem; line-height: 1.2; margin: 0 0 .75rem; }
 
 .wiki-body { grid-column: 1; min-width: 560px; }
+#world-detail .wiki-body .markdown {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
 .markdown a.wiki-link-resolved {
   color: var(--primary-color);
   text-decoration-color: rgba(255, 255, 255, 0.55);
