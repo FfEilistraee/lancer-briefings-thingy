@@ -24,13 +24,13 @@
 				</div>
 				<div class="rhombus-back">&nbsp;</div>
 			</div>
-			<div class="section-content-container extra-margins">
-				<div class="event" v-if="selectedEvent.title">
-					<div class="name">
-						<h1>{{ selectedEvent.location }} // {{ selectedEvent.time }}</h1>
-						<h2>{{ selectedEvent.title }}</h2>
-					</div>
-					<vue-markdown-it :source="selectedEvent.content" class="markdown" />
+                        <div class="section-content-container extra-margins" @click="handleWikiClick">
+                                <div class="event" v-if="selectedEvent.title">
+                                        <div class="name">
+                                                <h1>{{ selectedEvent.location }} // {{ selectedEvent.time }}</h1>
+                                                <h2>{{ selectedEvent.title }}</h2>
+                                        </div>
+                                        <vue-markdown-it :source="selectedEvent.content" class="markdown" />
 				</div>
 			</div>
 		</section>
@@ -40,6 +40,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Event from "@/components/Event.vue";
+import { isWikiHref, extractWikiSlug } from '@/utils/wiki';
 
 export default {
 	components: {
@@ -63,10 +64,20 @@ export default {
 			}
 		};
 	},
-	methods: {
-		selectEvent(event) {
-			this.selectedEvent = event;
-		}
-	}
+        methods: {
+                selectEvent(event) {
+                        this.selectedEvent = event;
+                },
+                handleWikiClick(event) {
+                        const anchor = event.target.closest('a');
+                        if (!anchor) return;
+                        const href = anchor.getAttribute('href') || '';
+                        if (!isWikiHref(href)) return;
+                        event.preventDefault();
+                        const slug = extractWikiSlug(href);
+                        if (!slug) return;
+                        this.$router.push({ path: '/world', query: { slug } });
+                }
+        }
 };
 </script>

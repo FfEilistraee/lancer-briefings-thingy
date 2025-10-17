@@ -27,6 +27,7 @@
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
 import Config from "@/assets/info/general-config.json";
+import { applyWikiTransforms } from '@/utils/wiki';
 
 export default {
 	components: {
@@ -72,14 +73,15 @@ export default {
 		async importMissions(files) {
 			let filePromises = Object.keys(files).map(path => files[path]());
 			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let mission = {};
-				mission["slug"] = content.split("\n")[0];
-				mission["name"] = content.split("\n")[1];
-				mission["status"] = content.split("\n")[2];
-				mission["content"] = content.split("\n").splice(3).join("\n");
-				this.missions = [...this.missions, mission];
-			});
+                        fileContents.forEach(content => {
+                                let mission = {};
+                                const lines = content.split("\n");
+                                mission["slug"] = lines[0];
+                                mission["name"] = lines[1];
+                                mission["status"] = lines[2];
+                                mission["content"] = applyWikiTransforms(lines.slice(3).join("\n"));
+                                this.missions = [...this.missions, mission];
+                        });
 			this.missions = this.missions.sort(function (a, b) {
 				return b["slug"] - a["slug"];
 			})
@@ -87,15 +89,16 @@ export default {
 		async importEvents(files) {
 			let filePromises = Object.keys(files).map(path => files[path]());
 			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let event = {};
-				event["title"] = content.split("\n")[0];
-				event["location"] = content.split("\n")[1];
-				event["time"] = content.split("\n")[2];
-				event["thumbnail"] = content.split("\n")[3];
-				event["content"] = content.split("\n").splice(4).join("\n");
-				this.events = [...this.events, event];
-			});
+                        fileContents.forEach(content => {
+                                let event = {};
+                                const lines = content.split("\n");
+                                event["title"] = lines[0];
+                                event["location"] = lines[1];
+                                event["time"] = lines[2];
+                                event["thumbnail"] = lines[3];
+                                event["content"] = applyWikiTransforms(lines.slice(4).join("\n"));
+                                this.events = [...this.events, event];
+                        });
 			this.events = this.events.reverse();
 		},
 		async importClocks(files) {

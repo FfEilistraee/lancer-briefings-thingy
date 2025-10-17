@@ -144,10 +144,15 @@
 
 <script setup>
 import { ref, computed, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
+import { slugify, transformWikiLinks, transformWikiImages, isWikiHref, extractWikiSlug } from '@/utils/wiki'
 
 const props = defineProps({ animate: { type: Boolean, required: true } })
+
+const route = useRoute()
+const router = useRouter()
 
 // Data
 const TAB_CONFIG = [
@@ -266,13 +271,17 @@ const tooltipStyle = computed(() => ({
   left: `${tooltip.value.x}px`
 }))
 
-function setActiveTab(tab) {
+function setActiveTab(tab, options = {}) {
   activeTab.value = tab
-  query.value = ''
+  if (!options.preserveQuery) {
+    query.value = ''
+  }
   const first = entries.value.find(e => e.category === tab)
-  if (first) {
+  if (first && !options.skipAutoSelect) {
     selectEntry(first)
-  } else {
+    return
+  }
+  if (!first) {
     hideTooltip()
     selectedEntry.value = null
   }
@@ -318,7 +327,9 @@ function attachWikiLinkEvents() {
 
     const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
     links.forEach(link => {
-      const slug = link.getAttribute('href').slice(5)
+      const href = link.getAttribute('href') || ''
+      const slug = extractWikiSlug(href)
+      if (!slug) return
       const resolved = !!slugIndex.value[slug]
       link.classList.toggle('wiki-link-resolved', resolved)
       link.classList.toggle('wiki-link-unresolved', !resolved)
@@ -351,6 +362,18 @@ function attachWikiLinkEvents() {
     })
   })
 }
+
+watch(
+  () => route.query.slug,
+  slug => {
+    if (!slug) return
+    const entry = slugIndex.value[slug]
+    if (!entry) return
+    if (selectedEntry.value && selectedEntry.value.slug === slug) return
+    setActiveTab(entry.category, { skipAutoSelect: true, preserveQuery: true })
+    selectEntry(entry)
+  }
+)
 
 watch(selectedEntry, async () => {
   hideTooltip()
@@ -407,31 +430,8 @@ function parseFrontMatter(raw) {
   return { data, content }
 }
 
-function slugify(s) {
-  return String(s || '')
-    .replace(/&/g, ' and ')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-}
 function normalizeArray(val) { return !val ? [] : (Array.isArray(val) ? val : String(val).split(',').map(s=>s.trim()).filter(Boolean)) }
 
-function transformWikiLinks(md) {
-  // [[Target|Label]] or [[Target]] → markdown link with custom scheme: wiki:slug
-  return md.replace(/\[\[([^\]|#]+?)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
-    const t = String(target).trim()
-    const text = label ? String(label).trim() : t
-    const slug = slugify(t)
-    return `[${text}](wiki:${slug})`
-  })
-}
-function transformWikiImages(md) {
-  // ![[File.png|anything]] → ![File](/world/File.png)
-  return md.replace(/!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/g, (_, file) => {
-    const name = String(file).trim(); const alt = name.replace(/\.[^/.]+$/, '')
-    return `![${alt}](/world/${name})`
-  })
-}
 function extractInfobox(md, meta) {
   // Remove an Obsidian infobox block and capture rows
   const lines = md.split('\n'); const out = []; let i = 0; const collected = []
@@ -509,16 +509,31 @@ function handleMarkdownClick(e) {
   const a = e.target.closest('a')
   if (!a) return
   const href = a.getAttribute('href') || ''
-  if (!href.startsWith('wiki:')) return
+  if (!isWikiHref(href)) return
 
   e.preventDefault()
-  const slug = href.slice(5)
+  const slug = extractWikiSlug(href)
+  if (!slug) return
   navigateToWikiSlug(slug, e)
 }
 
 function selectEntry(entry) {
   hideTooltip()
   selectedEntry.value = entry
+  if (!entry) {
+    if (route.name === 'World' && route.query.slug) {
+      const nextQuery = { ...route.query }
+      delete nextQuery.slug
+      router.replace({ path: route.path, query: nextQuery })
+    }
+    return
+  }
+  if (route.name === 'World') {
+    const slug = entry.slug
+    if (slug && route.query.slug !== slug) {
+      router.replace({ path: route.path, query: { ...route.query, slug } })
+    }
+  }
 }
 
 function detectCategory(sourcePath, type) {
@@ -653,9 +668,25 @@ async function loadEntries() {
     const fallback = TAB_CONFIG.map(t => t.value).find(cat => entries.value.some(e => e.category === cat))
     if (fallback) activeTab.value = fallback
   }
-  const initial = entries.value.find(e => e.category === activeTab.value) || entries.value[0] || null
-  selectedEntry.value = initial
-  if (!initial) hideTooltip()
+
+  const routeSlug = typeof route.query.slug === 'string' ? route.query.slug : null
+  let initial = null
+  if (routeSlug) {
+    const target = slugIndex.value[routeSlug]
+    if (target) {
+      activeTab.value = target.category
+      initial = target
+    }
+  }
+  if (!initial) {
+    initial = entries.value.find(e => e.category === activeTab.value) || entries.value[0] || null
+  }
+
+  if (initial) {
+    selectEntry(initial)
+  } else {
+    selectEntry(null)
+  }
   await nextTick()
   attachWikiLinkEvents()
 }
