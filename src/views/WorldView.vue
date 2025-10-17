@@ -4,7 +4,7 @@
     <section id="world" class="section-container">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/npc.svg" />
-        <h1>WORLD</h1>
+        <h1>ATLAS</h1>
       </div>
 
       <div class="section-content-container">
@@ -38,7 +38,7 @@
           style="overflow:auto"
         >
           <p v-if="!visibleEntries.length" class="empty-placeholder">
-            Nothing here yet. Add a new {{ activeTabLabel.toLowerCase() }} markdown file in
+            No {{ emptyNoun }} logged yet. Drop a new markdown file inside
             <code>{{ tabDirectoryHint }}</code> and reload.
           </p>
           <WorldEntry
@@ -56,7 +56,7 @@
     <section v-if="selectedEntry" id="world-detail" class="section-container">
       <div class="section-header clipped-medium-backward-events-logs">
         <img src="/icons/conversation.svg" />
-        <h1>ENTRY</h1>
+        <h1>FILE</h1>
       </div>
       <div class="rhombus-back">&nbsp;</div>
 
@@ -141,21 +141,58 @@ import WorldEntry from '@/components/WorldEntry.vue'
 const props = defineProps({ animate: { type: Boolean, required: true } })
 
 // Data
+const TAB_CONFIG = [
+  {
+    label: 'Personnel Dossiers',
+    value: 'people',
+    placeholder: 'Search pilots, fixers, civilian contacts…',
+    directory: 'src/assets/world/npcs',
+    emptyNoun: 'dossier',
+  },
+  {
+    label: 'Power Index',
+    value: 'power',
+    placeholder: 'Search corps, houses, resistance cells…',
+    directory: 'src/assets/world/factions',
+    emptyNoun: 'faction file',
+  },
+  {
+    label: 'World Log',
+    value: 'world',
+    placeholder: 'Search planets, moons, and sectors…',
+    directory: 'src/assets/world/planets',
+    emptyNoun: 'world log',
+  },
+  {
+    label: 'Gate Registry',
+    value: 'gate',
+    placeholder: 'Search stations, rings, and waypoints…',
+    directory: 'src/assets/world/stations',
+    emptyNoun: 'gate record',
+  },
+]
+
 const entries = ref([])
+const codexEntries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
-const activeTab = ref('npc')
+const activeTab = ref(TAB_CONFIG[0].value)
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
 const BASE_KEYS = new Set(['slug','name','type','tags','thumbnail','content','sourcePath','summary','quickFacts','category'])
 
-const slugIndex = computed(() => Object.fromEntries(entries.value.map(e => [e.slug, e])))
+const slugIndex = computed(() => {
+  const index = {}
+  entries.value.forEach(entry => { index[entry.slug] = entry })
+  codexEntries.value.forEach(entry => { index[entry.slug] = entry })
+  return index
+})
 
 const filteredEntries = computed(() => {
   const q = query.value.trim().toLowerCase()
   return entries.value
-    .filter(e => activeTab.value === 'all' || e.category === activeTab.value)
+    .filter(e => e.category === activeTab.value)
     .filter(e => {
       if (!q) return true
       const searchable = [e.name, e.type, ...(e.tags || []), e.content]
@@ -168,34 +205,20 @@ const filteredEntries = computed(() => {
 
 const visibleEntries = computed(() => filteredEntries.value)
 
-const searchPlaceholder = computed(() => {
-  if (activeTab.value === 'faction') return 'Search factions, alliances, operations…'
-  if (activeTab.value === 'term') return 'Search glossary terms and definitions…'
-  return 'Search NPCs, factions, places…'
-})
+const activeTabConfig = computed(() => TAB_CONFIG.find(t => t.value === activeTab.value) || TAB_CONFIG[0])
 
-const activeTabLabel = computed(() => {
-  const tab = tabs.value.find(t => t.value === activeTab.value)
-  return tab ? tab.label : 'Entries'
-})
+const searchPlaceholder = computed(() => activeTabConfig.value?.placeholder || 'Search the archive…')
 
-const tabDirectoryHint = computed(() => {
-  if (activeTab.value === 'faction') return 'src/assets/world/factions'
-  if (activeTab.value === 'term') return 'src/assets/world/terms'
-  return 'src/assets/world/npcs'
-})
+const tabDirectoryHint = computed(() => activeTabConfig.value?.directory || 'src/assets/world')
 
-const tabs = computed(() => {
-  const counts = entries.value.reduce((acc, entry) => {
-    acc[entry.category] = (acc[entry.category] || 0) + 1
-    return acc
-  }, {})
-  return [
-    { label: 'NPCs', value: 'npc', count: counts.npc || 0 },
-    { label: 'Factions', value: 'faction', count: counts.faction || 0 },
-    { label: 'Terms', value: 'term', count: counts.term || 0 },
-  ]
-})
+const emptyNoun = computed(() => activeTabConfig.value?.emptyNoun || 'entry')
+
+const tabs = computed(() =>
+  TAB_CONFIG.map(tab => ({
+    ...tab,
+    count: entries.value.filter(entry => entry.category === tab.value).length,
+  }))
+)
 
 const infoboxRows = computed(() => {
   if (!selectedEntry.value) return []
@@ -429,8 +452,13 @@ function handleMarkdownClick(e) {
 
   e.preventDefault()
   const slug = href.slice(5)
-  const match = entries.value.find(en => en.slug === slug)
-  if (match) selectEntry(match)
+  const match = slugIndex.value[slug]
+  if (!match) return
+  if (match.category === 'codex') {
+    showTooltipForSlug(slug, { x: e.clientX + 16, y: e.clientY + 24 })
+    return
+  }
+  selectEntry(match)
 }
 
 function selectEntry(entry) {
@@ -438,9 +466,12 @@ function selectEntry(entry) {
 }
 
 function detectCategory(sourcePath, type) {
-  if (/world\/terms\//i.test(sourcePath) || (type || '').toLowerCase() === 'term') return 'term'
-  if (/world\/factions\//i.test(sourcePath) || (type || '').toLowerCase() === 'faction') return 'faction'
-  return 'npc'
+  const lowerType = (type || '').toLowerCase()
+  if (/world\/terms\//i.test(sourcePath) || lowerType === 'term' || lowerType.includes('codex')) return 'codex'
+  if (/world\/factions\//i.test(sourcePath) || lowerType.includes('faction') || lowerType.includes('power')) return 'power'
+  if (/world\/planets\//i.test(sourcePath) || lowerType.includes('world') || lowerType.includes('planet')) return 'world'
+  if (/world\/stations\//i.test(sourcePath) || lowerType.includes('gate') || lowerType.includes('station')) return 'gate'
+  return 'people'
 }
 
 function extractSummary(entry) {
@@ -496,6 +527,8 @@ function postProcessEntry(entry) {
 }
 
 async function loadEntries() {
+  entries.value = []
+  codexEntries.value = []
   const modules = {
     ...import.meta.glob('@/assets/world/**/*.md', { query: '?raw', import: 'default' }),
     ...import.meta.glob('/src/assets/world/**/*.md', { query: '?raw', import: 'default' }),
@@ -548,17 +581,25 @@ async function loadEntries() {
     }
 
     const processed = postProcessEntry(entry)
+    const isDraft = typeof processed.draft === 'string' ? processed.draft.toLowerCase() === 'true' : !!processed.draft
+    if (isDraft) return
     if (slugSeen.has(processed.slug)) return
     slugSeen.add(processed.slug)
+    if (processed.category === 'codex') {
+      codexEntries.value.push(processed)
+      return
+    }
     entries.value.push(processed)
   })
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
+  codexEntries.value.sort((a, b) => a.name.localeCompare(b.name))
   if (!entries.value.some(e => e.category === activeTab.value)) {
-    const fallback = ['npc', 'faction', 'term'].find(cat => entries.value.some(e => e.category === cat))
+    const fallback = TAB_CONFIG.map(t => t.value).find(cat => entries.value.some(e => e.category === cat))
     if (fallback) activeTab.value = fallback
   }
   const initial = entries.value.find(e => e.category === activeTab.value) || entries.value[0] || null
   selectedEntry.value = initial
+  if (!initial) hideTooltip()
   await nextTick()
   attachWikiLinkEvents()
 }

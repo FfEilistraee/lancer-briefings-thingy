@@ -53,41 +53,23 @@ Customization is handled in a couple of places.
 
 ### World bible authoring
 
-The WORLD screen now pulls markdown from three directories so you can manage NPCs, factions, and glossary terms separately:
+The ATLAS view is split into four flavorful categories so you can slot lore exactly where it belongs:
 
-- `src/assets/world/npcs` – character dossiers.
-- `src/assets/world/factions` – organizations, crews, or locations treated like factions.
-- `src/assets/world/terms` – glossary entries that power hover cards (they do not appear in the default list unless you switch to the **Terms** tab).
+- `src/assets/world/npcs` – personnel dossiers (pilots, contacts, notable civilians).
+- `src/assets/world/factions` – power blocs, corps, city-states, or mercenary outfits.
+- `src/assets/world/planets` – worlds, moons, systems, or other major locations.
+- `src/assets/world/stations` – gates, ring stations, and orbital waypoints.
 
-Each file can be created with a simple front-matter block so the UI can build the infobox, hover cards, and search index automatically. Copy this template and tweak the fields you need:
+Glossary pop-ups live separately in `src/assets/world/terms`. They never appear as standalone pages; their front-matter only fuels hover cards.
 
-```markdown
----
-name: Captain Ira Vos
-slug: captain-ira-vos
-type: NPC
-tags: [OES, Rustwatch-37]
-thumbnail: /world/ira-vos.png
-summary: The hard-nosed commander that keeps Rustwatch-37 operating on schedule.
-tooltipFacts:
-  - Role: Site Commander
-  - Location: Rustwatch-37
-aliases: [Vos]
-languages: [Common]
-status: alive
----
-> [!infobox]
-> ![[ira-vos.png]]
-> | Role | Site Commander |
+Each folder now includes a `_template-*.md` file stocked with comments, example data, and copy/paste-friendly sections. Duplicate the template, rename it, remove `draft: true`, and then adjust the fields. The front-matter powers the infobox, hover tooltip, and search index automatically.
 
-Captain Ira Vos runs Rustwatch-37 with a blend of discipline and warmth...
-```
+Quick notes while editing:
 
-- `summary` shows in the hover pop-up. If omitted, the first sentence of the entry body is used.
-- `tooltipFacts` is an optional bullet list (`- Label: Value`) that becomes quick facts in the hover card.
-- The Obsidian-style `> [!infobox]` block is still supported; its rows continue to populate the right-hand infobox.
-
-Linking between entries works the same way as Obsidian: use `[[Slug]]` or `[[Slug|Custom text]]`. Hovering any link will show the mini infobox and clicking it swaps the entry pane to that record.
+- `summary` feeds the hover preview. Keep it short and punchy.
+- `quickFacts` and `tooltipFacts` add labeled bullet points inside the hover card.
+- The Obsidian-style `> [!infobox]` callout still works; every table row is parsed into the right-hand infobox.
+- Use `[[Double Brackets]]` to link between entries. Hovering shows a pop-up, and clicking takes you straight to the target file (terms simply show their hover card).
 
 ### _base.css
 
