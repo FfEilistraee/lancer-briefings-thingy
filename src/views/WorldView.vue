@@ -8,22 +8,45 @@
       </div>
 
       <div class="section-content-container">
+        <nav class="world-tabs" role="tablist">
+          <button
+            v-for="tab in tabs"
+            :key="tab.value"
+            type="button"
+            :class="['world-tab', { active: activeTab === tab.value }]"
+            role="tab"
+            @click="setActiveTab(tab.value)"
+          >
+            {{ tab.label }}
+            <span class="world-tab-count">{{ tab.count }}</span>
+          </button>
+        </nav>
+
         <!-- Filters -->
         <div class="world-filters">
-          <input v-model="query" type="text" placeholder="Search NPCs, factions, places…" class="world-input" />
+          <input
+            v-model="query"
+            type="text"
+            :placeholder="searchPlaceholder"
+            class="world-input"
+          />
           <select v-model="typeFilter" class="world-select">
             <option value="">All Types</option>
-            <option>NPC</option>
-            <option>Faction</option>
-            <option>Location</option>
-            <option>Term</option>
-            <option>Item</option>
+            <option v-for="type in typeOptions" :key="type" :value="type">{{ type }}</option>
           </select>
         </div>
 
-        <div class="events-list-container" style="overflow:auto">
+        <div
+          class="events-list-container"
+          :class="{ 'show-placeholder': !visibleEntries.length }"
+          style="overflow:auto"
+        >
+          <p v-if="!visibleEntries.length" class="empty-placeholder">
+            Nothing here yet. Add a new {{ activeTabLabel.toLowerCase() }} markdown file in
+            <code>{{ tabDirectoryHint }}</code> and reload.
+          </p>
           <WorldEntry
-            v-for="entry in filteredEntries"
+            v-for="entry in visibleEntries"
             :key="entry.slug"
             :entry="entry"
             :animate="props.animate"
@@ -83,11 +106,39 @@
         </article>
       </div>
     </section>
+
+    <transition name="tooltip-fade">
+      <div
+        v-if="tooltip.visible && tooltip.entry"
+        class="wiki-tooltip"
+        :style="tooltipStyle"
+      >
+        <div class="wiki-tooltip__header">
+          <img
+            v-if="tooltip.entry.thumbnail"
+            class="wiki-tooltip__image"
+            :src="tooltip.entry.thumbnail"
+            :alt="tooltip.entry.name"
+          />
+          <div>
+            <p class="wiki-tooltip__type">{{ tooltip.entry.type }}</p>
+            <h3 class="wiki-tooltip__title">{{ tooltip.entry.name }}</h3>
+          </div>
+        </div>
+        <p v-if="tooltip.entry.summary" class="wiki-tooltip__summary">{{ tooltip.entry.summary }}</p>
+        <ul v-if="tooltip.entry.quickFacts.length" class="wiki-tooltip__facts">
+          <li v-for="fact in tooltip.entry.quickFacts" :key="fact.label">
+            <span class="wiki-tooltip__fact-label">{{ fact.label }}:</span>
+            <span class="wiki-tooltip__fact-value">{{ fact.value }}</span>
+          </li>
+        </ul>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
 
@@ -98,23 +149,64 @@ const entries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
 const typeFilter = ref('')
+const activeTab = ref('npc')
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
-const BASE_KEYS = new Set(['slug','name','type','tags','thumbnail','content'])
+const BASE_KEYS = new Set(['slug','name','type','tags','thumbnail','content','sourcePath','summary','quickFacts','category'])
+
+const slugIndex = computed(() => Object.fromEntries(entries.value.map(e => [e.slug, e])))
 
 const filteredEntries = computed(() => {
   const q = query.value.trim().toLowerCase()
+  const typeFilterValue = typeFilter.value.trim().toLowerCase()
   return entries.value
-    .filter(e => !typeFilter.value || (e.type || '').toLowerCase() === typeFilter.value.toLowerCase())
+    .filter(e => activeTab.value === 'all' || e.category === activeTab.value)
+    .filter(e => !typeFilterValue || (e.type || '').toLowerCase() === typeFilterValue)
     .filter(e => {
       if (!q) return true
-      const searchable = [e.name, e.type, ...(e.tags||[]), e.content]
-      Object.entries(e).forEach(([k,v]) => {
+      const searchable = [e.name, e.type, ...(e.tags || []), e.content]
+      Object.entries(e).forEach(([k, v]) => {
         if (!BASE_KEYS.has(k) && v) searchable.push(Array.isArray(v) ? v.join(' ') : String(v))
       })
       return searchable.join(' ').toLowerCase().includes(q)
     })
+})
+
+const visibleEntries = computed(() => filteredEntries.value)
+
+const searchPlaceholder = computed(() => {
+  if (activeTab.value === 'faction') return 'Search factions, alliances, operations…'
+  if (activeTab.value === 'term') return 'Search glossary terms and definitions…'
+  return 'Search NPCs, factions, places…'
+})
+
+const activeTabLabel = computed(() => {
+  const tab = tabs.value.find(t => t.value === activeTab.value)
+  return tab ? tab.label : 'Entries'
+})
+
+const tabDirectoryHint = computed(() => {
+  if (activeTab.value === 'faction') return 'src/assets/world/factions'
+  if (activeTab.value === 'term') return 'src/assets/world/terms'
+  return 'src/assets/world/npcs'
+})
+
+const typeOptions = computed(() => {
+  const types = new Set(entries.value.map(e => e.type).filter(Boolean))
+  return Array.from(types).sort()
+})
+
+const tabs = computed(() => {
+  const counts = entries.value.reduce((acc, entry) => {
+    acc[entry.category] = (acc[entry.category] || 0) + 1
+    return acc
+  }, {})
+  return [
+    { label: 'NPCs', value: 'npc', count: counts.npc || 0 },
+    { label: 'Factions', value: 'faction', count: counts.faction || 0 },
+    { label: 'Terms', value: 'term', count: counts.term || 0 },
+  ]
 })
 
 const infoboxRows = computed(() => {
@@ -127,7 +219,7 @@ const infoboxRows = computed(() => {
     const ok = v !== undefined && v !== null && (Array.isArray(v) ? v.length : String(v).trim())
     if (ok) { rows.push({ label: labelize(k), value: v }); used.add(k) }
   }
-  Object.entries(s).forEach(([k,v]) => {
+  Object.entries(s).forEach(([k, v]) => {
     if (BASE_KEYS.has(k) || used.has(k)) return
     if (v === undefined || v === null) return
     const text = Array.isArray(v) ? v.join('').trim() : String(v).trim()
@@ -142,6 +234,89 @@ function labelize(key) {
             .replace(/([a-z])([A-Z])/g, '$1 $2')
             .replace(/^\w|\s\w/g, c => c.toUpperCase())
 }
+
+const tooltip = ref({ visible: false, x: 0, y: 0, entry: null })
+
+const tooltipStyle = computed(() => ({
+  top: `${tooltip.value.y}px`,
+  left: `${tooltip.value.x}px`
+}))
+
+function setActiveTab(tab) {
+  activeTab.value = tab
+  query.value = ''
+  typeFilter.value = ''
+  const first = entries.value.find(e => e.category === tab)
+  if (first) {
+    selectEntry(first)
+  } else {
+    hideTooltip()
+    selectedEntry.value = null
+  }
+}
+
+function hideTooltip() {
+  tooltip.value = { visible: false, x: 0, y: 0, entry: null }
+}
+
+function showTooltipForSlug(slug, position) {
+  const entry = slugIndex.value[slug]
+  if (!entry) {
+    hideTooltip()
+    return
+  }
+  tooltip.value = {
+    visible: true,
+    x: position.x,
+    y: position.y,
+    entry: {
+      name: entry.name,
+      type: entry.type,
+      thumbnail: entry.thumbnail,
+      summary: entry.summary,
+      quickFacts: entry.quickFacts || []
+    }
+  }
+}
+
+function attachWikiLinkEvents() {
+  if (!selectedEntry.value) return
+  const container = document.querySelector('#world-detail .wiki-body')
+  if (!container) return
+  if (!container.dataset.tooltipBound) {
+    container.addEventListener('scroll', hideTooltip, { passive: true })
+    container.addEventListener('mouseleave', hideTooltip)
+    container.dataset.tooltipBound = 'true'
+  }
+  const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
+  links.forEach(link => {
+    if (link.dataset.wikiBound === 'true') return
+    const slug = link.getAttribute('href').slice(5)
+    link.dataset.wikiBound = 'true'
+    link.addEventListener('mouseenter', event => {
+      const pos = {
+        x: event.clientX + 16,
+        y: event.clientY + 24
+      }
+      showTooltipForSlug(slug, pos)
+    })
+    link.addEventListener('mousemove', event => {
+      if (!tooltip.value.visible) return
+      tooltip.value = {
+        ...tooltip.value,
+        x: event.clientX + 16,
+        y: event.clientY + 24
+      }
+    })
+    link.addEventListener('mouseleave', hideTooltip)
+  })
+}
+
+watch(selectedEntry, async () => {
+  hideTooltip()
+  await nextTick()
+  attachWikiLinkEvents()
+})
 
 // ---------- Front-matter + Obsidian helpers (no deps) ----------
 function parseFrontMatter(raw) {
@@ -253,17 +428,81 @@ function handleMarkdownClick(e) {
   }
 }
 
-function selectEntry(entry) { selectedEntry.value = entry }
+function selectEntry(entry) {
+  selectedEntry.value = entry
+}
 
-async function importEntries() {
-  // Search both src/ and repo-root assets/world
+function detectCategory(sourcePath, type) {
+  if (/world\/terms\//i.test(sourcePath) || (type || '').toLowerCase() === 'term') return 'term'
+  if (/world\/factions\//i.test(sourcePath) || (type || '').toLowerCase() === 'faction') return 'faction'
+  return 'npc'
+}
+
+function extractSummary(entry) {
+  if (entry.summary) return Array.isArray(entry.summary) ? entry.summary.join(' ') : String(entry.summary)
+  if (entry.tooltip) return Array.isArray(entry.tooltip) ? entry.tooltip.join(' ') : String(entry.tooltip)
+  const raw = entry.content || ''
+  const stripped = raw.replace(/\[(?:[^\]]+)\]\([^\)]+\)/g, '$1').replace(/[#>*_`]/g, '')
+  const sentence = stripped.split(/\n+/).map(line => line.trim()).filter(Boolean)[0] || ''
+  return sentence.slice(0, 220) + (sentence.length > 220 ? '…' : '')
+}
+
+function buildQuickFacts(entry) {
+  const quick = []
+  const fields = entry.tooltipFacts || entry.infobox || null
+  if (Array.isArray(fields)) {
+    fields.forEach(f => {
+      if (f && typeof f === 'string') {
+        const [label, ...rest] = f.split(':')
+        if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
+      } else if (f && f.label && f.value) {
+        quick.push({ label: f.label, value: f.value })
+      }
+    })
+    if (quick.length) return quick
+  } else if (fields && typeof fields === 'string') {
+    const parts = fields.split('|').map(s => s.trim()).filter(Boolean)
+    parts.forEach(part => {
+      const [label, ...rest] = part.split(':')
+      if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
+    })
+    if (quick.length) return quick
+  }
+  const candidates = ['role', 'rank', 'affiliations', 'location', 'status']
+  candidates.forEach(key => {
+    if (entry[key]) {
+      const value = Array.isArray(entry[key]) ? entry[key].join(', ') : entry[key]
+      quick.push({ label: labelize(key), value })
+    }
+  })
+  return quick
+}
+
+function postProcessEntry(entry) {
+  const category = detectCategory(entry.sourcePath || '', entry.type)
+  const summary = extractSummary(entry)
+  const quickFacts = buildQuickFacts(entry)
+  return {
+    ...entry,
+    category,
+    summary,
+    quickFacts,
+  }
+}
+
+async function loadEntries() {
   const modules = {
     ...import.meta.glob('@/assets/world/**/*.md', { query: '?raw', import: 'default' }),
     ...import.meta.glob('/src/assets/world/**/*.md', { query: '?raw', import: 'default' }),
     ...import.meta.glob('/assets/world/**/*.md', { query: '?raw', import: 'default' }),
   }
-  const loaded = await Promise.all(Object.values(modules).map(fn => fn()))
-  loaded.forEach(mod => {
+  const fileEntries = Object.entries(modules)
+  const loaded = await Promise.all(fileEntries.map(([path, loader]) => loader().then(mod => ({ path, mod }))))
+  const seen = new Set()
+  const slugSeen = new Set()
+  loaded.forEach(({ path, mod }) => {
+    if (seen.has(path)) return
+    seen.add(path)
     const raw = typeof mod === 'string' ? mod : mod.default
 
     // 1) Front-matter (if any)
@@ -287,6 +526,7 @@ async function importEntries() {
         tags: normalizeArray(meta.tags),
         thumbnail: meta.thumbnail || '',
         content: body || '',
+        sourcePath: path,
         ...Object.fromEntries(Object.entries(meta).filter(([k]) => !['slug','name','type','tags','thumbnail'].includes(k)))
       }
     } else {
@@ -297,26 +537,75 @@ async function importEntries() {
         type: (lines[2] || 'NPC').trim(),
         tags: (lines[3] || '').split(',').map(s => s.trim()).filter(Boolean),
         thumbnail: (lines[4] || '').trim(),
-        content: lines.slice(5).join('\n')
+        content: lines.slice(5).join('\n'),
+        sourcePath: path,
       }
     }
 
-    entries.value.push(entry)
+    const processed = postProcessEntry(entry)
+    if (slugSeen.has(processed.slug)) return
+    slugSeen.add(processed.slug)
+    entries.value.push(processed)
   })
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
-  selectedEntry.value = entries.value[0] || null
+  if (!entries.value.some(e => e.category === activeTab.value)) {
+    const fallback = ['npc', 'faction', 'term'].find(cat => entries.value.some(e => e.category === cat))
+    if (fallback) activeTab.value = fallback
+  }
+  const initial = entries.value.find(e => e.category === activeTab.value) || entries.value[0] || null
+  selectedEntry.value = initial
+  await nextTick()
+  attachWikiLinkEvents()
 }
 
-onMounted(importEntries)
+loadEntries()
+
 </script>
 
 <style scoped>
+/* Tabs */
+.world-tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap }
+.world-tab {
+  position:relative;
+  padding:6px 14px;
+  border:1px solid transparent;
+  border-radius:999px;
+  background:rgba(255,255,255,0.05);
+  color:var(--text-color);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-size:0.75rem;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+.world-tab:hover { border-color:var(--primary-color); background:rgba(255,255,255,0.08); }
+.world-tab.active {
+  border-color:var(--primary-color);
+  background:var(--primary-color);
+  color:#0b0d13;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+.world-tab-count {
+  margin-left:6px;
+  padding:2px 6px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.3);
+  font-weight:600;
+}
+.world-tab.active .world-tab-count {
+  background:rgba(0,0,0,0.15);
+}
+
 /* Controls */
-.world-filters { display:flex; gap:12px; margin-bottom:12px; align-items:center }
+.world-filters { display:flex; gap:12px; margin-bottom:12px; align-items:center; flex-wrap:wrap }
 .world-input, .world-select {
   padding:6px 10px; background:var(--secondary-color);
   border:1px solid var(--primary-color); color:var(--text-color);
 }
+.world-select { min-width:160px; }
+.events-list-container.show-placeholder { display:flex; align-items:center; justify-content:center; }
+.empty-placeholder { opacity:0.7; font-style:italic; text-align:center; }
+.empty-placeholder code { font-style:normal; background:rgba(0,0,0,0.2); padding:2px 6px; border-radius:4px; }
 
 /* Make the ENTRY reading area wide */
 #world.section-container {
@@ -366,6 +655,30 @@ onMounted(importEntries)
 .tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
 
+/* Tooltip */
+.wiki-tooltip {
+  position:fixed;
+  max-width:320px;
+  padding:14px 16px;
+  background:rgba(12,14,22,0.95);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.45);
+  pointer-events:none;
+  z-index:6;
+  backdrop-filter: blur(6px);
+}
+.wiki-tooltip__header { display:flex; gap:12px; align-items:center; margin-bottom:8px; }
+.wiki-tooltip__image { width:64px; height:64px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,0.12); }
+.wiki-tooltip__type { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; opacity:0.75; margin:0 0 2px; }
+.wiki-tooltip__title { margin:0; font-size:1.05rem; }
+.wiki-tooltip__summary { margin:0 0 8px; font-size:0.85rem; line-height:1.4; opacity:0.88; }
+.wiki-tooltip__facts { list-style:none; padding:0; margin:0; display:grid; gap:4px; }
+.wiki-tooltip__fact-label { font-weight:600; margin-right:4px; }
+.wiki-tooltip__fact-value { opacity:0.85; }
+.tooltip-fade-enter-active, .tooltip-fade-leave-active { transition: opacity 0.18s ease; }
+.tooltip-fade-enter-from, .tooltip-fade-leave-to { opacity:0; }
+
 /* Mobile */
 @media (max-width: 980px) {
   #worldView { flex-direction: column; }
@@ -384,5 +697,6 @@ onMounted(importEntries)
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
   .infobox { grid-column: 1; max-width: 100%; }
+  .wiki-tooltip { display:none; }
 }
 </style>
