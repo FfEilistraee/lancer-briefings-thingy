@@ -7,9 +7,9 @@
 			</div>
 			<div class="rhombus-back">&nbsp;</div>
 		</div>
-		<div class="pilot markdown">
-			<div v-html="getHistory()" />
-		</div>
+                <div class="pilot markdown">
+                        <vue-markdown-it :source="historyMarkdown" class="markdown" @click="handleWikiClick" />
+                </div>
 	</div>
 	<div class="pilot-modal pilot-identity" style="color:white!important">
 		<div class="header">
@@ -106,6 +106,7 @@
 <script>
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import { capitalize } from 'vue';
+import { applyWikiTransforms, isWikiHref, extractWikiSlug } from '@/utils/wiki';
 
 export default {
 	components: {
@@ -130,43 +131,38 @@ export default {
 			required:true
 		}
 	},
-	data() {
-		return {
-			markdownHtml: true,
-		};
-	},
-	computed: {
-		pilotPortrait() {
-			return `/pilots/${this.pilot.callsign.toUpperCase()}.webp`
-		},
-		mechPortrait() {
-			return `/mechs/${this.pilot.callsign.toUpperCase()}.webp`
-		},
-	},
-	methods: {
-		getHistory() {
-			if (this.pilot.history === "") {
-				return `<p> <h2> [ERR: REDACTED] </h2> </p>`
-			}
+        computed: {
+                pilotPortrait() {
+                        return `/pilots/${this.pilot.callsign.toUpperCase()}.webp`
+                },
+                mechPortrait() {
+                        return `/mechs/${this.pilot.callsign.toUpperCase()}.webp`
+                },
+                historyMarkdown() {
+                        const sections = [];
+                        const appearance = (this.pilot.text_appearance || '').trim();
+                        const history = (this.pilot.history || '').trim();
 
-			let response = "<p>"
+                        if (appearance.length > 0) {
+                                sections.push(`## Appearance\n${appearance}`);
+                        }
 
-			if (this.pilot.text_appearance !== "") {
-				response += `<h2>APPEARANCE</h2> ${this.pilot.text_appearance} </hr>`;
-			}
+                        if (history.length > 0) {
+                                sections.push(`## History\n${history}`);
+                        }
 
-			if (this.pilot.history !== "") {
-				response += `<h2>HISTORY</h2> ${this.pilot.history} </hr>`;
-			}
+                        if (!sections.length) {
+                                return applyWikiTransforms('## [ERR: REDACTED]');
+                        }
 
-			response += "</p>"
-
-			return response;
-		},
-		getSkill(id) {
-			let skill = this.skills.find((x) => x.id == id);
-			return skill.name
-		},
+                        return applyWikiTransforms(sections.join('\n\n---\n\n'));
+                }
+        },
+        methods: {
+                getSkill(id) {
+                        let skill = this.skills.find((x) => x.id == id);
+                        return skill.name
+                },
 		getTalent(id, value) {
 			let talent = this.talents.find((x) => x.id == id);
 			let response = talent.name + " "
@@ -188,19 +184,19 @@ export default {
 		capitalize(str) {
 			return str.split(' ').map(word => word[0].toUpperCase() + word.slice(1)).join(' ');
 		},
-		reverse(str) {
-			const words = str.split(' ')
-			const reversed = words.reverse()
-			const reversedResult = words.join('.')
-			return reversedResult
-		},
-		randomNumber(max, min) {
-			const rand = Math.random() * (max - min) + min
-			const power = Math.pow(10, 2)
-			return Math.floor(rand * power) / power
-		},
-		timeStamp(str) {
-			let date = new Date(str);
+                reverse(str) {
+                        const words = str.split(' ')
+                        const reversed = words.reverse()
+                        const reversedResult = words.join('.')
+                        return reversedResult
+                },
+                randomNumber(max, min) {
+                        const rand = Math.random() * (max - min) + min
+                        const power = Math.pow(10, 2)
+                        return Math.floor(rand * power) / power
+                },
+                timeStamp(str) {
+                        let date = new Date(str);
 			let y = date.getFullYear();
 			let m = date.getMonth();
 			let d = date.getDate();
@@ -211,7 +207,17 @@ export default {
 			let tz = date.getTimezoneOffset();
 			y += 2990;
 			return new Date(y, m, d, h, mi, s, ms).toISOString();
-		}
-	},
+                },
+                handleWikiClick(event) {
+                        const anchor = event.target.closest('a');
+                        if (!anchor) return;
+                        const href = anchor.getAttribute('href') || '';
+                        if (!isWikiHref(href)) return;
+                        event.preventDefault();
+                        const slug = extractWikiSlug(href);
+                        if (!slug) return;
+                        this.$router.push({ path: '/world', query: { slug } });
+                }
+        },
 };
 </script>

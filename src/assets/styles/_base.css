@@ -405,6 +405,22 @@ section .section-header {
 
 
 
+.section-header-wrapper {
+        display: inline-flex;
+        align-items: stretch;
+        height: 52px;
+        overflow: hidden;
+}
+
+.section-header-wrapper > .section-header {
+        margin-right: 0;
+}
+
+.section-header-wrapper > .rhombus-back {
+        align-self: stretch;
+        top: 0;
+}
+
 section .section-header img {
 	width: 36px;
 	height: 36px;

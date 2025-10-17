@@ -18,9 +18,9 @@
 				<img src="/icons/deployable.svg" />
 				<h1>Current Assignment</h1>
 			</div>
-			<div class="section-content-container">
-				<vue-markdown-it :source="missionMarkdown" class="markdown" />
-			</div>
+                        <div class="section-content-container" @click="handleWikiClick">
+                                <vue-markdown-it :source="missionMarkdown" class="markdown" />
+                        </div>
 		</section>
 		<div>
 		<section id="reserves" class="section-container" :style="{ 'animation-delay': animationDelay }">
@@ -56,6 +56,7 @@ import Mission from "@/components/Mission.vue";
 import Event from "@/components/Event.vue";
 import Clock from "@/components/Clock.vue";
 import Reserve from "@/components/Reserve.vue";
+import { isWikiHref, extractWikiSlug } from '@/utils/wiki';
 
 export default {
 	components: {
@@ -120,11 +121,21 @@ export default {
 		}
 	},
 	methods: {
-		selectMission(slug) {
-			this.missionSlug = slug;
-			let m = this.missions.find(x => x.slug === this.missionSlug);
-			this.missionMarkdown = m.content;
-		},
+                selectMission(slug) {
+                        this.missionSlug = slug;
+                        let m = this.missions.find(x => x.slug === this.missionSlug);
+                        this.missionMarkdown = m.content;
+                },
+                handleWikiClick(event) {
+                        const anchor = event.target.closest('a');
+                        if (!anchor) return;
+                        const href = anchor.getAttribute('href') || '';
+                        if (!isWikiHref(href)) return;
+                        event.preventDefault();
+                        const slug = extractWikiSlug(href);
+                        if (!slug) return;
+                        this.$router.push({ path: '/world', query: { slug } });
+                },
 		setAnimate() {
 			if (this.animate) {
 				this.animateView = true;

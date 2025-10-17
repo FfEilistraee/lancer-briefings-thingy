@@ -34,12 +34,42 @@ Go over mission briefings within the LANCER Universe in style by showing your pl
 
 `npm run dev` - Serve the webapp with hot reloads (for development work)  
 `npm run build` - Build for production  
-`npm run serve OR npm run preview` - Locally preview production build  
-`npm run format` - Format all code files using `prettier` based on rules set in `.prettierrc.json` (for development work)  
+`npm run serve OR npm run preview` - Locally preview production build
+`npm run format` - Format all code files using `prettier` based on rules set in `.prettierrc.json` (for development work)
+
+## Pushing your changes
+
+If you have forked this repository and want to publish your edits:
+
+1. Make sure everything builds locally with `npm run build` so you do not push a broken site.
+2. Stage your work: `git add .` (or list specific files instead of `.` if you prefer).
+3. Commit with a clear message: `git commit -m "Describe your change"`.
+4. Push to your fork on GitHub: `git push origin work` (replace `work` with your branch name if it is different).
+5. Open a pull request from your branch so the changes can be reviewed and merged.
 
 ## Customization
 
 Customization is handled in a couple of places.
+
+### World bible authoring
+
+The ATLAS view is split into four flavorful categories so you can slot lore exactly where it belongs:
+
+- `src/assets/world/npcs` – personnel dossiers (pilots, contacts, notable civilians).
+- `src/assets/world/factions` – power blocs, corps, city-states, or mercenary outfits.
+- `src/assets/world/planets` – worlds, moons, systems, or other major locations.
+- `src/assets/world/stations` – gates, ring stations, and orbital waypoints.
+
+Glossary pop-ups live separately in `src/assets/world/terms`. They never appear as standalone pages; their front-matter only fuels hover cards.
+
+Each folder now includes a `_template-*.md` file stocked with comments, example data, and copy/paste-friendly sections. Duplicate the template, rename it, remove `draft: true`, and then adjust the fields. The front-matter powers the infobox, hover tooltip, and search index automatically.
+
+Quick notes while editing:
+
+- `summary` feeds the hover preview. Keep it short and punchy.
+- `quickFacts` and `tooltipFacts` add labeled bullet points inside the hover card.
+- The Obsidian-style `> [!infobox]` callout still works; every table row is parsed into the right-hand infobox.
+- Use `[[Double Brackets]]` to link between entries. Hovering shows a pop-up, and clicking takes you straight to the target file (terms simply show their hover card).
 
 ### _base.css
 
