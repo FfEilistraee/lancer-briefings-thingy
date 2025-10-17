@@ -41,13 +41,14 @@
       </div>
       <div class="rhombus-back">&nbsp;</div>
 
-      <div class="section-content-container extra-margins">
-        <!-- WIDE ARTICLE + INFOBOX -->
+      <!-- Make the reading area WIDE with `world-wide` -->
+      <div class="section-content-container extra-margins world-wide">
+        <!-- WIDE ARTICLE + INFOBOX (Wikipedia style) -->
         <article class="wiki-article">
           <header class="wiki-header">
             <h1 class="entry-type">
               {{ selectedEntry.type }}
-              <span v-if="selectedEntry.tags?.length"> // {{ selectedEntry.tags.join(', ') }}</span>
+              <span v-if="selectedEntry.tags && selectedEntry.tags.length"> // {{ selectedEntry.tags.join(', ') }}</span>
             </h1>
             <h2 class="entry-title">{{ selectedEntry.name }}</h2>
           </header>
@@ -55,7 +56,7 @@
           <!-- Main body -->
           <section class="wiki-body" @click="handleMarkdownClick">
             <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
-            <div v-if="selectedEntry.tags?.length" class="tag-chips">
+            <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
               <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="query = t">{{ t }}</span>
             </div>
           </section>
@@ -92,12 +93,15 @@ import WorldEntry from '@/components/WorldEntry.vue'
 
 const props = defineProps({ animate: { type: Boolean, required: true } })
 
+// Data
 const entries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
 const typeFilter = ref('')
 
-const baseKeys = new Set(['slug','name','type','tags','thumbnail','content'])
+// Infobox fields (others still searchable)
+const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
+const BASE_KEYS = new Set(['slug','name','type','tags','thumbnail','content'])
 
 const filteredEntries = computed(() => {
   const q = query.value.trim().toLowerCase()
@@ -107,14 +111,12 @@ const filteredEntries = computed(() => {
       if (!q) return true
       const searchable = [e.name, e.type, ...(e.tags||[]), e.content]
       Object.entries(e).forEach(([k,v]) => {
-        if (!baseKeys.has(k) && v) searchable.push(Array.isArray(v) ? v.join(' ') : String(v))
+        if (!BASE_KEYS.has(k) && v) searchable.push(Array.isArray(v) ? v.join(' ') : String(v))
       })
       return searchable.join(' ').toLowerCase().includes(q)
     })
 })
 
-// infobox order (any other custom fields still searchable)
-const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
 const infoboxRows = computed(() => {
   if (!selectedEntry.value) return []
   const s = selectedEntry.value
@@ -122,11 +124,11 @@ const infoboxRows = computed(() => {
   const used = new Set()
   for (const k of INFOBOX_ORDER) {
     const v = s[k]
-    const has = v !== undefined && v !== null && (Array.isArray(v) ? v.length : String(v).trim())
-    if (has) { rows.push({ label: labelize(k), value: v }); used.add(k) }
+    const ok = v !== undefined && v !== null && (Array.isArray(v) ? v.length : String(v).trim())
+    if (ok) { rows.push({ label: labelize(k), value: v }); used.add(k) }
   }
   Object.entries(s).forEach(([k,v]) => {
-    if (baseKeys.has(k) || used.has(k)) return
+    if (BASE_KEYS.has(k) || used.has(k)) return
     if (v === undefined || v === null) return
     const text = Array.isArray(v) ? v.join('').trim() : String(v).trim()
     if (!text) return
@@ -136,10 +138,12 @@ const infoboxRows = computed(() => {
 })
 
 function labelize(key) {
-  return key.replace(/[_-]+/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^\w|\s\w/g, c => c.toUpperCase())
+  return key.replace(/[_-]+/g, ' ')
+            .replace(/([a-z])([A-Z])/g, '$1 $2')
+            .replace(/^\w|\s\w/g, c => c.toUpperCase())
 }
 
-// --- Tiny front-matter + Obsidian helpers (no deps) ---
+// ---------- Front-matter + Obsidian helpers (no deps) ----------
 function parseFrontMatter(raw) {
   if (!raw.startsWith('---')) return { data: null, content: raw }
   const end = raw.indexOf('\n---')
@@ -188,15 +192,11 @@ function parseFrontMatter(raw) {
   return { data, content }
 }
 
-function slugify(s) {
-  return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-}
-function normalizeArray(val) {
-  if (!val) return []
-  return Array.isArray(val) ? val : String(val).split(',').map(s => s.trim()).filter(Boolean)
-}
+function slugify(s) { return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') }
+function normalizeArray(val) { return !val ? [] : (Array.isArray(val) ? val : String(val).split(',').map(s=>s.trim()).filter(Boolean)) }
+
 function transformWikiLinks(md) {
-  // [[Target|Label]] or [[Target]]
+  // [[Target|Label]] or [[Target]] → markdown link with custom scheme: wiki:slug
   return md.replace(/\[\[([^\]|#]+?)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
     const t = String(target).trim()
     const text = label ? String(label).trim() : t
@@ -205,17 +205,15 @@ function transformWikiLinks(md) {
   })
 }
 function transformWikiImages(md) {
-  // ![[File.png|anything]] -> ![File](/world/File.png)
+  // ![[File.png|anything]] → ![File](/world/File.png)
   return md.replace(/!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/g, (_, file) => {
-    const name = String(file).trim()
-    const alt = name.replace(/\.[^/.]+$/, '')
+    const name = String(file).trim(); const alt = name.replace(/\.[^/.]+$/, '')
     return `![${alt}](/world/${name})`
   })
 }
 function extractInfobox(md, meta) {
-  // Pull out > [!infobox] block and parse rows
-  const lines = md.split('\n')
-  const out = []; let i = 0; const collected = []
+  // Remove an Obsidian infobox block and capture rows
+  const lines = md.split('\n'); const out = []; let i = 0; const collected = []
   while (i < lines.length) {
     const line = lines[i]
     if (line.trim().startsWith('> [!infobox]')) {
@@ -225,50 +223,24 @@ function extractInfobox(md, meta) {
     }
     out.push(line); i++
   }
-
   const kv = {}
   collected.forEach(l => {
     const t = l.replace(/^>\s?/, '')
-    if (/^!\[\[/.test(t)) {
-      const m = t.match(/^!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/)
-      if (m) kv.__thumbnail = `/world/${m[1]}`
-      return
-    }
+    if (/^!\[\[/.test(t)) { const m = t.match(/^!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/); if (m) kv.__thumbnail = `/world/${m[1]}`; return }
     if (t.includes('|')) {
       const parts = t.split('|').map(s => s.trim()).filter(Boolean)
       if (parts.length === 2 && !/^[-]+$/.test(parts[0])) {
-        const key = slugify(parts[0]).replace(/-/g, ' ')
-        const label = key.replace(/\b\w/g, c => c.toUpperCase())
+        const key = slugify(parts[0]).replace(/-/g,' '); const label = key.replace(/\b\w/g, c=>c.toUpperCase())
         kv[label.toLowerCase()] = parts[1]
       }
     }
   })
-
   const merged = { ...meta }
-  const map = {
-    'other names': 'aliases',
-    'gender': 'gender',
-    'race': 'race',
-    'age': 'age',
-    'height': 'height',
-    'origin': 'origin',
-    'ethnicity': 'ethnicity',
-    'occupation': 'occupation',
-    'title': 'title',
-    'languages': 'languages',
-    'status': 'status',
-    'affiliations': 'affiliations',
-    'location': 'location',
-  }
-  Object.entries(map).forEach(([from, to]) => {
-    if (kv[from] !== undefined) {
-      merged[to] = /,/.test(kv[from]) ? kv[from].split(',').map(s => s.trim()).filter(Boolean) : kv[from]
-    }
-  })
+  const map = { 'other names':'aliases','gender':'gender','race':'race','age':'age','height':'height','origin':'origin','ethnicity':'ethnicity','occupation':'occupation','title':'title','languages':'languages','status':'status','affiliations':'affiliations','location':'location' }
+  Object.entries(map).forEach(([from,to]) => { if (kv[from] !== undefined) merged[to] = /,/.test(kv[from]) ? kv[from].split(',').map(s=>s.trim()).filter(Boolean) : kv[from] })
   if (kv.__thumbnail && !merged.thumbnail) merged.thumbnail = kv.__thumbnail
   return { content: out.join('\n'), meta: merged }
 }
-// ---------------------------------------------------------------
 
 function handleMarkdownClick(e) {
   const a = e.target.closest('a'); if (!a) return
@@ -276,8 +248,7 @@ function handleMarkdownClick(e) {
   if (href.startsWith('wiki:')) {
     const slug = href.slice(5)
     const match = entries.value.find(en => en.slug === slug)
-    if (match) selectEntry(match)
-    else query.value = slug.replace(/-/g, ' ')
+    if (match) selectEntry(match); else query.value = slug.replace(/-/g,' ')
     e.preventDefault()
   }
 }
@@ -285,7 +256,7 @@ function handleMarkdownClick(e) {
 function selectEntry(entry) { selectedEntry.value = entry }
 
 async function importEntries() {
-  // Look under src/ and (optionally) repo-root assets
+  // Search both src/ and repo-root assets/world
   const modules = {
     ...import.meta.glob('@/assets/world/**/*.md', { query: '?raw', import: 'default' }),
     ...import.meta.glob('/src/assets/world/**/*.md', { query: '?raw', import: 'default' }),
@@ -295,7 +266,7 @@ async function importEntries() {
   loaded.forEach(mod => {
     const raw = typeof mod === 'string' ? mod : mod.default
 
-    // 1) front-matter if present
+    // 1) Front-matter (if any)
     let data = null, body = raw
     if (raw.startsWith('---')) { const fm = parseFrontMatter(raw); data = fm.data; body = fm.content }
 
@@ -306,7 +277,7 @@ async function importEntries() {
     body = inf.content
     const meta = inf.meta || {}
 
-    // 3) Build entry (fallback to 5-line header if no meta)
+    // 3) Build entry (fallback to simple 5-line header)
     let entry
     if (meta && (meta.name || meta.slug)) {
       entry = {
@@ -329,6 +300,7 @@ async function importEntries() {
         content: lines.slice(5).join('\n')
       }
     }
+
     entries.value.push(entry)
   })
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
@@ -346,7 +318,12 @@ onMounted(importEntries)
   border:1px solid var(--primary-color); color:var(--text-color);
 }
 
-/* WIDE article layout: main content grows, infobox fixed ~340px */
+/* Make the ENTRY reading area wide */
+#world-detail .world-wide { max-width: clamp(960px, 92vw, 1600px); }
+#world-detail .world-wide .event { width: 100%; max-width: none; }
+#world-detail .world-wide .markdown { font-size: 1.05rem; line-height: 1.7; }
+
+/* Two-column article layout */
 .wiki-article {
   display: grid;
   grid-template-columns: minmax(560px, 1fr) 340px;
@@ -368,7 +345,7 @@ onMounted(importEntries)
 .tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
 
-/* Mobile: collapse to one column */
+/* Mobile */
 @media (max-width: 980px) {
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
