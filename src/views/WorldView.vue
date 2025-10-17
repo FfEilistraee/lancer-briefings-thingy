@@ -54,11 +54,13 @@
 
     <!-- DETAILS / ARTICLE -->
     <section v-if="selectedEntry" id="world-detail" class="section-container">
-      <div class="section-header clipped-medium-backward-events-logs">
-        <img src="/icons/conversation.svg" />
-        <h1>FILE</h1>
+      <div class="section-header-wrapper">
+        <div class="section-header clipped-medium-backward-events-logs">
+          <img src="/icons/conversation.svg" />
+          <h1>FILE</h1>
+        </div>
+        <div class="rhombus-back">&nbsp;</div>
       </div>
-      <div class="rhombus-back">&nbsp;</div>
 
       <!-- Make the reading area WIDE with `world-wide` -->
       <div class="section-content-container extra-margins world-wide">

@@ -17,7 +17,7 @@
 			</div>
 		</section>
 		<section id="events-logs" :class="{ animate: animate }" class="section-container">
-			<div style="height: 52px; overflow: hidden">
+			<div class="section-header-wrapper">
 				<div class="section-header clipped-medium-backward-events-logs">
 					<img src="/icons/conversation.svg" />
 					<h1>EVENT LOG</h1>

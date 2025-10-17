@@ -1,6 +1,6 @@
 <template>
 	<section id="pilots" :class="{ animate: animate }" class="section-container">
-		<div style="height: 52px; overflow: hidden">
+		<div class="section-header-wrapper">
 			<div class="section-header clipped-medium-backward-pilot">
 				<img src="/icons/license.svg" />
 				<h1>Pilot Roster</h1>
