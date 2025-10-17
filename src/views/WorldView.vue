@@ -319,14 +319,23 @@ onMounted(importEntries)
 }
 
 /* Make the ENTRY reading area wide */
+#world.section-container {
+  height: 714px;
+  max-height: calc(100vh - 190px);
+}
+
 #world-detail.section-container {
   flex: 1 1 0;
   width: clamp(860px, 70vw, 1240px);
   margin: 50px 60px;
   min-width: 0;
+  height: 714px;
+  max-height: calc(100vh - 190px);
 }
 #world-detail .section-content-container {
   padding: 32px 36px;
+  flex: 1;
+  overflow-y: auto;
 }
 #world-detail .world-wide {
   width: 100%;
@@ -360,6 +369,11 @@ onMounted(importEntries)
 /* Mobile */
 @media (max-width: 980px) {
   #worldView { flex-direction: column; }
+  #world.section-container,
+  #world-detail.section-container {
+    height: auto;
+    max-height: none;
+  }
   #world-detail.section-container {
     width: auto;
     margin: 30px 20px;
