@@ -610,17 +610,28 @@ loadEntries()
 
 <style scoped>
 /* Tabs */
-.world-tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap }
+.world-tabs {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:12px;
+  width:100%;
+  margin-bottom:16px;
+}
 .world-tab {
   position:relative;
-  padding:6px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+  padding:12px 18px;
   border:1px solid transparent;
-  border-radius:999px;
+  border-radius:16px;
   background:rgba(255,255,255,0.05);
   color:var(--text-color);
-  letter-spacing:0.04em;
+  letter-spacing:0.06em;
   text-transform:uppercase;
-  font-size:0.75rem;
+  font-size:0.78rem;
   cursor:pointer;
   transition:all 0.2s ease;
 }
@@ -632,21 +643,26 @@ loadEntries()
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 .world-tab-count {
-  margin-left:6px;
-  padding:2px 6px;
+  padding:4px 10px;
   border-radius:999px;
-  background:rgba(0,0,0,0.3);
+  background:rgba(0,0,0,0.35);
   font-weight:600;
+  font-size:0.7rem;
+  letter-spacing:0.08em;
 }
 .world-tab.active .world-tab-count {
   background:rgba(0,0,0,0.15);
 }
 
 /* Controls */
-.world-filters { display:flex; gap:12px; margin-bottom:12px; align-items:center; flex-wrap:wrap }
+.world-filters {
+  width:100%;
+  margin-bottom:12px;
+}
 .world-input {
   padding:6px 10px; background:var(--secondary-color);
   border:1px solid var(--primary-color); color:var(--text-color);
+  width:100%;
 }
 .events-list-container.show-placeholder { display:flex; align-items:center; justify-content:center; }
 .empty-placeholder { opacity:0.7; font-style:italic; text-align:center; }
