@@ -18,7 +18,7 @@
 				<img src="/icons/deployable.svg" />
 				<h1>Current Assignment</h1>
 			</div>
-                        <div class="section-content-container" @click="handleWikiClick">
+                        <div class="section-content-container" @click="handleWikiClick" ref="assignmentContent">
                                 <vue-markdown-it :source="missionMarkdown" class="markdown" />
                         </div>
 		</section>
@@ -57,6 +57,7 @@ import Event from "@/components/Event.vue";
 import Clock from "@/components/Clock.vue";
 import Reserve from "@/components/Reserve.vue";
 import { isWikiHref, extractWikiSlug } from '@/utils/wiki';
+import { bindWikiTooltip, hideWikiTooltip } from '@/utils/wikiTooltip';
 
 export default {
 	components: {
@@ -114,17 +115,32 @@ export default {
 		// initial set
 		this.selectMission(this.missionSlug);
 	},
-	mounted() {
-		// need to set on re-mount
-		if (this.missions.length > 0) {
-			this.selectMission(this.missions[0].slug);
-		}
-	},
-	methods: {
+        mounted() {
+                // need to set on re-mount
+                if (this.missions.length > 0) {
+                        this.selectMission(this.missions[0].slug);
+                }
+        },
+        beforeUnmount() {
+                hideWikiTooltip();
+        },
+        methods: {
                 selectMission(slug) {
+                        hideWikiTooltip();
                         this.missionSlug = slug;
                         let m = this.missions.find(x => x.slug === this.missionSlug);
+                        if (!m) {
+                                this.missionMarkdown = "";
+                                return;
+                        }
                         this.missionMarkdown = m.content;
+                        this.refreshAssignmentTooltip();
+                },
+                async refreshAssignmentTooltip() {
+                        await this.$nextTick();
+                        const container = this.$refs.assignmentContent;
+                        if (!container) return;
+                        await bindWikiTooltip(container, { hideOnScroll: true });
                 },
                 handleWikiClick(event) {
                         const anchor = event.target.closest('a');

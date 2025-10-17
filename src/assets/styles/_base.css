@@ -1425,7 +1425,19 @@ div.markdown blockquote {
 }
 
 div.markdown p strong {
-	color: var(--primary-color);
+        color: var(--primary-color);
+}
+
+div.markdown a.wiki-link-resolved {
+        color: var(--primary-color);
+        text-decoration-color: rgba(255, 255, 255, 0.55);
+}
+
+div.markdown a.wiki-link-unresolved {
+        color: rgba(255, 255, 255, 0.45);
+        text-decoration-style: dashed;
+        text-decoration-color: rgba(255, 255, 255, 0.3);
+        cursor: default;
 }
 
 div.markdown h1 {

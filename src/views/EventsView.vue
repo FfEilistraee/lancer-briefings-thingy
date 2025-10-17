@@ -24,7 +24,7 @@
 				</div>
 				<div class="rhombus-back">&nbsp;</div>
 			</div>
-                        <div class="section-content-container extra-margins" @click="handleWikiClick">
+                        <div class="section-content-container extra-margins" @click="handleWikiClick" ref="logContent">
                                 <div class="event" v-if="selectedEvent.title">
                                         <div class="name">
                                                 <h1>{{ selectedEvent.location }} // {{ selectedEvent.time }}</h1>
@@ -41,6 +41,7 @@
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it';
 import Event from "@/components/Event.vue";
 import { isWikiHref, extractWikiSlug } from '@/utils/wiki';
+import { bindWikiTooltip, hideWikiTooltip } from '@/utils/wikiTooltip';
 
 export default {
 	components: {
@@ -64,9 +65,20 @@ export default {
 			}
 		};
 	},
+        beforeUnmount() {
+                hideWikiTooltip();
+        },
         methods: {
                 selectEvent(event) {
+                        hideWikiTooltip();
                         this.selectedEvent = event;
+                        this.refreshEventTooltip();
+                },
+                async refreshEventTooltip() {
+                        await this.$nextTick();
+                        const container = this.$refs.logContent;
+                        if (!container) return;
+                        await bindWikiTooltip(container, { hideOnScroll: true });
                 },
                 handleWikiClick(event) {
                         const anchor = event.target.closest('a');
