@@ -30,10 +30,6 @@
             :placeholder="searchPlaceholder"
             class="world-input"
           />
-          <select v-model="typeFilter" class="world-select">
-            <option value="">All Types</option>
-            <option v-for="type in typeOptions" :key="type" :value="type">{{ type }}</option>
-          </select>
         </div>
 
         <div
@@ -148,7 +144,6 @@ const props = defineProps({ animate: { type: Boolean, required: true } })
 const entries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
-const typeFilter = ref('')
 const activeTab = ref('npc')
 
 // Infobox fields (others still searchable)
@@ -159,10 +154,8 @@ const slugIndex = computed(() => Object.fromEntries(entries.value.map(e => [e.sl
 
 const filteredEntries = computed(() => {
   const q = query.value.trim().toLowerCase()
-  const typeFilterValue = typeFilter.value.trim().toLowerCase()
   return entries.value
     .filter(e => activeTab.value === 'all' || e.category === activeTab.value)
-    .filter(e => !typeFilterValue || (e.type || '').toLowerCase() === typeFilterValue)
     .filter(e => {
       if (!q) return true
       const searchable = [e.name, e.type, ...(e.tags || []), e.content]
@@ -190,11 +183,6 @@ const tabDirectoryHint = computed(() => {
   if (activeTab.value === 'faction') return 'src/assets/world/factions'
   if (activeTab.value === 'term') return 'src/assets/world/terms'
   return 'src/assets/world/npcs'
-})
-
-const typeOptions = computed(() => {
-  const types = new Set(entries.value.map(e => e.type).filter(Boolean))
-  return Array.from(types).sort()
 })
 
 const tabs = computed(() => {
@@ -245,7 +233,6 @@ const tooltipStyle = computed(() => ({
 function setActiveTab(tab) {
   activeTab.value = tab
   query.value = ''
-  typeFilter.value = ''
   const first = entries.value.find(e => e.category === tab)
   if (first) {
     selectEntry(first)
@@ -290,8 +277,19 @@ function attachWikiLinkEvents() {
   }
   const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
   links.forEach(link => {
-    if (link.dataset.wikiBound === 'true') return
     const slug = link.getAttribute('href').slice(5)
+    const resolved = !!slugIndex.value[slug]
+    link.classList.toggle('wiki-link-resolved', resolved)
+    link.classList.toggle('wiki-link-unresolved', !resolved)
+    link.dataset.wikiResolved = resolved ? 'true' : 'false'
+
+    if (!resolved) {
+      link.dataset.wikiBound = 'false'
+      return
+    }
+
+    if (link.dataset.wikiBound === 'true') return
+
     link.dataset.wikiBound = 'true'
     link.addEventListener('mouseenter', event => {
       const pos = {
@@ -367,7 +365,13 @@ function parseFrontMatter(raw) {
   return { data, content }
 }
 
-function slugify(s) { return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') }
+function slugify(s) {
+  return String(s || '')
+    .replace(/&/g, ' and ')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '')
+}
 function normalizeArray(val) { return !val ? [] : (Array.isArray(val) ? val : String(val).split(',').map(s=>s.trim()).filter(Boolean)) }
 
 function transformWikiLinks(md) {
@@ -418,14 +422,15 @@ function extractInfobox(md, meta) {
 }
 
 function handleMarkdownClick(e) {
-  const a = e.target.closest('a'); if (!a) return
+  const a = e.target.closest('a')
+  if (!a) return
   const href = a.getAttribute('href') || ''
-  if (href.startsWith('wiki:')) {
-    const slug = href.slice(5)
-    const match = entries.value.find(en => en.slug === slug)
-    if (match) selectEntry(match); else query.value = slug.replace(/-/g,' ')
-    e.preventDefault()
-  }
+  if (!href.startsWith('wiki:')) return
+
+  e.preventDefault()
+  const slug = href.slice(5)
+  const match = entries.value.find(en => en.slug === slug)
+  if (match) selectEntry(match)
 }
 
 function selectEntry(entry) {
@@ -442,7 +447,7 @@ function extractSummary(entry) {
   if (entry.summary) return Array.isArray(entry.summary) ? entry.summary.join(' ') : String(entry.summary)
   if (entry.tooltip) return Array.isArray(entry.tooltip) ? entry.tooltip.join(' ') : String(entry.tooltip)
   const raw = entry.content || ''
-  const stripped = raw.replace(/\[(?:[^\]]+)\]\([^\)]+\)/g, '$1').replace(/[#>*_`]/g, '')
+  const stripped = raw.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1').replace(/[#>*_`]/g, '')
   const sentence = stripped.split(/\n+/).map(line => line.trim()).filter(Boolean)[0] || ''
   return sentence.slice(0, 220) + (sentence.length > 220 ? '…' : '')
 }
@@ -598,11 +603,10 @@ loadEntries()
 
 /* Controls */
 .world-filters { display:flex; gap:12px; margin-bottom:12px; align-items:center; flex-wrap:wrap }
-.world-input, .world-select {
+.world-input {
   padding:6px 10px; background:var(--secondary-color);
   border:1px solid var(--primary-color); color:var(--text-color);
 }
-.world-select { min-width:160px; }
 .events-list-container.show-placeholder { display:flex; align-items:center; justify-content:center; }
 .empty-placeholder { opacity:0.7; font-style:italic; text-align:center; }
 .empty-placeholder code { font-style:normal; background:rgba(0,0,0,0.2); padding:2px 6px; border-radius:4px; }
@@ -645,6 +649,16 @@ loadEntries()
 .entry-title { font-size: 2rem; line-height: 1.2; margin: 0 0 .75rem; }
 
 .wiki-body { grid-column: 1; min-width: 560px; }
+.markdown a.wiki-link-resolved {
+  color: var(--primary-color);
+  text-decoration-color: rgba(255, 255, 255, 0.55);
+}
+.markdown a.wiki-link-unresolved {
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration-style: dashed;
+  text-decoration-color: rgba(255, 255, 255, 0.3);
+  cursor: default;
+}
 .infobox { grid-column: 2; width: 100%; max-width: 340px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
 .infobox-image { display:block; width:100%; height:auto; }
 .infobox-table { width:100%; border-collapse: collapse; font-size: .95rem; }
