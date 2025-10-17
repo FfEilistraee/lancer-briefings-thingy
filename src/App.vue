@@ -3,10 +3,11 @@
 		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
 		<Sidebar :animate="animate" :class="{ animate: animate }" />
 	</div>
-	<div id="router-view-container">
-		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
-			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
-	</div>
+        <div id="router-view-container">
+                <router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
+                        :pilots="pilots" :clocks="clocks" :reserves="reserves" />
+        </div>
+        <WikiTooltipLayer />
 	<svg style="visibility: hidden; position: absolute" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
 		version="1.1">
 		<defs>
@@ -26,13 +27,15 @@
 <script>
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
+import WikiTooltipLayer from "@/components/WikiTooltipLayer.vue";
 import Config from "@/assets/info/general-config.json";
 import { applyWikiTransforms } from '@/utils/wiki';
 
 export default {
 	components: {
-		Header,
-		Sidebar,
+                Header,
+                Sidebar,
+                WikiTooltipLayer,
 	},
 
 	data() {

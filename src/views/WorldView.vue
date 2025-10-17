@@ -114,33 +114,6 @@
       </div>
     </section>
 
-    <transition name="tooltip-fade">
-      <div
-        v-if="tooltip.visible && tooltip.entry"
-        class="wiki-tooltip"
-        :style="tooltipStyle"
-      >
-        <div class="wiki-tooltip__header">
-          <img
-            v-if="tooltip.entry.thumbnail"
-            class="wiki-tooltip__image"
-            :src="tooltip.entry.thumbnail"
-            :alt="tooltip.entry.name"
-          />
-          <div>
-            <p class="wiki-tooltip__type">{{ tooltip.entry.type }}</p>
-            <h3 class="wiki-tooltip__title">{{ tooltip.entry.name }}</h3>
-          </div>
-        </div>
-        <p v-if="tooltip.entry.summary" class="wiki-tooltip__summary">{{ tooltip.entry.summary }}</p>
-        <ul v-if="tooltip.entry.quickFacts.length" class="wiki-tooltip__facts">
-          <li v-for="fact in tooltip.entry.quickFacts" :key="fact.label">
-            <span class="wiki-tooltip__fact-label">{{ fact.label }}:</span>
-            <span class="wiki-tooltip__fact-value">{{ fact.value }}</span>
-          </li>
-        </ul>
-      </div>
-    </transition>
   </div>
 </template>
 
@@ -149,7 +122,9 @@ import { ref, computed, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
-import { slugify, transformWikiLinks, transformWikiImages, isWikiHref, extractWikiSlug } from '@/utils/wiki'
+import { slugify, isWikiHref, extractWikiSlug } from '@/utils/wiki'
+import { ensureWikiData, labelize } from '@/utils/wikiDataStore'
+import { bindWikiTooltip, hideWikiTooltip, showWikiTooltipForSlug } from '@/utils/wikiTooltip'
 
 const props = defineProps({ animate: { type: Boolean, required: true } })
 
@@ -260,19 +235,6 @@ const infoboxRows = computed(() => {
   return rows
 })
 
-function labelize(key) {
-  return key.replace(/[_-]+/g, ' ')
-            .replace(/([a-z])([A-Z])/g, '$1 $2')
-            .replace(/^\w|\s\w/g, c => c.toUpperCase())
-}
-
-const tooltip = ref({ visible: false, x: 0, y: 0, entry: null })
-
-const tooltipStyle = computed(() => ({
-  top: `${tooltip.value.y}px`,
-  left: `${tooltip.value.x}px`
-}))
-
 function setActiveTab(tab, options = {}) {
   activeTab.value = tab
   if (!options.preserveQuery) {
@@ -284,85 +246,23 @@ function setActiveTab(tab, options = {}) {
     return
   }
   if (!first) {
-    hideTooltip()
+    hideWikiTooltip()
     selectedEntry.value = null
   }
 }
 
-function hideTooltip() {
-  tooltip.value = { visible: false, x: 0, y: 0, entry: null }
-}
-
-function showTooltipForSlug(slug, position) {
-  const entry = slugIndex.value[slug]
-  if (!entry) {
-    hideTooltip()
-    return
-  }
-  tooltip.value = {
-    visible: true,
-    x: position.x,
-    y: position.y,
-    entry: {
-      name: entry.name,
-      type: entry.type,
-      thumbnail: entry.thumbnail,
-      summary: entry.summary,
-      quickFacts: entry.quickFacts || []
-    }
-  }
-}
-
-function attachWikiLinkEvents() {
+async function attachWikiLinkEvents() {
   if (!selectedEntry.value) return
   const containers = Array.from(document.querySelectorAll('#world-detail .wiki-body, #world-detail .infobox'))
   if (!containers.length) return
 
-  containers.forEach(container => {
-    if (!container.dataset.tooltipBound) {
-      if (container.classList.contains('wiki-body')) {
-        container.addEventListener('scroll', hideTooltip, { passive: true })
-      }
-      container.addEventListener('mouseleave', hideTooltip)
-      container.dataset.tooltipBound = 'true'
-    }
-
-    const links = Array.from(container.querySelectorAll('a[href^="wiki:"]'))
-    links.forEach(link => {
-      const href = link.getAttribute('href') || ''
-      const slug = extractWikiSlug(href)
-      if (!slug) return
-      const resolved = !!slugIndex.value[slug]
-      link.classList.toggle('wiki-link-resolved', resolved)
-      link.classList.toggle('wiki-link-unresolved', !resolved)
-      link.dataset.wikiResolved = resolved ? 'true' : 'false'
-
-      if (!resolved) {
-        link.dataset.wikiBound = 'false'
-        return
-      }
-
-      if (link.dataset.wikiBound === 'true') return
-
-      link.dataset.wikiBound = 'true'
-      link.addEventListener('mouseenter', event => {
-        const pos = {
-          x: event.clientX + 16,
-          y: event.clientY + 24
-        }
-        showTooltipForSlug(slug, pos)
+  await Promise.all(
+    containers.map(container =>
+      bindWikiTooltip(container, {
+        hideOnScroll: container.classList.contains('wiki-body'),
       })
-      link.addEventListener('mousemove', event => {
-        if (!tooltip.value.visible) return
-        tooltip.value = {
-          ...tooltip.value,
-          x: event.clientX + 16,
-          y: event.clientY + 24
-        }
-      })
-      link.addEventListener('mouseleave', hideTooltip)
-    })
-  })
+    )
+  )
 }
 
 watch(
@@ -378,93 +278,12 @@ watch(
 )
 
 watch(selectedEntry, async () => {
-  hideTooltip()
+  hideWikiTooltip()
   await nextTick()
-  attachWikiLinkEvents()
+  await attachWikiLinkEvents()
 })
 
 // ---------- Front-matter + Obsidian helpers (no deps) ----------
-function parseFrontMatter(raw) {
-  if (!raw.startsWith('---')) return { data: null, content: raw }
-  const end = raw.indexOf('\n---')
-  if (end === -1) return { data: null, content: raw }
-  const fm = raw.slice(3, end).trim()
-  const content = raw.slice(end + 4).replace(/^\s*\n/, '')
-
-  const data = {}
-  const lines = fm.split('\n')
-  let i = 0
-  while (i < lines.length) {
-    const line = lines[i].trim()
-    if (!line) { i++; continue }
-    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/)
-    if (!m) { i++; continue }
-    const key = m[1]; let val = m[2].trim()
-
-    // block list
-    if (val === '') {
-      const arr = []; let j = i + 1
-      while (j < lines.length) {
-        const li = lines[j]; const t = li.trim()
-        if (t.startsWith('- ')) { arr.push(t.slice(2).trim()); j++; continue }
-        if (li.startsWith('  ') || li.startsWith('\t')) { j++; continue }
-        break
-      }
-      if (arr.length) { data[key] = arr; i = j; continue }
-    }
-    // inline array
-    if (val.startsWith('[') && val.endsWith(']')) {
-      const inner = val.slice(1, -1).trim()
-      data[key] = inner ? inner.split(',').map(s => s.trim()).filter(Boolean) : []
-      i++; continue
-    }
-    // comma list (unless quoted)
-    if (val.includes(',') && !(val.startsWith('"') || val.startsWith("'"))) {
-      data[key] = val.split(',').map(s => s.trim()).filter(Boolean)
-      i++; continue
-    }
-    // strip quotes
-    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-      val = val.slice(1, -1)
-    }
-    data[key] = val; i++
-  }
-  return { data, content }
-}
-
-function normalizeArray(val) { return !val ? [] : (Array.isArray(val) ? val : String(val).split(',').map(s=>s.trim()).filter(Boolean)) }
-
-function extractInfobox(md, meta) {
-  // Remove an Obsidian infobox block and capture rows
-  const lines = md.split('\n'); const out = []; let i = 0; const collected = []
-  while (i < lines.length) {
-    const line = lines[i]
-    if (line.trim().startsWith('> [!infobox]')) {
-      i++
-      while (i < lines.length && lines[i].trim().startsWith('>')) { collected.push(lines[i]); i++ }
-      continue
-    }
-    out.push(line); i++
-  }
-  const kv = {}
-  collected.forEach(l => {
-    const t = l.replace(/^>\s?/, '')
-    if (/^!\[\[/.test(t)) { const m = t.match(/^!\[\[([^|\]]+)(?:\|[^\]]*)?\]\]/); if (m) kv.__thumbnail = `/world/${m[1]}`; return }
-    if (t.includes('|')) {
-      const parts = t.split('|').map(s => s.trim()).filter(Boolean)
-      if (parts.length === 2 && !/^[-]+$/.test(parts[0])) {
-        const key = slugify(parts[0]).replace(/-/g,' '); const label = key.replace(/\b\w/g, c=>c.toUpperCase())
-        kv[label.toLowerCase()] = parts[1]
-      }
-    }
-  })
-  const merged = { ...meta }
-  const map = { 'other names':'aliases','gender':'gender','race':'race','age':'age','height':'height','origin':'origin','ethnicity':'ethnicity','occupation':'occupation','title':'title','languages':'languages','status':'status','affiliations':'affiliations','location':'location' }
-  Object.entries(map).forEach(([from,to]) => { if (kv[from] !== undefined) merged[to] = /,/.test(kv[from]) ? kv[from].split(',').map(s=>s.trim()).filter(Boolean) : kv[from] })
-  if (kv.__thumbnail && !merged.thumbnail) merged.thumbnail = kv.__thumbnail
-  return { content: out.join('\n'), meta: merged }
-}
-
 function buildInfoboxTokens(value, index) {
   const rawValues = Array.isArray(value) ? value : [value]
   const tokens = []
@@ -501,7 +320,7 @@ function navigateToWikiSlug(slug, event) {
   if (match.category === 'codex') {
     const x = (event?.clientX || 0) + 16
     const y = (event?.clientY || 0) + 24
-    showTooltipForSlug(slug, { x, y })
+    showWikiTooltipForSlug(slug, { x, y })
     return
   }
   selectEntry(match)
@@ -520,7 +339,7 @@ function handleMarkdownClick(e) {
 }
 
 function selectEntry(entry) {
-  hideTooltip()
+  hideWikiTooltip()
   selectedEntry.value = entry
   if (!entry) {
     if (route.name === 'World' && route.query.slug) {
@@ -538,134 +357,11 @@ function selectEntry(entry) {
   }
 }
 
-function detectCategory(sourcePath, type) {
-  const lowerType = (type || '').toLowerCase()
-  if (/world\/terms\//i.test(sourcePath) || lowerType === 'term' || lowerType.includes('codex')) return 'codex'
-  if (/world\/factions\//i.test(sourcePath) || lowerType.includes('faction') || lowerType.includes('power')) return 'power'
-  if (/world\/planets\//i.test(sourcePath) || lowerType.includes('world') || lowerType.includes('planet')) return 'world'
-  if (/world\/stations\//i.test(sourcePath) || lowerType.includes('gate') || lowerType.includes('station')) return 'gate'
-  return 'people'
-}
-
-function extractSummary(entry) {
-  if (entry.summary) return Array.isArray(entry.summary) ? entry.summary.join(' ') : String(entry.summary)
-  if (entry.tooltip) return Array.isArray(entry.tooltip) ? entry.tooltip.join(' ') : String(entry.tooltip)
-  const raw = entry.content || ''
-  const stripped = raw.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1').replace(/[#>*_`]/g, '')
-  const sentence = stripped.split(/\n+/).map(line => line.trim()).filter(Boolean)[0] || ''
-  return sentence.slice(0, 220) + (sentence.length > 220 ? '…' : '')
-}
-
-function buildQuickFacts(entry) {
-  const quick = []
-  const fields = entry.tooltipFacts || entry.infobox || null
-  if (Array.isArray(fields)) {
-    fields.forEach(f => {
-      if (f && typeof f === 'string') {
-        const [label, ...rest] = f.split(':')
-        if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
-      } else if (f && f.label && f.value) {
-        quick.push({ label: f.label, value: f.value })
-      }
-    })
-    if (quick.length) return quick
-  } else if (fields && typeof fields === 'string') {
-    const parts = fields.split('|').map(s => s.trim()).filter(Boolean)
-    parts.forEach(part => {
-      const [label, ...rest] = part.split(':')
-      if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
-    })
-    if (quick.length) return quick
-  }
-  const candidates = ['role', 'rank', 'affiliations', 'location', 'status']
-  candidates.forEach(key => {
-    if (entry[key]) {
-      const value = Array.isArray(entry[key]) ? entry[key].join(', ') : entry[key]
-      quick.push({ label: labelize(key), value })
-    }
-  })
-  return quick
-}
-
-function postProcessEntry(entry) {
-  const category = detectCategory(entry.sourcePath || '', entry.type)
-  const summary = extractSummary(entry)
-  const quickFacts = buildQuickFacts(entry)
-  return {
-    ...entry,
-    category,
-    summary,
-    quickFacts,
-  }
-}
-
 async function loadEntries() {
-  entries.value = []
-  codexEntries.value = []
-  const modules = {
-    ...import.meta.glob('@/assets/world/**/*.md', { query: '?raw', import: 'default' }),
-    ...import.meta.glob('/src/assets/world/**/*.md', { query: '?raw', import: 'default' }),
-    ...import.meta.glob('/assets/world/**/*.md', { query: '?raw', import: 'default' }),
-  }
-  const fileEntries = Object.entries(modules)
-  const loaded = await Promise.all(fileEntries.map(([path, loader]) => loader().then(mod => ({ path, mod }))))
-  const seen = new Set()
-  const slugSeen = new Set()
-  loaded.forEach(({ path, mod }) => {
-    if (seen.has(path)) return
-    seen.add(path)
-    const raw = typeof mod === 'string' ? mod : mod.default
+  const { entries: loadedEntries, codexEntries: loadedCodex } = await ensureWikiData()
+  entries.value = [...loadedEntries]
+  codexEntries.value = [...loadedCodex]
 
-    // 1) Front-matter (if any)
-    let data = null, body = raw
-    if (raw.startsWith('---')) { const fm = parseFrontMatter(raw); data = fm.data; body = fm.content }
-
-    // 2) Obsidian transforms
-    body = transformWikiImages(body)
-    body = transformWikiLinks(body)
-    const inf = extractInfobox(body, data || {})
-    body = inf.content
-    const meta = inf.meta || {}
-
-    // 3) Build entry (fallback to simple 5-line header)
-    let entry
-    if (meta && (meta.name || meta.slug)) {
-      entry = {
-        slug: meta.slug || slugify(meta.name),
-        name: meta.name || 'Untitled',
-        type: meta.type || 'NPC',
-        tags: normalizeArray(meta.tags),
-        thumbnail: meta.thumbnail || '',
-        content: body || '',
-        sourcePath: path,
-        ...Object.fromEntries(Object.entries(meta).filter(([k]) => !['slug','name','type','tags','thumbnail'].includes(k)))
-      }
-    } else {
-      const lines = (raw || '').split('\n')
-      entry = {
-        slug: (lines[0] || '').trim(),
-        name: (lines[1] || '').trim(),
-        type: (lines[2] || 'NPC').trim(),
-        tags: (lines[3] || '').split(',').map(s => s.trim()).filter(Boolean),
-        thumbnail: (lines[4] || '').trim(),
-        content: lines.slice(5).join('\n'),
-        sourcePath: path,
-      }
-    }
-
-    const processed = postProcessEntry(entry)
-    const isDraft = typeof processed.draft === 'string' ? processed.draft.toLowerCase() === 'true' : !!processed.draft
-    if (isDraft) return
-    if (slugSeen.has(processed.slug)) return
-    slugSeen.add(processed.slug)
-    if (processed.category === 'codex') {
-      codexEntries.value.push(processed)
-      return
-    }
-    entries.value.push(processed)
-  })
-  entries.value.sort((a, b) => a.name.localeCompare(b.name))
-  codexEntries.value.sort((a, b) => a.name.localeCompare(b.name))
   if (!entries.value.some(e => e.category === activeTab.value)) {
     const fallback = TAB_CONFIG.map(t => t.value).find(cat => entries.value.some(e => e.category === cat))
     if (fallback) activeTab.value = fallback
@@ -689,8 +385,9 @@ async function loadEntries() {
   } else {
     selectEntry(null)
   }
+
   await nextTick()
-  attachWikiLinkEvents()
+  await attachWikiLinkEvents()
 }
 
 loadEntries()
@@ -800,16 +497,6 @@ loadEntries()
   max-height: none;
   overflow: visible;
 }
-.markdown a.wiki-link-resolved {
-  color: var(--primary-color);
-  text-decoration-color: rgba(255, 255, 255, 0.55);
-}
-.markdown a.wiki-link-unresolved {
-  color: rgba(255, 255, 255, 0.45);
-  text-decoration-style: dashed;
-  text-decoration-color: rgba(255, 255, 255, 0.3);
-  cursor: default;
-}
 .infobox { grid-column: 2; width: 100%; max-width: 340px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
 .infobox-image { display:block; width:100%; height:auto; }
 .infobox-table { width:100%; border-collapse: collapse; font-size: .95rem; }
@@ -820,29 +507,6 @@ loadEntries()
 .tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
 
-/* Tooltip */
-.wiki-tooltip {
-  position:fixed;
-  max-width:320px;
-  padding:14px 16px;
-  background:rgba(12,14,22,0.95);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:12px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.45);
-  pointer-events:none;
-  z-index:6;
-  backdrop-filter: blur(6px);
-}
-.wiki-tooltip__header { display:flex; gap:12px; align-items:center; margin-bottom:8px; }
-.wiki-tooltip__image { width:64px; height:64px; object-fit:cover; border-radius:10px; border:1px solid rgba(255,255,255,0.12); }
-.wiki-tooltip__type { font-size:0.7rem; letter-spacing:0.12em; text-transform:uppercase; opacity:0.75; margin:0 0 2px; }
-.wiki-tooltip__title { margin:0; font-size:1.05rem; }
-.wiki-tooltip__summary { margin:0 0 8px; font-size:0.85rem; line-height:1.4; opacity:0.88; }
-.wiki-tooltip__facts { list-style:none; padding:0; margin:0; display:grid; gap:4px; }
-.wiki-tooltip__fact-label { font-weight:600; margin-right:4px; }
-.wiki-tooltip__fact-value { opacity:0.85; }
-.tooltip-fade-enter-active, .tooltip-fade-leave-active { transition: opacity 0.18s ease; }
-.tooltip-fade-enter-from, .tooltip-fade-leave-to { opacity:0; }
 
 /* Mobile */
 @media (max-width: 980px) {
@@ -862,6 +526,5 @@ loadEntries()
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
   .infobox { grid-column: 1; max-width: 100%; }
-  .wiki-tooltip { display:none; }
 }
 </style>
