@@ -319,7 +319,19 @@ onMounted(importEntries)
 }
 
 /* Make the ENTRY reading area wide */
-#world-detail .world-wide { max-width: clamp(960px, 92vw, 1600px); }
+#world-detail.section-container {
+  flex: 1 1 0;
+  width: clamp(860px, 70vw, 1240px);
+  margin: 50px 60px;
+  min-width: 0;
+}
+#world-detail .section-content-container {
+  padding: 32px 36px;
+}
+#world-detail .world-wide {
+  width: 100%;
+  max-width: none;
+}
 #world-detail .world-wide .event { width: 100%; max-width: none; }
 #world-detail .world-wide .markdown { font-size: 1.05rem; line-height: 1.7; }
 
@@ -347,6 +359,14 @@ onMounted(importEntries)
 
 /* Mobile */
 @media (max-width: 980px) {
+  #worldView { flex-direction: column; }
+  #world-detail.section-container {
+    width: auto;
+    margin: 30px 20px;
+  }
+  #world-detail .section-content-container {
+    padding: 20px;
+  }
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
   .infobox { grid-column: 1; max-width: 100%; }

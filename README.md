@@ -34,8 +34,18 @@ Go over mission briefings within the LANCER Universe in style by showing your pl
 
 `npm run dev` - Serve the webapp with hot reloads (for development work)  
 `npm run build` - Build for production  
-`npm run serve OR npm run preview` - Locally preview production build  
-`npm run format` - Format all code files using `prettier` based on rules set in `.prettierrc.json` (for development work)  
+`npm run serve OR npm run preview` - Locally preview production build
+`npm run format` - Format all code files using `prettier` based on rules set in `.prettierrc.json` (for development work)
+
+## Pushing your changes
+
+If you have forked this repository and want to publish your edits:
+
+1. Make sure everything builds locally with `npm run build` so you do not push a broken site.
+2. Stage your work: `git add .` (or list specific files instead of `.` if you prefer).
+3. Commit with a clear message: `git commit -m "Describe your change"`.
+4. Push to your fork on GitHub: `git push origin work` (replace `work` with your branch name if it is different).
+5. Open a pull request from your branch so the changes can be reviewed and merged.
 
 ## Customization
 
