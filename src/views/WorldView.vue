@@ -8,10 +8,10 @@
       </div>
 
       <div class="section-content-container">
-        <!-- Simple filters -->
-        <div style="display:flex; gap:12px; margin-bottom:12px; align-items:center">
-          <input v-model="query" type="text" placeholder="Search NPCs, factions, places…" style="flex:1; padding:6px 10px; background:var(--secondary-color); border:1px solid var(--primary-color); color:var(--text-color)" />
-          <select v-model="typeFilter" style="padding:6px 10px; background:var(--secondary-color); border:1px solid var(--primary-color); color:var(--text-color)">
+        <!-- Filters -->
+        <div class="world-filters">
+          <input v-model="query" type="text" placeholder="Search NPCs, factions, places…" class="world-input" />
+          <select v-model="typeFilter" class="world-select">
             <option value="">All Types</option>
             <option>NPC</option>
             <option>Faction</option>
@@ -42,8 +42,25 @@
       <div class="rhombus-back">&nbsp;</div>
 
       <div class="section-content-container extra-margins">
-        <div class="wiki-article">
-          <!-- InfoBox (right side like Wikipedia) -->
+        <!-- WIDE ARTICLE + INFOBOX -->
+        <article class="wiki-article">
+          <header class="wiki-header">
+            <h1 class="entry-type">
+              {{ selectedEntry.type }}
+              <span v-if="selectedEntry.tags?.length"> // {{ selectedEntry.tags.join(', ') }}</span>
+            </h1>
+            <h2 class="entry-title">{{ selectedEntry.name }}</h2>
+          </header>
+
+          <!-- Main body -->
+          <section class="wiki-body" @click="handleMarkdownClick">
+            <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
+            <div v-if="selectedEntry.tags?.length" class="tag-chips">
+              <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="query = t">{{ t }}</span>
+            </div>
+          </section>
+
+          <!-- Right infobox -->
           <aside class="infobox">
             <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
             <table class="infobox-table">
@@ -62,25 +79,7 @@
               </tbody>
             </table>
           </aside>
-
-          <div class="name">
-            <h1 class="entry-type">
-              {{ selectedEntry.type }}
-              <span v-if="selectedEntry.tags && selectedEntry.tags.length"> // {{ selectedEntry.tags.join(', ') }}</span>
-            </h1>
-            <h2 class="entry-title">{{ selectedEntry.name }}</h2>
-          </div>
-
-          <!-- Body -->
-          <div class="markdown" @click="handleMarkdownClick">
-            <VueMarkdownIt :source="selectedEntry.content" class="markdown-body" />
-          </div>
-
-          <!-- Tag chips -->
-          <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
-            <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="query = t">{{ t }}</span>
-          </div>
-        </div>
+        </article>
       </div>
     </section>
   </div>
@@ -214,7 +213,7 @@ function transformWikiImages(md) {
   })
 }
 function extractInfobox(md, meta) {
-  // Pull out > [!infobox] ... block (quoted lines) and parse table/key-values
+  // Pull out > [!infobox] block and parse rows
   const lines = md.split('\n')
   const out = []; let i = 0; const collected = []
   while (i < lines.length) {
@@ -340,22 +339,39 @@ onMounted(importEntries)
 </script>
 
 <style scoped>
-/* Wikipedia-style layout */
-.wiki-article { position: relative; }
+/* Controls */
+.world-filters { display:flex; gap:12px; margin-bottom:12px; align-items:center }
+.world-input, .world-select {
+  padding:6px 10px; background:var(--secondary-color);
+  border:1px solid var(--primary-color); color:var(--text-color);
+}
+
+/* WIDE article layout: main content grows, infobox fixed ~340px */
+.wiki-article {
+  display: grid;
+  grid-template-columns: minmax(560px, 1fr) 340px;
+  gap: 16px 24px;
+  align-items: start;
+}
+.wiki-header { grid-column: 1 / -1; }
 .entry-type { font-size: 1rem; letter-spacing: .04em; opacity: .85; margin-bottom: .25rem; }
 .entry-title { font-size: 2rem; line-height: 1.2; margin: 0 0 .75rem; }
 
-/* Right-side infobox */
-.infobox { float: right; width: 300px; max-width: 40%; margin: 0 0 12px 16px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+.wiki-body { grid-column: 1; min-width: 560px; }
+.infobox { grid-column: 2; width: 100%; max-width: 340px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
 .infobox-image { display:block; width:100%; height:auto; }
-.infobox-table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.infobox-table { width:100%; border-collapse: collapse; font-size: .95rem; }
 .infobox-label { text-align:left; vertical-align: top; padding: 6px 8px; font-weight: 600; width: 34%; border-bottom: 1px solid rgba(255,255,255,.08); }
 .infobox-value { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,.08); }
 
+/* Chips */
 .tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
 
-@media (max-width: 900px) {
-  .infobox { float:none; max-width:100%; width:100%; margin:0 0 12px 0; }
+/* Mobile: collapse to one column */
+@media (max-width: 980px) {
+  .wiki-article { grid-template-columns: 1fr; }
+  .wiki-body { grid-column: 1; min-width: 0; }
+  .infobox { grid-column: 1; max-width: 100%; }
 }
 </style>
