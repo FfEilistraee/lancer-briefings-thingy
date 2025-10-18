@@ -834,6 +834,7 @@ function triggerDownload(content, filename) {
   padding: 24px 24px 64px;
   box-sizing: border-box;
   min-height: calc(100vh - 140px);
+  height: calc(100vh - 140px);
   overflow-y: auto;
 }
 

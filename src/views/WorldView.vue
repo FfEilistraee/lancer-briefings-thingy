@@ -78,8 +78,13 @@
               <header
                 class="world-grid-card__header"
                 :class="{ 'world-grid-card__header--with-thumb': !!entry.cardThumbnail }"
-                :style="getCardHeaderStyle(entry.cardThumbnail)"
               >
+                <div
+                  v-if="entry.cardThumbnail"
+                  class="world-grid-card__backdrop"
+                  :style="getCardHeaderStyle(entry.cardThumbnail)"
+                  aria-hidden="true"
+                ></div>
                 <p class="world-grid-card__type">{{ entry.type }}</p>
                 <h3 class="world-grid-card__title">{{ entry.name }}</h3>
               </header>
@@ -392,8 +397,12 @@ function getCardHeaderStyle(thumbnail) {
   const source = typeof thumbnail === 'string' ? thumbnail.trim() : ''
   if (!source) return null
   const escaped = source.replace(/"/g, '\\"')
+  const background = `linear-gradient(158deg, rgba(9, 11, 17, 0.36) 0%, rgba(9, 11, 17, 0.82) 100%), url("${escaped}")`
   return {
-    backgroundImage: `linear-gradient(160deg, rgba(11,13,19,0.28) 0%, rgba(11,13,19,0.78) 100%), url("${escaped}")`,
+    background,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
   }
 }
 
@@ -1424,19 +1433,30 @@ onUnmounted(() => {
   gap:4px;
   border-radius:12px;
   padding:14px 14px 12px;
-  background:rgba(255,255,255,0.05);
+  background-color:rgba(255,255,255,0.05);
   overflow: hidden;
   transition:background 0.35s ease, color 0.35s ease;
+}
+.world-grid-card__backdrop {
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background-color:rgba(9,11,17,0.72);
+  pointer-events:none;
+  opacity:1;
+  transition:transform 0.35s ease, opacity 0.35s ease;
 }
 .world-grid-card__header--with-thumb {
   justify-content:flex-end;
   color:#fff;
   padding:16px 16px 14px;
   min-height:140px;
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.world-grid-card__header--with-thumb .world-grid-card__type,
+.world-grid-card__header--with-thumb .world-grid-card__title {
+  position:relative;
+  z-index:1;
 }
 .world-grid-card__type {
   font-size:0.72rem;
