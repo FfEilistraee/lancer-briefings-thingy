@@ -1,5 +1,9 @@
 <template>
-  <div id="worldView" :class="{ animate: props.animate }" class="content-container">
+  <div
+    id="worldView"
+    class="content-container"
+    :class="[{ animate: props.animate }, hasDetail ? 'has-detail' : 'no-detail']"
+  >
     <!-- LIST / GLOSSARY -->
     <section id="world" class="section-container">
       <div class="section-header clipped-medium-backward">
@@ -15,7 +19,7 @@
             type="button"
             :class="['world-tab', { active: activeTab === tab.value }]"
             role="tab"
-            @click="setActiveTab(tab.value)"
+            @click="setActiveTab(tab.value, { skipAutoSelect: true, clearSelection: true })"
           >
             {{ tab.label }}
             <span class="world-tab-count">{{ tab.count }}</span>
@@ -281,6 +285,8 @@ const layoutMode = ref('list')
 
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
 
+const hasDetail = computed(() => !!selectedEntry.value)
+
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
 const BASE_KEYS = new Set(['slug','name','type','tags','thumbnail','content','sourcePath','summary','quickFacts','category'])
@@ -434,7 +440,17 @@ function setActiveTab(tab, options = {}) {
     query.value = ''
   }
   const first = entries.value.find(e => e.category === tab)
-  if (first && !options.skipAutoSelect) {
+  if (options.skipAutoSelect) {
+    if (options.clearSelection !== false) {
+      selectEntry(null)
+    }
+    if (!first) {
+      hideTooltip()
+      selectedEntry.value = null
+    }
+    return
+  }
+  if (first) {
     selectEntry(first)
     return
   }
@@ -483,7 +499,11 @@ function appendTagToQuery(tag) {
 function openRelatedEntry(entry) {
   if (!entry) return
   if (entry.category && entry.category !== activeTab.value) {
-    setActiveTab(entry.category, { skipAutoSelect: true, preserveQuery: true })
+    setActiveTab(entry.category, {
+      skipAutoSelect: true,
+      preserveQuery: true,
+      clearSelection: false,
+    })
   }
   selectEntry(entry)
 }
@@ -547,7 +567,11 @@ watch(
     const entry = slugIndex.value[slug]
     if (!entry) return
     if (selectedEntry.value && selectedEntry.value.slug === slug) return
-    setActiveTab(entry.category, { skipAutoSelect: true, preserveQuery: true })
+    setActiveTab(entry.category, {
+      skipAutoSelect: true,
+      preserveQuery: true,
+      clearSelection: false,
+    })
     selectEntry(entry)
   }
 )
@@ -1077,9 +1101,6 @@ async function loadEntries() {
       initial = target
     }
   }
-  if (!initial) {
-    initial = entries.value.find(e => e.category === activeTab.value) || entries.value[0] || null
-  }
 
   if (initial) {
     selectEntry(initial)
@@ -1283,8 +1304,23 @@ onUnmounted(() => {
 
 /* Make the ENTRY reading area wide */
 #world.section-container {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  margin: 50px 60px;
   height: 714px;
   max-height: calc(100vh - 190px);
+}
+
+#worldView.has-detail #world.section-container {
+  flex: 0 0 420px;
+  max-width: 420px;
+  width: 420px;
+  margin-right: 20px;
+}
+
+#worldView.has-detail #world-detail.section-container {
+  margin-left: 20px;
 }
 
 #world-detail.section-container {
