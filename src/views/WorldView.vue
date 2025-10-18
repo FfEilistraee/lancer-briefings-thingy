@@ -24,6 +24,30 @@
 
         <!-- Filters -->
         <div class="world-filters">
+          <div v-if="activeTopTags.length" class="world-filter-tags">
+            <span class="world-filter-tags__label">Top tags</span>
+            <button
+              v-for="tag in activeTopTags"
+              :key="tag"
+              type="button"
+              class="world-tag-chip"
+              @click="appendTagToQuery(tag)"
+            >
+              {{ tag }}
+            </button>
+          </div>
+
+          <div class="world-toggle-group">
+            <label class="world-toggle">
+              <input v-model="filters.hasSummary" type="checkbox" />
+              <span>Has summary</span>
+            </label>
+            <label class="world-toggle">
+              <input v-model="filters.hasQuickFacts" type="checkbox" />
+              <span>Has quick facts</span>
+            </label>
+          </div>
+
           <input
             v-model="query"
             type="text"
@@ -78,7 +102,7 @@
           <section class="wiki-body" @click="handleMarkdownClick">
             <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
             <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
-              <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="query = t">{{ t }}</span>
+              <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="appendTagToQuery(t)">{{ t }}</span>
             </div>
           </section>
 
@@ -145,7 +169,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
@@ -193,6 +217,7 @@ const codexEntries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
+const filters = reactive({ hasSummary: false, hasQuickFacts: false })
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
@@ -210,6 +235,13 @@ const filteredEntries = computed(() => {
   return entries.value
     .filter(e => e.category === activeTab.value)
     .filter(e => {
+      if (filters.hasSummary) {
+        const summaryText = typeof e.summary === 'string' ? e.summary.trim() : ''
+        if (!summaryText) return false
+      }
+      if (filters.hasQuickFacts) {
+        if (!Array.isArray(e.quickFacts) || !e.quickFacts.length) return false
+      }
       if (!q) return true
       const searchable = [e.name, e.type, ...(e.tags || []), e.content]
       Object.entries(e).forEach(([k, v]) => {
@@ -220,6 +252,33 @@ const filteredEntries = computed(() => {
 })
 
 const visibleEntries = computed(() => filteredEntries.value)
+
+const topTagsByCategory = computed(() => {
+  const map = {}
+  entries.value.forEach(entry => {
+    if (!entry.category) return
+    if (!map[entry.category]) map[entry.category] = {}
+    ;(entry.tags || []).forEach(tag => {
+      const cleaned = (tag || '').trim()
+      if (!cleaned) return
+      map[entry.category][cleaned] = (map[entry.category][cleaned] || 0) + 1
+    })
+  })
+  const result = {}
+  Object.entries(map).forEach(([category, tagCounts]) => {
+    const sorted = Object.entries(tagCounts)
+      .sort((a, b) => {
+        if (b[1] !== a[1]) return b[1] - a[1]
+        return a[0].localeCompare(b[0])
+      })
+      .slice(0, 8)
+      .map(([tag]) => tag)
+    result[category] = sorted
+  })
+  return result
+})
+
+const activeTopTags = computed(() => topTagsByCategory.value[activeTab.value] || [])
 
 const activeTabConfig = computed(() => TAB_CONFIG.find(t => t.value === activeTab.value) || TAB_CONFIG[0])
 
@@ -311,6 +370,15 @@ function showTooltipForSlug(slug, position) {
       quickFacts: entry.quickFacts || []
     }
   }
+}
+
+function appendTagToQuery(tag) {
+  const cleaned = (tag || '').trim()
+  if (!cleaned) return
+  const current = query.value.trim()
+  const tokens = current ? current.split(/\s+/).map(t => t.toLowerCase()) : []
+  if (tokens.includes(cleaned.toLowerCase())) return
+  query.value = current ? `${current} ${cleaned}` : cleaned
 }
 
 function attachWikiLinkEvents() {
@@ -747,6 +815,56 @@ loadEntries()
 .world-filters {
   width:100%;
   margin-bottom:12px;
+}
+.world-filter-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+  margin-bottom:10px;
+}
+.world-filter-tags__label {
+  font-size:0.72rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  opacity:0.7;
+  margin-right:4px;
+}
+.world-tag-chip {
+  padding:4px 12px;
+  border-radius:999px;
+  border:1px solid var(--primary-color);
+  background:rgba(255,255,255,0.06);
+  color:var(--text-color);
+  font-size:0.78rem;
+  letter-spacing:0.04em;
+  cursor:pointer;
+  transition:background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.world-tag-chip:hover {
+  background:var(--primary-color);
+  color:#0b0d13;
+  transform:translateY(-1px);
+}
+.world-toggle-group {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:10px;
+}
+.world-toggle {
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  opacity:0.85;
+}
+.world-toggle input[type="checkbox"] {
+  width:16px;
+  height:16px;
+  accent-color:var(--primary-color);
 }
 .world-input {
   padding:6px 10px; background:var(--secondary-color);
