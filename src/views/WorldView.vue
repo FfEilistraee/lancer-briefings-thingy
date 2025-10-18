@@ -106,6 +106,36 @@
             </div>
           </section>
 
+          <section v-if="timelineEvents.length" class="wiki-timeline">
+            <h3 class="wiki-section-heading">Timeline</h3>
+            <Timeline :events="timelineEvents" />
+          </section>
+
+          <section v-if="relatedEntries.length" class="related-entries">
+            <h3 class="wiki-section-heading">Related Entries</h3>
+            <div class="related-grid">
+              <article
+                v-for="entry in relatedEntries"
+                :key="entry.slug"
+                class="related-card"
+                role="button"
+                tabindex="0"
+                @click="openRelatedEntry(entry)"
+                @keydown.enter.prevent="openRelatedEntry(entry)"
+                @keydown.space.prevent="openRelatedEntry(entry)"
+              >
+                <header class="related-card__header">
+                  <p class="related-card__type">{{ entry.type }}</p>
+                  <h4 class="related-card__title">{{ entry.name }}</h4>
+                </header>
+                <p v-if="entry.summary" class="related-card__summary">{{ entry.summary }}</p>
+                <ul v-if="entry.tags && entry.tags.length" class="related-card__tags">
+                  <li v-for="tag in entry.tags" :key="tag" class="related-card__tag">{{ tag }}</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
           <!-- Right infobox -->
           <aside class="infobox">
             <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
@@ -173,6 +203,7 @@ import { ref, computed, watch, nextTick, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
+import Timeline from '@/components/Timeline.vue'
 import { slugify, transformWikiLinks, transformWikiImages, isWikiHref, extractWikiSlug } from '@/utils/wiki'
 
 const props = defineProps({ animate: { type: Boolean, required: true } })
@@ -230,6 +261,8 @@ const slugIndex = computed(() => {
   return index
 })
 
+const allEntries = computed(() => [...entries.value, ...codexEntries.value])
+
 const filteredEntries = computed(() => {
   const q = query.value.trim().toLowerCase()
   return entries.value
@@ -252,6 +285,39 @@ const filteredEntries = computed(() => {
 })
 
 const visibleEntries = computed(() => filteredEntries.value)
+
+const relatedEntries = computed(() => {
+  if (!selectedEntry.value) return []
+  const current = selectedEntry.value
+  const tags = new Set((current.tags || []).map(tag => tag.toLowerCase()))
+  if (!tags.size) return []
+
+  const scored = []
+  allEntries.value.forEach(entry => {
+    if (!entry || entry.slug === current.slug) return
+    if (entry.category === 'codex') return
+    const entryTags = (entry.tags || []).map(tag => tag.toLowerCase())
+    let overlap = 0
+    entryTags.forEach(tag => { if (tags.has(tag)) overlap++ })
+    if (!overlap) return
+    const sameCategory = entry.category === current.category ? 1 : 0
+    scored.push({ entry, overlap, sameCategory })
+  })
+
+  return scored
+    .sort((a, b) => {
+      if (b.sameCategory !== a.sameCategory) return b.sameCategory - a.sameCategory
+      if (b.overlap !== a.overlap) return b.overlap - a.overlap
+      return a.entry.name.localeCompare(b.entry.name)
+    })
+    .slice(0, 8)
+    .map(item => item.entry)
+})
+
+const timelineEvents = computed(() => {
+  if (!selectedEntry.value) return []
+  return buildTimelineFromFacts(selectedEntry.value.quickFacts)
+})
 
 const topTagsByCategory = computed(() => {
   const map = {}
@@ -379,6 +445,14 @@ function appendTagToQuery(tag) {
   const tokens = current ? current.split(/\s+/).map(t => t.toLowerCase()) : []
   if (tokens.includes(cleaned.toLowerCase())) return
   query.value = current ? `${current} ${cleaned}` : cleaned
+}
+
+function openRelatedEntry(entry) {
+  if (!entry) return
+  if (entry.category && entry.category !== activeTab.value) {
+    setActiveTab(entry.category, { skipAutoSelect: true, preserveQuery: true })
+  }
+  selectEntry(entry)
 }
 
 function attachWikiLinkEvents() {
@@ -626,25 +700,31 @@ function extractSummary(entry) {
 
 function buildQuickFacts(entry) {
   const quick = []
+
+  if (Array.isArray(entry.quickFacts) && entry.quickFacts.length) {
+    entry.quickFacts.forEach(fact => {
+      const normalized = normalizeQuickFactItem(fact)
+      if (normalized) quick.push(normalized)
+    })
+    if (quick.length) return quick
+  }
+
   const fields = entry.tooltipFacts || entry.infobox || null
   if (Array.isArray(fields)) {
     fields.forEach(f => {
-      if (f && typeof f === 'string') {
-        const [label, ...rest] = f.split(':')
-        if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
-      } else if (f && f.label && f.value) {
-        quick.push({ label: f.label, value: f.value })
-      }
+      const normalized = normalizeQuickFactItem(f)
+      if (normalized) quick.push(normalized)
     })
     if (quick.length) return quick
   } else if (fields && typeof fields === 'string') {
     const parts = fields.split('|').map(s => s.trim()).filter(Boolean)
     parts.forEach(part => {
-      const [label, ...rest] = part.split(':')
-      if (label && rest.length) quick.push({ label: label.trim(), value: rest.join(':').trim() })
+      const normalized = normalizeQuickFactItem(part)
+      if (normalized) quick.push(normalized)
     })
     if (quick.length) return quick
   }
+
   const candidates = ['role', 'rank', 'affiliations', 'location', 'status']
   candidates.forEach(key => {
     if (entry[key]) {
@@ -653,6 +733,25 @@ function buildQuickFacts(entry) {
     }
   })
   return quick
+}
+
+function normalizeQuickFactItem(fact) {
+  if (!fact) return null
+  if (typeof fact === 'string') {
+    const [label, ...rest] = fact.split(':')
+    if (!label || !rest.length) return null
+    return { label: label.trim(), value: rest.join(':').trim() }
+  }
+  if (typeof fact === 'object') {
+    const { label = '', value = '', ...rest } = fact
+    if (!label && !value && !rest.date && !rest.year && !rest.description && !rest.title) return null
+    return {
+      label: typeof label === 'string' ? label.trim() : label,
+      value: typeof value === 'string' ? value.trim() : value,
+      ...rest,
+    }
+  }
+  return null
 }
 
 function postProcessEntry(entry) {
@@ -665,6 +764,130 @@ function postProcessEntry(entry) {
     summary,
     quickFacts,
   }
+}
+
+function buildTimelineFromFacts(facts) {
+  if (!Array.isArray(facts) || !facts.length) return []
+  const events = facts
+    .map((fact, index) => convertFactToTimelineEvent(fact, index))
+    .filter(Boolean)
+    .sort((a, b) => {
+      if (a.sortKey != null && b.sortKey != null) return a.sortKey - b.sortKey
+      if (a.sortKey != null) return -1
+      if (b.sortKey != null) return 1
+      return a.date.localeCompare(b.date)
+    })
+    .map((event, index) => ({
+      ...event,
+      id: event.id || `timeline-${index}`,
+    }))
+  return events
+}
+
+function convertFactToTimelineEvent(fact, index) {
+  if (!fact) return null
+
+  if (typeof fact === 'string') {
+    const match = fact.match(/^([^:–-]+)[:–-]\s*(.+)$/)
+    if (!match) return null
+    const dateCandidate = extractDateCandidate(match[1])
+    if (!dateCandidate) return null
+    return {
+      id: `quickfact-${index}`,
+      date: dateCandidate.text,
+      sortKey: dateCandidate.sortKey,
+      title: '',
+      description: match[2].trim(),
+    }
+  }
+
+  if (typeof fact === 'object') {
+    const { label, value, description, title } = fact
+    const dateSource = fact.date || fact.year || null
+    let candidate = extractDateCandidate(dateSource)
+    let factDescription = typeof description === 'string'
+      ? description.trim()
+      : Array.isArray(description)
+        ? description.join(', ')
+        : ''
+    const valueText = Array.isArray(value) ? value.join(', ') : typeof value === 'string' ? value.trim() : ''
+
+    if (!candidate && typeof label === 'string' && isLikelyDateString(label)) {
+      candidate = extractDateCandidate(label)
+    }
+
+    if (!candidate && valueText) {
+      const match = valueText.match(/^([^:–-]+)[:–-]\s*(.+)$/)
+      if (match) {
+        const potentialDate = extractDateCandidate(match[1])
+        if (potentialDate) {
+          candidate = potentialDate
+          if (!factDescription) factDescription = match[2].trim()
+        }
+      }
+    }
+
+    if (!candidate) return null
+
+    if (!factDescription) factDescription = valueText
+
+    let factTitle = typeof title === 'string' ? title.trim() : ''
+    if (!factTitle && typeof label === 'string' && !isLikelyDateString(label)) {
+      factTitle = label.trim()
+    }
+
+    return {
+      id: fact.id || `quickfact-${index}`,
+      date: candidate.text,
+      sortKey: candidate.sortKey,
+      title: factTitle,
+      description: factDescription,
+    }
+  }
+
+  return null
+}
+
+function isLikelyDateString(value) {
+  if (!value) return false
+  return !!extractDateCandidate(value)
+}
+
+function extractDateCandidate(value) {
+  if (!value) return null
+  const raw = String(value).trim()
+  if (!raw) return null
+  const normalized = raw.replace(/^(?:c\.|ca\.|circa)\s+/i, '')
+
+  const isoMatch = normalized.match(/^(\d{4})[./-](\d{1,2})(?:[./-](\d{1,2}))?$/)
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch
+    const date = new Date(Number(year), Number(month) - 1, day ? Number(day) : 1)
+    return { text: raw, sortKey: date.getTime() }
+  }
+
+  const yearOnly = normalized.match(/^-?\d{3,4}$/)
+  if (yearOnly) {
+    const year = Number(yearOnly[0])
+    if (!Number.isNaN(year)) {
+      return { text: raw, sortKey: year * 12 * 31 }
+    }
+  }
+
+  const parsed = Date.parse(normalized)
+  if (!Number.isNaN(parsed)) {
+    return { text: raw, sortKey: parsed }
+  }
+
+  const firstYear = normalized.match(/(-?\d{3,4})/)
+  if (firstYear) {
+    const year = Number(firstYear[1])
+    if (!Number.isNaN(year)) {
+      return { text: raw, sortKey: year * 12 * 31 }
+    }
+  }
+
+  return null
 }
 
 async function loadEntries() {
@@ -938,6 +1161,108 @@ loadEntries()
 .tag-chips { margin-top: 8px; }
 .tag-chip { display:inline-block; padding:2px 8px; border:1px solid var(--primary-color); border-radius:999px; font-size:.85rem; margin-right:6px; cursor:pointer; }
 
+.wiki-section-heading {
+  grid-column: 1 / -1;
+  margin: 0 0 12px;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.wiki-timeline {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-top: 8px;
+}
+
+.related-entries {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  min-height: 160px;
+}
+
+.related-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.related-card:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.related-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.related-card__type {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.related-card__title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.related-card__summary {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  opacity: 0.85;
+  flex: 1;
+}
+
+.related-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related-card__tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
 /* Tooltip */
 .wiki-tooltip {
   position:fixed;
@@ -980,6 +1305,8 @@ loadEntries()
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
   .infobox { grid-column: 1; max-width: 100%; }
+  .wiki-timeline { margin-top: 16px; }
+  .related-grid { grid-template-columns: 1fr; }
   .wiki-tooltip { display:none; }
 }
 </style>
