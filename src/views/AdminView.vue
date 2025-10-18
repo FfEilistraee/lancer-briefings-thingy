@@ -885,22 +885,26 @@ function triggerDownload(content, filename) {
 }
 
 .admin-login {
+  position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
-  padding: 48px 0;
+  min-height: calc(100vh - 140px);
+  padding: 24px;
 }
 
 .admin-card {
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 32px;
-  max-width: 520px;
+  padding: 28px 32px;
+  max-width: 420px;
   width: 100%;
-  background: rgba(15, 18, 28, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  background: rgba(18, 22, 34, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(16px);
 }
 
 .admin-card__header {
