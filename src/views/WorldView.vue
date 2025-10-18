@@ -65,7 +65,7 @@
               <header
                 class="world-grid-card__header"
                 :class="{ 'world-grid-card__header--with-thumb': !!entry.thumbnail }"
-                :style="entry.thumbnail ? { '--world-card-thumb': `url(${entry.thumbnail})` } : null"
+                :style="getCardHeaderStyle(entry)"
               >
                 <p class="world-grid-card__type">{{ entry.type }}</p>
                 <h3 class="world-grid-card__title">{{ entry.name }}</h3>
@@ -116,31 +116,6 @@
               <Timeline :events="timelineEvents" />
             </section>
 
-            <section v-if="relatedEntries.length" class="related-entries">
-              <h3 class="wiki-section-heading">Related Entries</h3>
-              <div class="related-grid">
-                <article
-                  v-for="entry in relatedEntries"
-                  :key="entry.slug"
-                  class="related-card"
-                  role="button"
-                  tabindex="0"
-                  @click="openRelatedEntry(entry)"
-                  @keydown.enter.prevent="openRelatedEntry(entry)"
-                  @keydown.space.prevent="openRelatedEntry(entry)"
-                >
-                  <header class="related-card__header">
-                    <p class="related-card__type">{{ entry.type }}</p>
-                    <h4 class="related-card__title">{{ entry.name }}</h4>
-                  </header>
-                  <p v-if="entry.summary" class="related-card__summary">{{ entry.summary }}</p>
-                  <ul v-if="entry.tags && entry.tags.length" class="related-card__tags">
-                    <li v-for="tag in entry.tags" :key="tag" class="related-card__tag">{{ tag }}</li>
-                  </ul>
-                </article>
-              </div>
-            </section>
-
             <!-- Right infobox -->
             <aside class="infobox">
               <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
@@ -170,6 +145,31 @@
               </table>
             </aside>
           </article>
+
+          <section v-if="relatedEntries.length" class="related-entries">
+            <h3 class="wiki-section-heading">Related Entries</h3>
+            <div class="related-grid">
+              <article
+                v-for="entry in relatedEntries"
+                :key="entry.slug"
+                class="related-card"
+                role="button"
+                tabindex="0"
+                @click="openRelatedEntry(entry)"
+                @keydown.enter.prevent="openRelatedEntry(entry)"
+                @keydown.space.prevent="openRelatedEntry(entry)"
+              >
+                <header class="related-card__header">
+                  <p class="related-card__type">{{ entry.type }}</p>
+                  <h4 class="related-card__title">{{ entry.name }}</h4>
+                </header>
+                <p v-if="entry.summary" class="related-card__summary">{{ entry.summary }}</p>
+                <ul v-if="entry.tags && entry.tags.length" class="related-card__tags">
+                  <li v-for="tag in entry.tags" :key="tag" class="related-card__tag">{{ tag }}</li>
+                </ul>
+              </article>
+            </div>
+          </section>
         </div>
       </section>
     </Transition>
@@ -346,6 +346,15 @@ const relatedEntries = computed(() => {
     .slice(0, 8)
     .map(item => item.entry)
 })
+
+function getCardHeaderStyle(entry) {
+  if (!entry || !entry.thumbnail) return null
+  const raw = String(entry.thumbnail)
+  const escaped = raw.replace(/"/g, '\\"')
+  return {
+    backgroundImage: `linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), url("${escaped}")`,
+  }
+}
 
 const timelineEvents = computed(() => {
   if (!selectedEntry.value) return []
@@ -1216,8 +1225,7 @@ onUnmounted(() => {
 }
 .world-grid-card__header--with-thumb {
   position:relative;
-  background:linear-gradient(160deg, rgba(11,13,19,0.05) 10%, rgba(11,13,19,0.9) 100%);
-  background-image:linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), var(--world-card-thumb);
+  background-color:rgba(11,13,19,0.85);
   background-size:cover;
   background-position:center;
   min-height:140px;
@@ -1283,15 +1291,15 @@ onUnmounted(() => {
   width: 100%;
   max-width: none;
   margin: 50px 60px;
-  height: 714px;
-  max-height: calc(100vh - 190px);
-  transition: flex-basis 0.35s ease, width 0.35s ease, max-width 0.35s ease, margin-right 0.35s ease;
+  height: 814px;
+  max-height: calc(100vh - 90px);
+  transition: flex-basis 0.35s ease, width 0.35s ease, max-width 0.35s ease, margin-right 0.35s ease, height 0.35s ease;
 }
 
 #worldView.has-detail #world.section-container {
-  flex: 0 0 420px;
-  max-width: 420px;
-  width: 420px;
+  flex: 0 0 720px;
+  max-width: 720px;
+  width: 720px;
   margin-right: 20px;
 }
 
@@ -1501,6 +1509,18 @@ onUnmounted(() => {
   #world-detail.section-container {
     height: auto;
     max-height: none;
+  }
+  #world.section-container {
+    width: auto;
+    max-width: none;
+    flex: 1 1 auto;
+    margin: 30px 20px;
+  }
+  #worldView.has-detail #world.section-container {
+    flex: 1 1 auto;
+    width: auto;
+    max-width: none;
+    margin-right: 0;
   }
   #world-detail.section-container {
     width: auto;
