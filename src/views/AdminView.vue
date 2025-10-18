@@ -142,15 +142,15 @@
                 </section>
 
                 <section class="admin-panel">
-                  <header class="admin-panel__header--stack">
-                    <div>
-                      <h2>Quick facts &amp; timeline</h2>
-                      <p class="admin-panel__hint">
-                        Add bite-sized facts. Include a year or date to feed the timeline.
-                      </p>
-                    </div>
-                    <button type="button" class="admin-button" @click="addQuickFact">Add quick fact</button>
+                  <header>
+                    <h2>Quick facts &amp; timeline</h2>
+                    <p class="admin-panel__hint">
+                      Add bite-sized facts. Include a year or date to feed the timeline.
+                    </p>
                   </header>
+                  <div class="admin-panel__toolbar">
+                    <button type="button" class="admin-button" @click="addQuickFact">Add quick fact</button>
+                  </div>
                   <div v-if="!entryForm.quickFacts.length" class="admin-empty">No quick facts yet.</div>
                   <div
                     v-for="(fact, index) in entryForm.quickFacts"
@@ -184,15 +184,15 @@
                 </section>
 
                 <section class="admin-panel">
-                  <header class="admin-panel__header--stack">
-                    <div>
-                      <h2>Infobox fields</h2>
-                      <p class="admin-panel__hint">
-                        Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
-                      </p>
-                    </div>
-                    <button type="button" class="admin-button" @click="addMetaField">Add field</button>
+                  <header>
+                    <h2>Infobox fields</h2>
+                    <p class="admin-panel__hint">
+                      Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
+                    </p>
                   </header>
+                  <div class="admin-panel__toolbar">
+                    <button type="button" class="admin-button" @click="addMetaField">Add field</button>
+                  </div>
                   <div v-if="!entryForm.additionalFields.length" class="admin-empty">No extra fields defined.</div>
                   <div
                     v-for="(field, index) in entryForm.additionalFields"
@@ -306,7 +306,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch, onMounted } from 'vue'
+import { computed, reactive, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { slugify } from '@/utils/wiki'
 import { stringifyFrontMatter } from '@/utils/frontMatter'
 
@@ -385,8 +385,17 @@ watch(
 )
 
 onMounted(() => {
-  if (typeof window !== 'undefined' && window.sessionStorage?.getItem(SESSION_KEY) === 'true') {
-    isAuthenticated.value = true
+  if (typeof window !== 'undefined') {
+    if (window.sessionStorage?.getItem(SESSION_KEY) === 'true') {
+      isAuthenticated.value = true
+    }
+    document.getElementById('router-view-container')?.classList.add('admin-mode')
+  }
+})
+
+onBeforeUnmount(() => {
+  if (typeof window !== 'undefined') {
+    document.getElementById('router-view-container')?.classList.remove('admin-mode')
   }
 })
 
@@ -815,13 +824,30 @@ function triggerDownload(content, filename) {
 </script>
 
 <style scoped>
+:global(#router-view-container.admin-mode) {
+  width: calc(100vw - 90px);
+  max-width: none;
+  right: 0;
+}
+
 .admin-view {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  padding: 0 32px 48px 0;
+  padding: 24px 48px 64px 24px;
   box-sizing: border-box;
+}
+
+.admin-view::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(14px);
+  background: rgba(6, 10, 18, 0.7);
+  z-index: -1;
 }
 
 .admin-login {
@@ -1182,12 +1208,16 @@ function triggerDownload(content, filename) {
   opacity: 0.6;
 }
 
-.admin-panel__header--stack {
+.admin-panel__toolbar {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.admin-panel__toolbar .admin-button {
+  width: min(100%, 240px);
+  justify-content: center;
 }
 
 .admin-grid {
@@ -1252,6 +1282,10 @@ function triggerDownload(content, filename) {
   .admin-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .admin-panel__toolbar .admin-button {
+    width: 100%;
   }
 }
 </style>
