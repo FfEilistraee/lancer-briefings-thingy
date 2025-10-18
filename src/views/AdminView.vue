@@ -35,6 +35,19 @@
           <h1>Atlas Admin Console</h1>
           <p>Create and curate dossiers without touching the codebase.</p>
         </div>
+
+        <nav class="admin-header__nav" aria-label="Atlas sections">
+          <RouterLink
+            v-for="link in quickLinks"
+            :key="link.to"
+            :to="link.to"
+            class="admin-nav__link"
+            :class="{ active: currentPath.startsWith(link.to) }"
+          >
+            {{ link.label }}
+          </RouterLink>
+        </nav>
+
         <div class="admin-header__actions">
           <button type="button" class="admin-button" @click="logout">Sign out</button>
         </div>
@@ -96,8 +109,8 @@
             <h2>How it works</h2>
             <ul class="admin-steps">
               <li>
-                Use the right column for identity and body text, and the left column for the portrait, quick facts, and extra
-                infobox fields.
+                Draft the left column first for category, slug, summary, and body content. The right column mirrors the atlas
+                infobox with portrait, name, tags, extra fields, and timeline-friendly quick facts.
               </li>
               <li>
                 Add quick facts with years or dates to build the timeline, and comma separated tags so the atlas can surface
@@ -120,13 +133,70 @@
 
           <form class="admin-editor" @submit.prevent="saveEntry">
             <div class="admin-editor__columns">
+              <div class="admin-column admin-column--main">
+                <section class="admin-panel admin-panel--meta">
+                  <header>
+                    <h2>Atlas setup</h2>
+                    <p class="admin-panel__hint">Pick a category and slug before writing the entry.</p>
+                  </header>
+                  <div class="admin-grid admin-grid--meta">
+                    <label class="admin-field admin-field--full admin-field--stacked">
+                      <span>Category</span>
+                      <select v-model="entryForm.category">
+                        <option v-for="option in categoryOptions" :key="option.value" :value="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                      <span class="admin-field__hint">
+                        Files for this category live in <code>{{ categoryDirectoryHint }}</code> when you export them.
+                      </span>
+                    </label>
+                    <label class="admin-field">
+                      <span>Type</span>
+                      <input v-model.trim="entryForm.type" type="text" placeholder="Personnel File" />
+                    </label>
+                    <label class="admin-field">
+                      <span>Slug</span>
+                      <input
+                        v-model.trim="entryForm.slug"
+                        type="text"
+                        @input="onSlugInput"
+                        placeholder="director-vex"
+                        required
+                      />
+                    </label>
+                    <label class="admin-field admin-field--checkbox">
+                      <input v-model="entryForm.draft" type="checkbox" />
+                      <span>Mark as draft (hidden from atlas)</span>
+                    </label>
+                  </div>
+                </section>
+
+                <section class="admin-panel">
+                  <header>
+                    <h2>Summary &amp; body</h2>
+                    <p class="admin-panel__hint">Summary powers hover cards. The body accepts markdown and wiki links.</p>
+                  </header>
+                  <label class="admin-field admin-field--full">
+                    <span>Summary</span>
+                    <textarea v-model="entryForm.summary" rows="3" placeholder="One or two punchy sentences."></textarea>
+                  </label>
+                  <label class="admin-field admin-field--full">
+                    <span>Article body</span>
+                    <textarea
+                      v-model="entryForm.body"
+                      rows="12"
+                      placeholder="Write the dossier using markdown. Use [[Double Brackets]] for atlas links."
+                    ></textarea>
+                  </label>
+                </section>
+              </div>
+
               <div class="admin-column admin-column--aside">
                 <section class="admin-panel admin-panel--media">
                   <header>
-                    <h2>Portrait &amp; infobox shell</h2>
-                    <p class="admin-panel__hint">
-                      Drop in art for the dossier and start shaping the sidebar content first.
-                    </p>
+                    <h2>Portrait</h2>
+                    <p class="admin-panel__hint">Drop in art for the dossier’s sidebar frame.</p>
                   </header>
                   <div class="admin-image-preview" v-if="entryForm.thumbnail">
                     <img :src="entryForm.thumbnail" :alt="`${entryForm.name || 'Dossier'} portrait`" />
@@ -139,6 +209,53 @@
                       placeholder="/world/Vex.png"
                     />
                   </label>
+                </section>
+
+                <section class="admin-panel">
+                  <header>
+                    <h2>Display &amp; tags</h2>
+                    <p class="admin-panel__hint">Name the dossier and add comma separated tags for atlas search.</p>
+                  </header>
+                  <div class="admin-grid">
+                    <label class="admin-field admin-field--full">
+                      <span>Display name</span>
+                      <input v-model.trim="entryForm.name" type="text" placeholder="Director Vex" required />
+                    </label>
+                    <label class="admin-field admin-field--full">
+                      <span>Tags (comma separated)</span>
+                      <input v-model="entryForm.tagsInput" type="text" placeholder="Rustwatch-37, Orpheus Extraction" />
+                    </label>
+                  </div>
+                </section>
+
+                <section class="admin-panel">
+                  <header>
+                    <h2>Infobox fields</h2>
+                    <p class="admin-panel__hint">
+                      Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
+                    </p>
+                  </header>
+                  <div class="admin-panel__toolbar">
+                    <button type="button" class="admin-button" @click="addMetaField">Add field</button>
+                  </div>
+                  <div v-if="!entryForm.additionalFields.length" class="admin-empty">No extra fields defined.</div>
+                  <div
+                    v-for="(field, index) in entryForm.additionalFields"
+                    :key="field.id"
+                    class="admin-metafield"
+                  >
+                    <div class="admin-grid">
+                      <label class="admin-field">
+                        <span>Field key</span>
+                        <input v-model.trim="field.key" type="text" placeholder="aliases" />
+                      </label>
+                      <label class="admin-field admin-field--full">
+                        <span>Values</span>
+                        <textarea v-model="field.valuesText" rows="2" placeholder="Use one value per line"></textarea>
+                      </label>
+                    </div>
+                    <button type="button" class="admin-button link" @click="removeMetaField(index)">Remove field</button>
+                  </div>
                 </section>
 
                 <section class="admin-panel">
@@ -182,103 +299,6 @@
                     <button type="button" class="admin-button link" @click="removeQuickFact(index)">Remove fact</button>
                   </div>
                 </section>
-
-                <section class="admin-panel">
-                  <header>
-                    <h2>Infobox fields</h2>
-                    <p class="admin-panel__hint">
-                      Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
-                    </p>
-                  </header>
-                  <div class="admin-panel__toolbar">
-                    <button type="button" class="admin-button" @click="addMetaField">Add field</button>
-                  </div>
-                  <div v-if="!entryForm.additionalFields.length" class="admin-empty">No extra fields defined.</div>
-                  <div
-                    v-for="(field, index) in entryForm.additionalFields"
-                    :key="field.id"
-                    class="admin-metafield"
-                  >
-                    <div class="admin-grid">
-                      <label class="admin-field">
-                        <span>Field key</span>
-                        <input v-model.trim="field.key" type="text" placeholder="aliases" />
-                      </label>
-                      <label class="admin-field admin-field--full">
-                        <span>Values</span>
-                        <textarea v-model="field.valuesText" rows="2" placeholder="Use one value per line"></textarea>
-                      </label>
-                    </div>
-                    <button type="button" class="admin-button link" @click="removeMetaField(index)">Remove field</button>
-                  </div>
-                </section>
-              </div>
-
-              <div class="admin-column admin-column--main">
-                <section class="admin-panel">
-                  <header>
-                    <h2>Identity</h2>
-                    <p class="admin-panel__hint">Pick a category and describe the dossier.</p>
-                  </header>
-                  <div class="admin-grid">
-                    <label class="admin-field">
-                      <span>Category</span>
-                      <select v-model="entryForm.category">
-                        <option v-for="option in categoryOptions" :key="option.value" :value="option.value">
-                          {{ option.label }}
-                        </option>
-                      </select>
-                    </label>
-                    <label class="admin-field admin-field--checkbox">
-                      <input v-model="entryForm.draft" type="checkbox" />
-                      <span>Mark as draft (hidden from atlas)</span>
-                    </label>
-                    <label class="admin-field">
-                      <span>Display name</span>
-                      <input v-model.trim="entryForm.name" type="text" placeholder="Director Vex" required />
-                    </label>
-                    <label class="admin-field">
-                      <span>Slug</span>
-                      <input
-                        v-model.trim="entryForm.slug"
-                        type="text"
-                        @input="onSlugInput"
-                        placeholder="director-vex"
-                        required
-                      />
-                    </label>
-                    <label class="admin-field">
-                      <span>Type</span>
-                      <input v-model.trim="entryForm.type" type="text" placeholder="Personnel File" />
-                    </label>
-                    <label class="admin-field admin-field--full">
-                      <span>Tags (comma separated)</span>
-                      <input v-model="entryForm.tagsInput" type="text" placeholder="Rustwatch-37, Orpheus Extraction" />
-                    </label>
-                  </div>
-                  <p class="admin-panel__footnote">
-                    Files for this category live in <code>{{ categoryDirectoryHint }}</code> when you export them.
-                  </p>
-                </section>
-
-                <section class="admin-panel">
-                  <header>
-                    <h2>Summary &amp; body</h2>
-                    <p class="admin-panel__hint">Summary powers hover cards. The body accepts markdown and wiki links.</p>
-                  </header>
-                  <label class="admin-field admin-field--full">
-                    <span>Summary</span>
-                    <textarea v-model="entryForm.summary" rows="3" placeholder="One or two punchy sentences."></textarea>
-                  </label>
-                  <label class="admin-field admin-field--full">
-                    <span>Article body</span>
-                    <textarea
-                      v-model="entryForm.body"
-                      rows="12"
-                      placeholder="Write the dossier using markdown. Use [[Double Brackets]] for atlas links."
-                    ></textarea>
-                  </label>
-                </section>
               </div>
             </div>
 
@@ -307,6 +327,7 @@
 
 <script setup>
 import { computed, reactive, ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute } from 'vue-router'
 import { slugify } from '@/utils/wiki'
 import { stringifyFrontMatter } from '@/utils/frontMatter'
 
@@ -314,6 +335,17 @@ const ADMIN_ID = 'admin'
 const ADMIN_PASSPORT = '1234'
 const STORAGE_KEY = 'atlas-admin-entries'
 const SESSION_KEY = 'atlas-admin-session'
+
+const quickLinks = [
+  { to: '/admin', label: 'Admin' },
+  { to: '/world', label: 'Atlas' },
+  { to: '/status', label: 'Status' },
+  { to: '/pilots', label: 'Pilots' },
+  { to: '/events', label: 'Events' },
+]
+
+const route = useRoute()
+const currentPath = computed(() => route.path)
 
 const credentials = reactive({ id: '', passport: '' })
 const isAuthenticated = ref(false)
@@ -825,9 +857,12 @@ function triggerDownload(content, filename) {
 
 <style scoped>
 :global(#router-view-container.admin-mode) {
-  width: calc(100vw - 90px);
+  right: 24px;
+  bottom: 24px;
+  width: auto;
   max-width: none;
-  right: 0;
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .admin-view {
@@ -837,8 +872,9 @@ function triggerDownload(content, filename) {
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  padding: 24px 48px 64px 24px;
+  padding: 24px 24px 64px;
   box-sizing: border-box;
+  min-height: 100%;
 }
 
 .admin-view::before {
@@ -891,6 +927,15 @@ function triggerDownload(content, filename) {
   flex-direction: column;
   gap: 6px;
   font-size: 0.95rem;
+}
+
+.admin-field--stacked {
+  gap: 8px;
+}
+
+.admin-field__hint {
+  font-size: 0.8rem;
+  opacity: 0.65;
 }
 
 .admin-field input,
@@ -988,6 +1033,31 @@ function triggerDownload(content, filename) {
   gap: 16px;
 }
 
+.admin-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-nav__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(16, 20, 30, 0.7);
+  color: var(--text-color);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.admin-nav__link.active {
+  border-color: var(--primary-color);
+  background: rgba(30, 120, 170, 0.4);
+}
+
 .admin-header__actions {
   display: flex;
   gap: 12px;
@@ -1005,6 +1075,7 @@ function triggerDownload(content, filename) {
   grid-template-columns: minmax(260px, 320px) 1fr;
   gap: 24px;
   min-height: 0;
+  align-items: flex-start;
 }
 
 .admin-sidebar {
@@ -1138,8 +1209,8 @@ function triggerDownload(content, filename) {
 
 .admin-editor__columns {
   display: grid;
-  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
-  grid-template-areas: 'aside main';
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+  grid-template-areas: 'main aside';
   gap: 24px;
   align-items: flex-start;
 }
@@ -1224,6 +1295,10 @@ function triggerDownload(content, filename) {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.admin-grid--meta {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .admin-quickfact,
