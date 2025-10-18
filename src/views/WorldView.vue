@@ -1,9 +1,5 @@
 <template>
-  <div
-    id="worldView"
-    class="content-container"
-    :class="[{ animate: props.animate }, hasDetail ? 'has-detail' : 'no-detail']"
-  >
+  <div id="worldView" :class="{ animate: props.animate }" class="content-container">
     <!-- LIST / GLOSSARY -->
     <section id="world" class="section-container">
       <div class="section-header clipped-medium-backward">
@@ -257,8 +253,6 @@ const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
-
-const hasDetail = computed(() => !!selectedEntry.value)
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
@@ -1287,24 +1281,8 @@ onUnmounted(() => {
 
 /* Make the ENTRY reading area wide */
 #world.section-container {
-  flex: 1 1 auto;
-  width: 100%;
-  max-width: none;
-  margin: 50px 60px;
-  height: 814px;
-  max-height: calc(100vh - 90px);
-  transition: flex-basis 0.35s ease, width 0.35s ease, max-width 0.35s ease, margin-right 0.35s ease, height 0.35s ease;
-}
-
-#worldView.has-detail #world.section-container {
-  flex: 0 0 720px;
-  max-width: 720px;
-  width: 720px;
-  margin-right: 20px;
-}
-
-#worldView.has-detail #world-detail.section-container {
-  margin-left: 20px;
+  height: 714px;
+  max-height: calc(100vh - 190px);
 }
 
 #world-detail.section-container {
@@ -1515,12 +1493,6 @@ onUnmounted(() => {
     max-width: none;
     flex: 1 1 auto;
     margin: 30px 20px;
-  }
-  #worldView.has-detail #world.section-container {
-    flex: 1 1 auto;
-    width: auto;
-    max-width: none;
-    margin-right: 0;
   }
   #world-detail.section-container {
     width: auto;
