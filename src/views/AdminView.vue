@@ -782,6 +782,10 @@ function triggerDownload(content, filename) {
   flex-direction: column;
   gap: 24px;
   width: 100%;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  padding-right: 12px;
+  scrollbar-gutter: stable both-edges;
 }
 
 .admin-login {
@@ -911,6 +915,7 @@ function triggerDownload(content, filename) {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-height: 100%;
 }
 
 .admin-header {
@@ -937,6 +942,7 @@ function triggerDownload(content, filename) {
   display: grid;
   grid-template-columns: minmax(260px, 320px) 1fr;
   gap: 24px;
+  min-height: 0;
 }
 
 .admin-sidebar {

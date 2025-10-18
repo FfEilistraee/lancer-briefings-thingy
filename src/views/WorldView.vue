@@ -24,70 +24,39 @@
 
         <!-- Filters -->
         <div class="world-filters">
-          <div v-if="activeTopTags.length" class="world-filter-tags">
-            <span class="world-filter-tags__label">Top tags</span>
-            <button
-              v-for="tag in activeTopTags"
-              :key="tag"
-              type="button"
-              class="world-tag-chip"
-              @click="appendTagToQuery(tag)"
-            >
-              {{ tag }}
-            </button>
-          </div>
+          <div class="world-filter-bar" role="group" aria-label="Atlas layout controls">
+            <input
+              v-model="query"
+              type="text"
+              :placeholder="searchPlaceholder"
+              class="world-input"
+            />
 
-          <div class="world-filter-controls">
-            <div class="world-toggle-group">
-              <label class="world-toggle">
-                <input v-model="filters.hasSummary" type="checkbox" />
-                <span>Has summary</span>
-              </label>
-              <label class="world-toggle">
-                <input v-model="filters.hasQuickFacts" type="checkbox" />
-                <span>Has quick facts</span>
-              </label>
-            </div>
-
-            <div class="world-control-bar" role="group" aria-label="Atlas layout controls">
-              <label class="world-sort">
-                <span class="world-sort__label">Sort</span>
-                <select v-model="sortMode" class="world-select">
-                  <option v-for="option in sortOptions" :key="option.value" :value="option.value">
-                    {{ option.label }}
-                  </option>
-                </select>
-              </label>
-
-              <div class="world-layout-toggle" role="group" aria-label="Switch entry layout">
-                <button
-                  type="button"
-                  class="world-layout-toggle__button"
-                  :class="{ active: layoutMode === 'list' }"
-                  :aria-pressed="layoutMode === 'list'"
-                  @click="layoutMode = 'list'"
-                >
-                  List
-                </button>
-                <button
-                  type="button"
-                  class="world-layout-toggle__button"
-                  :class="{ active: layoutMode === 'grid' }"
-                  :aria-pressed="layoutMode === 'grid'"
-                  @click="layoutMode = 'grid'"
-                >
-                  Grid
-                </button>
-              </div>
+            <div class="world-layout-toggle" role="group" aria-label="Switch entry layout">
+              <button
+                type="button"
+                class="world-layout-toggle__button"
+                :class="{ active: layoutMode === 'list' }"
+                :aria-pressed="layoutMode === 'list'"
+                @click="layoutMode = 'list'"
+              >
+                List
+              </button>
+              <button
+                type="button"
+                class="world-layout-toggle__button"
+                :class="{ active: layoutMode === 'grid' }"
+                :aria-pressed="layoutMode === 'grid'"
+                @click="layoutMode = 'grid'"
+              >
+                Grid
+              </button>
             </div>
           </div>
 
-          <input
-            v-model="query"
-            type="text"
-            :placeholder="searchPlaceholder"
-            class="world-input"
-          />
+          <p class="world-filter-hint">
+            Tip: type <span class="world-filter-hash">#tag</span> to jump straight to dossiers with that tag.
+          </p>
         </div>
 
         <div
@@ -256,7 +225,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, reactive, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
@@ -308,33 +277,9 @@ const codexEntries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
-const filters = reactive({ hasSummary: false, hasQuickFacts: false })
-const sortMode = ref('name-asc')
 const layoutMode = ref('list')
 
-const sortOptions = [
-  { value: 'name-asc', label: 'Name (A → Z)' },
-  { value: 'name-desc', label: 'Name (Z → A)' },
-  { value: 'type', label: 'Type' },
-  { value: 'tag-count', label: 'Tag density' },
-]
-
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
-
-const sortComparators = {
-  'name-asc': (a, b) => collator.compare(a.name || '', b.name || ''),
-  'name-desc': (a, b) => collator.compare(b.name || '', a.name || ''),
-  type: (a, b) => {
-    const typeCompare = collator.compare(a.type || '', b.type || '')
-    if (typeCompare !== 0) return typeCompare
-    return collator.compare(a.name || '', b.name || '')
-  },
-  'tag-count': (a, b) => {
-    const countDiff = (Array.isArray(b.tags) ? b.tags.length : 0) - (Array.isArray(a.tags) ? a.tags.length : 0)
-    if (countDiff !== 0) return countDiff
-    return collator.compare(a.name || '', b.name || '')
-  },
-}
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
@@ -349,32 +294,51 @@ const slugIndex = computed(() => {
 
 const allEntries = computed(() => [...entries.value, ...codexEntries.value])
 
+const TAG_TOKEN_PATTERN = /#[^\s#]+/g
+
 const filteredEntries = computed(() => {
-  const q = query.value.trim().toLowerCase()
+  const raw = query.value.trim()
+  const lower = raw.toLowerCase()
+  const tagTokens = lower.match(TAG_TOKEN_PATTERN) || []
+  const tagFilters = tagTokens.map(token => token.slice(1)).filter(Boolean)
+  const plainQuery = lower.replace(TAG_TOKEN_PATTERN, ' ').trim()
+
   return entries.value
     .filter(e => e.category === activeTab.value)
     .filter(e => {
-      if (filters.hasSummary) {
-        const summaryText = typeof e.summary === 'string' ? e.summary.trim() : ''
-        if (!summaryText) return false
-      }
-      if (filters.hasQuickFacts) {
-        if (!Array.isArray(e.quickFacts) || !e.quickFacts.length) return false
-      }
-      if (!q) return true
+      if (!matchesTagFilters(e, tagFilters)) return false
+      if (!plainQuery) return true
       const searchable = [e.name, e.type, ...(e.tags || []), e.content]
       Object.entries(e).forEach(([k, v]) => {
         if (!BASE_KEYS.has(k) && v) searchable.push(Array.isArray(v) ? v.join(' ') : String(v))
       })
-      return searchable.join(' ').toLowerCase().includes(q)
+      return searchable.join(' ').toLowerCase().includes(plainQuery)
     })
 })
 
 const visibleEntries = computed(() => {
-  const entries = [...filteredEntries.value]
-  const comparator = sortComparators[sortMode.value] || sortComparators['name-asc']
-  return entries.sort((a, b) => comparator(a, b))
+  return [...filteredEntries.value].sort((a, b) => collator.compare(a.name || '', b.name || ''))
 })
+
+function matchesTagFilters(entry, tagFilters) {
+  if (!tagFilters.length) return true
+  const variants = new Set()
+  ;(entry.tags || []).forEach(tag => {
+    const base = String(tag || '').trim().toLowerCase()
+    if (!base) return
+    variants.add(base)
+    const slug = slugify(base)
+    if (slug) {
+      variants.add(slug)
+      const slugCompact = slug.replace(/-/g, '')
+      if (slugCompact) variants.add(slugCompact)
+    }
+    const compact = base.replace(/[^a-z0-9]/g, '')
+    if (compact) variants.add(compact)
+  })
+  if (!variants.size) return false
+  return tagFilters.every(filter => variants.has(filter))
+}
 
 const relatedEntries = computed(() => {
   if (!selectedEntry.value) return []
@@ -409,36 +373,12 @@ const timelineEvents = computed(() => {
   return buildTimelineFromFacts(selectedEntry.value.quickFacts)
 })
 
-const topTagsByCategory = computed(() => {
-  const map = {}
-  entries.value.forEach(entry => {
-    if (!entry.category) return
-    if (!map[entry.category]) map[entry.category] = {}
-    ;(entry.tags || []).forEach(tag => {
-      const cleaned = (tag || '').trim()
-      if (!cleaned) return
-      map[entry.category][cleaned] = (map[entry.category][cleaned] || 0) + 1
-    })
-  })
-  const result = {}
-  Object.entries(map).forEach(([category, tagCounts]) => {
-    const sorted = Object.entries(tagCounts)
-      .sort((a, b) => {
-        if (b[1] !== a[1]) return b[1] - a[1]
-        return a[0].localeCompare(b[0])
-      })
-      .slice(0, 8)
-      .map(([tag]) => tag)
-    result[category] = sorted
-  })
-  return result
-})
-
-const activeTopTags = computed(() => topTagsByCategory.value[activeTab.value] || [])
-
 const activeTabConfig = computed(() => TAB_CONFIG.find(t => t.value === activeTab.value) || TAB_CONFIG[0])
 
-const searchPlaceholder = computed(() => activeTabConfig.value?.placeholder || 'Search the archive…')
+const searchPlaceholder = computed(() => {
+  const base = activeTabConfig.value?.placeholder || 'Search the archive…'
+  return `${base} (type #tag to filter)`
+})
 
 const tabDirectoryHint = computed(() => activeTabConfig.value?.directory || 'src/assets/world')
 
@@ -531,10 +471,13 @@ function showTooltipForSlug(slug, position) {
 function appendTagToQuery(tag) {
   const cleaned = (tag || '').trim()
   if (!cleaned) return
+  const token = `#${slugify(cleaned)}`
   const current = query.value.trim()
-  const tokens = current ? current.split(/\s+/).map(t => t.toLowerCase()) : []
-  if (tokens.includes(cleaned.toLowerCase())) return
-  query.value = current ? `${current} ${cleaned}` : cleaned
+  const tokens = current ? current.split(/\s+/) : []
+  const normalized = tokens.map(t => t.toLowerCase())
+  if (normalized.includes(token.toLowerCase())) return
+  const nextTokens = [...tokens, token].filter(Boolean)
+  query.value = nextTokens.join(' ').trim()
 }
 
 function openRelatedEntry(entry) {
@@ -1169,31 +1112,31 @@ onUnmounted(() => {
 <style scoped>
 /* Tabs */
 .world-tabs {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
   width:100%;
   margin-bottom:16px;
 }
 .world-tab {
-  position:relative;
-  display:flex;
+  display:inline-flex;
   align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  width:100%;
-  padding:12px 18px;
-  border:1px solid transparent;
-  border-radius:16px;
+  gap:8px;
+  padding:6px 14px;
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:999px;
   background:rgba(255,255,255,0.05);
   color:var(--text-color);
-  letter-spacing:0.06em;
+  letter-spacing:0.08em;
   text-transform:uppercase;
-  font-size:0.78rem;
+  font-size:0.72rem;
   cursor:pointer;
   transition:all 0.2s ease;
 }
-.world-tab:hover { border-color:var(--primary-color); background:rgba(255,255,255,0.08); }
+.world-tab:hover {
+  border-color:var(--primary-color);
+  background:rgba(255,255,255,0.12);
+}
 .world-tab.active {
   border-color:var(--primary-color);
   background:var(--primary-color);
@@ -1201,12 +1144,12 @@ onUnmounted(() => {
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 .world-tab-count {
-  padding:4px 10px;
+  padding:2px 8px;
   border-radius:999px;
   background:rgba(0,0,0,0.35);
   font-weight:600;
-  font-size:0.7rem;
-  letter-spacing:0.08em;
+  font-size:0.65rem;
+  letter-spacing:0.1em;
 }
 .world-tab.active .world-tab-count {
   background:rgba(0,0,0,0.15);
@@ -1217,92 +1160,21 @@ onUnmounted(() => {
   width:100%;
   margin-bottom:12px;
 }
-.world-filter-tags {
+.world-filter-bar {
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
   align-items:center;
-  margin-bottom:10px;
+  gap:12px;
 }
-.world-filter-tags__label {
+.world-filter-hint {
+  margin-top:6px;
   font-size:0.72rem;
   letter-spacing:0.12em;
   text-transform:uppercase;
-  opacity:0.7;
-  margin-right:4px;
+  opacity:0.6;
 }
-.world-filter-controls {
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:12px;
-  margin-bottom:10px;
-}
-.world-tag-chip {
-  padding:4px 12px;
-  border-radius:999px;
-  border:1px solid var(--primary-color);
-  background:rgba(255,255,255,0.06);
-  color:var(--text-color);
-  font-size:0.78rem;
-  letter-spacing:0.04em;
-  cursor:pointer;
-  transition:background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-.world-tag-chip:hover {
-  background:var(--primary-color);
-  color:#0b0d13;
-  transform:translateY(-1px);
-}
-.world-toggle-group {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-}
-.world-toggle {
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-size:0.78rem;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  opacity:0.85;
-}
-.world-toggle input[type="checkbox"] {
-  width:16px;
-  height:16px;
-  accent-color:var(--primary-color);
-}
-.world-control-bar {
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-left:auto;
-}
-.world-sort {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:0.72rem;
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-  opacity:0.8;
-}
-.world-sort__label {
-  white-space:nowrap;
-}
-.world-select {
-  min-width:160px;
-  padding:6px 10px;
-  border:1px solid rgba(255,255,255,0.2);
-  border-radius:8px;
-  background:var(--secondary-color);
-  color:var(--text-color);
-  font-size:0.85rem;
-}
-.world-select:focus-visible {
-  outline:2px solid var(--primary-color);
-  outline-offset:2px;
+.world-filter-hash {
+  color:var(--primary-color);
 }
 .world-layout-toggle {
   display:inline-flex;
@@ -1311,6 +1183,8 @@ onUnmounted(() => {
   border-radius:999px;
   overflow:hidden;
   background:rgba(0,0,0,0.2);
+  flex-shrink:0;
+  margin-left:auto;
 }
 .world-layout-toggle__button {
   padding:6px 12px;
@@ -1336,9 +1210,13 @@ onUnmounted(() => {
   outline-offset:2px;
 }
 .world-input {
-  padding:6px 10px; background:var(--secondary-color);
-  border:1px solid var(--primary-color); color:var(--text-color);
-  width:100%;
+  flex:1 1 240px;
+  min-width:0;
+  padding:6px 10px;
+  background:var(--secondary-color);
+  border:1px solid var(--primary-color);
+  color:var(--text-color);
+  border-radius:8px;
 }
 .world-grid {
   display:grid;
