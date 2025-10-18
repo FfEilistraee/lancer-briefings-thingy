@@ -28,34 +28,13 @@
 
         <!-- Filters -->
         <div class="world-filters">
-          <div class="world-filter-bar" role="group" aria-label="Atlas layout controls">
+          <div class="world-filter-bar" role="group" aria-label="Atlas search controls">
             <input
               v-model="query"
               type="text"
               :placeholder="searchPlaceholder"
               class="world-input"
             />
-
-            <div class="world-layout-toggle" role="group" aria-label="Switch entry layout">
-              <button
-                type="button"
-                class="world-layout-toggle__button"
-                :class="{ active: layoutMode === 'list' }"
-                :aria-pressed="layoutMode === 'list'"
-                @click="layoutMode = 'list'"
-              >
-                List
-              </button>
-              <button
-                type="button"
-                class="world-layout-toggle__button"
-                :class="{ active: layoutMode === 'grid' }"
-                :aria-pressed="layoutMode === 'grid'"
-                @click="layoutMode = 'grid'"
-              >
-                Grid
-              </button>
-            </div>
           </div>
 
           <p class="world-filter-hint">
@@ -72,16 +51,7 @@
             No {{ emptyNoun }} logged yet. Drop a new markdown file inside
             <code>{{ tabDirectoryHint }}</code> and reload.
           </p>
-          <template v-if="layoutMode === 'list'">
-            <WorldEntry
-              v-for="entry in visibleEntries"
-              :key="entry.slug"
-              :entry="entry"
-              :animate="props.animate"
-              @select-entry="selectEntry"
-            />
-          </template>
-          <div v-else class="world-grid" role="list">
+          <div class="world-grid" role="list">
             <article
               v-for="entry in visibleEntries"
               :key="entry.slug"
@@ -92,7 +62,11 @@
               @keydown.enter.prevent="selectEntry(entry)"
               @keydown.space.prevent="selectEntry(entry)"
             >
-              <header class="world-grid-card__header">
+              <header
+                class="world-grid-card__header"
+                :class="{ 'world-grid-card__header--with-thumb': !!entry.thumbnail }"
+                :style="entry.thumbnail ? { '--world-card-thumb': `url(${entry.thumbnail})` } : null"
+              >
                 <p class="world-grid-card__type">{{ entry.type }}</p>
                 <h3 class="world-grid-card__title">{{ entry.name }}</h3>
               </header>
@@ -107,96 +81,98 @@
     </section>
 
     <!-- DETAILS / ARTICLE -->
-    <section v-if="selectedEntry" id="world-detail" class="section-container">
-      <div class="section-header-wrapper">
-        <div class="section-header clipped-medium-backward-events-logs">
-          <img src="/icons/conversation.svg" />
-          <h1>FILE</h1>
+    <Transition name="world-detail">
+      <section v-if="selectedEntry" id="world-detail" class="section-container">
+        <div class="section-header-wrapper">
+          <div class="section-header clipped-medium-backward-events-logs">
+            <img src="/icons/conversation.svg" />
+            <h1>FILE</h1>
+          </div>
+          <div class="rhombus-back">&nbsp;</div>
         </div>
-        <div class="rhombus-back">&nbsp;</div>
-      </div>
 
-      <!-- Make the reading area WIDE with `world-wide` -->
-      <div class="section-content-container extra-margins world-wide">
-        <!-- WIDE ARTICLE + INFOBOX (Wikipedia style) -->
-        <article class="wiki-article">
-          <header class="wiki-header">
-            <h1 class="entry-type">
-              {{ selectedEntry.type }}
-              <span v-if="selectedEntry.tags && selectedEntry.tags.length"> // {{ selectedEntry.tags.join(', ') }}</span>
-            </h1>
-            <h2 class="entry-title">{{ selectedEntry.name }}</h2>
-          </header>
+        <!-- Make the reading area WIDE with `world-wide` -->
+        <div class="section-content-container extra-margins world-wide">
+          <!-- WIDE ARTICLE + INFOBOX (Wikipedia style) -->
+          <article class="wiki-article">
+            <header class="wiki-header">
+              <h1 class="entry-type">
+                {{ selectedEntry.type }}
+                <span v-if="selectedEntry.tags && selectedEntry.tags.length"> // {{ selectedEntry.tags.join(', ') }}</span>
+              </h1>
+              <h2 class="entry-title">{{ selectedEntry.name }}</h2>
+            </header>
 
-          <!-- Main body -->
-          <section class="wiki-body" @click="handleMarkdownClick">
-            <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
-            <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
-              <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="appendTagToQuery(t)">{{ t }}</span>
-            </div>
-          </section>
+            <!-- Main body -->
+            <section class="wiki-body" @click="handleMarkdownClick">
+              <VueMarkdownIt :source="selectedEntry.content" class="markdown" />
+              <div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
+                <span class="tag-chip" v-for="t in selectedEntry.tags" :key="t" @click="appendTagToQuery(t)">{{ t }}</span>
+              </div>
+            </section>
 
-          <section v-if="timelineEvents.length" class="wiki-timeline">
-            <h3 class="wiki-section-heading">Timeline</h3>
-            <Timeline :events="timelineEvents" />
-          </section>
+            <section v-if="timelineEvents.length" class="wiki-timeline">
+              <h3 class="wiki-section-heading">Timeline</h3>
+              <Timeline :events="timelineEvents" />
+            </section>
 
-          <section v-if="relatedEntries.length" class="related-entries">
-            <h3 class="wiki-section-heading">Related Entries</h3>
-            <div class="related-grid">
-              <article
-                v-for="entry in relatedEntries"
-                :key="entry.slug"
-                class="related-card"
-                role="button"
-                tabindex="0"
-                @click="openRelatedEntry(entry)"
-                @keydown.enter.prevent="openRelatedEntry(entry)"
-                @keydown.space.prevent="openRelatedEntry(entry)"
-              >
-                <header class="related-card__header">
-                  <p class="related-card__type">{{ entry.type }}</p>
-                  <h4 class="related-card__title">{{ entry.name }}</h4>
-                </header>
-                <p v-if="entry.summary" class="related-card__summary">{{ entry.summary }}</p>
-                <ul v-if="entry.tags && entry.tags.length" class="related-card__tags">
-                  <li v-for="tag in entry.tags" :key="tag" class="related-card__tag">{{ tag }}</li>
-                </ul>
-              </article>
-            </div>
-          </section>
+            <section v-if="relatedEntries.length" class="related-entries">
+              <h3 class="wiki-section-heading">Related Entries</h3>
+              <div class="related-grid">
+                <article
+                  v-for="entry in relatedEntries"
+                  :key="entry.slug"
+                  class="related-card"
+                  role="button"
+                  tabindex="0"
+                  @click="openRelatedEntry(entry)"
+                  @keydown.enter.prevent="openRelatedEntry(entry)"
+                  @keydown.space.prevent="openRelatedEntry(entry)"
+                >
+                  <header class="related-card__header">
+                    <p class="related-card__type">{{ entry.type }}</p>
+                    <h4 class="related-card__title">{{ entry.name }}</h4>
+                  </header>
+                  <p v-if="entry.summary" class="related-card__summary">{{ entry.summary }}</p>
+                  <ul v-if="entry.tags && entry.tags.length" class="related-card__tags">
+                    <li v-for="tag in entry.tags" :key="tag" class="related-card__tag">{{ tag }}</li>
+                  </ul>
+                </article>
+              </div>
+            </section>
 
-          <!-- Right infobox -->
-          <aside class="infobox">
-            <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
-            <table class="infobox-table">
-              <tbody>
-                <tr v-for="row in infoboxRows" :key="row.label">
-                  <th class="infobox-label">{{ row.label }}</th>
-                  <td class="infobox-value">
-                    <template v-if="row.tokens.length">
-                      <template v-for="(token, index) in row.tokens" :key="index">
-                        <template v-if="token.slug">
-                          <a
-                            :href="`wiki:${token.slug}`"
-                            :class="['wiki-link', token.resolved ? 'wiki-link-resolved' : 'wiki-link-unresolved']"
-                            @click.prevent="navigateToWikiSlug(token.slug, $event)"
-                          >
-                            {{ token.text }}
-                          </a>
+            <!-- Right infobox -->
+            <aside class="infobox">
+              <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
+              <table class="infobox-table">
+                <tbody>
+                  <tr v-for="row in infoboxRows" :key="row.label">
+                    <th class="infobox-label">{{ row.label }}</th>
+                    <td class="infobox-value">
+                      <template v-if="row.tokens.length">
+                        <template v-for="(token, index) in row.tokens" :key="index">
+                          <template v-if="token.slug">
+                            <a
+                              :href="`wiki:${token.slug}`"
+                              :class="['wiki-link', token.resolved ? 'wiki-link-resolved' : 'wiki-link-unresolved']"
+                              @click.prevent="navigateToWikiSlug(token.slug, $event)"
+                            >
+                              {{ token.text }}
+                            </a>
+                          </template>
+                          <template v-else>{{ token.text }}</template>
+                          <span v-if="index < row.tokens.length - 1">{{ row.separator }}</span>
                         </template>
-                        <template v-else>{{ token.text }}</template>
-                        <span v-if="index < row.tokens.length - 1">{{ row.separator }}</span>
                       </template>
-                    </template>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </aside>
-        </article>
-      </div>
-    </section>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </aside>
+          </article>
+        </div>
+      </section>
+    </Transition>
 
     <transition name="tooltip-fade">
       <div
@@ -232,7 +208,6 @@
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
-import WorldEntry from '@/components/WorldEntry.vue'
 import Timeline from '@/components/Timeline.vue'
 import { slugify, transformWikiLinks, transformWikiImages, isWikiHref, extractWikiSlug } from '@/utils/wiki'
 import { parseFrontMatter } from '@/utils/frontMatter'
@@ -281,8 +256,6 @@ const codexEntries = ref([])
 const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
-const layoutMode = ref('list')
-
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
 
 const hasDetail = computed(() => !!selectedEntry.value)
@@ -1197,39 +1170,6 @@ onUnmounted(() => {
 .world-filter-hash {
   color:var(--primary-color);
 }
-.world-layout-toggle {
-  display:inline-flex;
-  align-items:center;
-  border:1px solid rgba(255,255,255,0.2);
-  border-radius:999px;
-  overflow:hidden;
-  background:rgba(0,0,0,0.2);
-  flex-shrink:0;
-  margin-left:auto;
-}
-.world-layout-toggle__button {
-  padding:6px 12px;
-  font-size:0.78rem;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--text-color);
-  background:transparent;
-  border:none;
-  cursor:pointer;
-  transition:background 0.2s ease, color 0.2s ease;
-}
-.world-layout-toggle__button + .world-layout-toggle__button {
-  border-left:1px solid rgba(255,255,255,0.2);
-}
-.world-layout-toggle__button.active,
-.world-layout-toggle__button:hover {
-  background:var(--primary-color);
-  color:#0b0d13;
-}
-.world-layout-toggle__button:focus-visible {
-  outline:2px solid var(--primary-color);
-  outline-offset:2px;
-}
 .world-input {
   flex:1 1 240px;
   min-width:0;
@@ -1248,13 +1188,15 @@ onUnmounted(() => {
 .world-grid-card {
   display:flex;
   flex-direction:column;
-  gap:10px;
-  padding:14px 16px;
+  gap:12px;
+  padding:16px;
   border:1px solid rgba(255,255,255,0.12);
-  border-radius:14px;
+  border-radius:16px;
   background:rgba(255,255,255,0.04);
   cursor:pointer;
-  transition:border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  transition:border-color 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  position:relative;
+  overflow:hidden;
 }
 .world-grid-card:hover,
 .world-grid-card:focus-visible {
@@ -1266,7 +1208,34 @@ onUnmounted(() => {
 .world-grid-card__header {
   display:flex;
   flex-direction:column;
-  gap:2px;
+  gap:4px;
+  border-radius:12px;
+  padding:14px 14px 12px;
+  background:rgba(255,255,255,0.05);
+  transition:background 0.35s ease, color 0.35s ease;
+}
+.world-grid-card__header--with-thumb {
+  position:relative;
+  background:linear-gradient(160deg, rgba(11,13,19,0.05) 10%, rgba(11,13,19,0.9) 100%);
+  background-image:linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), var(--world-card-thumb);
+  background-size:cover;
+  background-position:center;
+  min-height:140px;
+  justify-content:flex-end;
+  color:#fff;
+  padding:16px 16px 14px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.world-grid-card__header--with-thumb::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(11,13,19,0) 35%, rgba(11,13,19,0.8) 100%);
+  z-index:0;
+}
+.world-grid-card__header--with-thumb > * {
+  position:relative;
+  z-index:1;
 }
 .world-grid-card__type {
   font-size:0.72rem;
@@ -1274,9 +1243,15 @@ onUnmounted(() => {
   text-transform:uppercase;
   opacity:0.75;
 }
+.world-grid-card__header--with-thumb .world-grid-card__type {
+  opacity:0.8;
+}
 .world-grid-card__title {
   font-size:1.05rem;
   margin:0;
+}
+.world-grid-card__header--with-thumb .world-grid-card__title {
+  text-shadow:0 2px 8px rgba(6,8,14,0.5);
 }
 .world-grid-card__summary {
   font-size:0.9rem;
@@ -1310,6 +1285,7 @@ onUnmounted(() => {
   margin: 50px 60px;
   height: 714px;
   max-height: calc(100vh - 190px);
+  transition: flex-basis 0.35s ease, width 0.35s ease, max-width 0.35s ease, margin-right 0.35s ease;
 }
 
 #worldView.has-detail #world.section-container {
@@ -1330,6 +1306,7 @@ onUnmounted(() => {
   min-width: 0;
   height: 714px;
   max-height: calc(100vh - 190px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 #world-detail .section-content-container {
   padding: 32px 36px;
@@ -1398,6 +1375,17 @@ onUnmounted(() => {
   border-radius: 14px;
   padding: 18px 20px;
   margin-top: 8px;
+}
+
+.world-detail-enter-from,
+.world-detail-leave-to {
+  opacity: 0;
+  transform: translateX(36px);
+}
+
+.world-detail-enter-active,
+.world-detail-leave-active {
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .related-entries {
