@@ -48,7 +48,19 @@
 
       <div v-else class="admin-workspace">
         <aside class="admin-sidebar">
-          <button type="button" class="admin-button primary" @click="startNewEntry">New entry</button>
+          <div class="admin-new-entry">
+            <label class="admin-field admin-field--stacked admin-field--full">
+              <span>Start a new draft</span>
+              <select v-model="newEntryCategory">
+                <option v-for="option in newEntryOptions" :key="option.value" :value="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </label>
+            <button type="button" class="admin-button primary admin-new-entry__button" @click="startNewEntry()">
+              New {{ newEntryLabel }}
+            </button>
+          </div>
 
           <section class="admin-sidebar__section">
             <h2>Saved drafts</h2>
@@ -353,6 +365,10 @@ const categoryOptions = [
   { value: 'custom', label: 'Local draft (custom)', directory: 'Local drafts only' },
 ]
 
+const newEntryCategory = ref('npcs')
+const newEntryOptions = computed(() => categoryOptions.filter(option => option.value !== 'custom'))
+const newEntryLabel = computed(() => labelForNewEntry(newEntryCategory.value))
+
 const entryForm = reactive(createEmptyForm())
 const slugTouched = ref(false)
 
@@ -418,8 +434,10 @@ function logout() {
   }
 }
 
-function startNewEntry() {
-  Object.assign(entryForm, createEmptyForm())
+function startNewEntry(category = newEntryCategory.value) {
+  const resolvedCategory = category || 'npcs'
+  Object.assign(entryForm, createEmptyForm(resolvedCategory))
+  newEntryCategory.value = resolvedCategory
   slugTouched.value = false
   formErrors.value = []
   statusMessage.value = ''
@@ -747,13 +765,13 @@ function parseFieldValues(text) {
     .filter(Boolean)
 }
 
-function createEmptyForm() {
+function createEmptyForm(category = 'npcs') {
   return {
     id: null,
-    category: 'npcs',
+    category,
     name: '',
     slug: '',
-    type: defaultTypeForCategory('npcs'),
+    type: defaultTypeForCategory(category),
     thumbnail: '',
     tagsInput: '',
     summary: '',
@@ -786,6 +804,25 @@ function createMetaField(initial = {}) {
     id: generateId(),
     key: initial.key || '',
     valuesText: values.join('\n'),
+  }
+}
+
+function labelForNewEntry(category) {
+  switch (category) {
+    case 'npcs':
+      return 'Character'
+    case 'factions':
+      return 'Faction'
+    case 'planets':
+      return 'World'
+    case 'stations':
+      return 'Station'
+    case 'terms':
+      return 'Term'
+    case 'custom':
+      return 'Entry'
+    default:
+      return 'Entry'
   }
 }
 
@@ -1045,6 +1082,16 @@ function triggerDownload(content, filename) {
   background: rgba(12, 15, 24, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.08);
   height: fit-content;
+}
+
+.admin-new-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-new-entry__button {
+  width: 100%;
 }
 
 .admin-sidebar__section {
