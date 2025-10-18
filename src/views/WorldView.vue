@@ -37,15 +37,49 @@
             </button>
           </div>
 
-          <div class="world-toggle-group">
-            <label class="world-toggle">
-              <input v-model="filters.hasSummary" type="checkbox" />
-              <span>Has summary</span>
-            </label>
-            <label class="world-toggle">
-              <input v-model="filters.hasQuickFacts" type="checkbox" />
-              <span>Has quick facts</span>
-            </label>
+          <div class="world-filter-controls">
+            <div class="world-toggle-group">
+              <label class="world-toggle">
+                <input v-model="filters.hasSummary" type="checkbox" />
+                <span>Has summary</span>
+              </label>
+              <label class="world-toggle">
+                <input v-model="filters.hasQuickFacts" type="checkbox" />
+                <span>Has quick facts</span>
+              </label>
+            </div>
+
+            <div class="world-control-bar" role="group" aria-label="Atlas layout controls">
+              <label class="world-sort">
+                <span class="world-sort__label">Sort</span>
+                <select v-model="sortMode" class="world-select">
+                  <option v-for="option in sortOptions" :key="option.value" :value="option.value">
+                    {{ option.label }}
+                  </option>
+                </select>
+              </label>
+
+              <div class="world-layout-toggle" role="group" aria-label="Switch entry layout">
+                <button
+                  type="button"
+                  class="world-layout-toggle__button"
+                  :class="{ active: layoutMode === 'list' }"
+                  :aria-pressed="layoutMode === 'list'"
+                  @click="layoutMode = 'list'"
+                >
+                  List
+                </button>
+                <button
+                  type="button"
+                  class="world-layout-toggle__button"
+                  :class="{ active: layoutMode === 'grid' }"
+                  :aria-pressed="layoutMode === 'grid'"
+                  @click="layoutMode = 'grid'"
+                >
+                  Grid
+                </button>
+              </div>
+            </div>
           </div>
 
           <input
@@ -65,13 +99,36 @@
             No {{ emptyNoun }} logged yet. Drop a new markdown file inside
             <code>{{ tabDirectoryHint }}</code> and reload.
           </p>
-          <WorldEntry
-            v-for="entry in visibleEntries"
-            :key="entry.slug"
-            :entry="entry"
-            :animate="props.animate"
-            @select-entry="selectEntry"
-          />
+          <template v-if="layoutMode === 'list'">
+            <WorldEntry
+              v-for="entry in visibleEntries"
+              :key="entry.slug"
+              :entry="entry"
+              :animate="props.animate"
+              @select-entry="selectEntry"
+            />
+          </template>
+          <div v-else class="world-grid" role="list">
+            <article
+              v-for="entry in visibleEntries"
+              :key="entry.slug"
+              class="world-grid-card"
+              role="button"
+              tabindex="0"
+              @click="selectEntry(entry)"
+              @keydown.enter.prevent="selectEntry(entry)"
+              @keydown.space.prevent="selectEntry(entry)"
+            >
+              <header class="world-grid-card__header">
+                <p class="world-grid-card__type">{{ entry.type }}</p>
+                <h3 class="world-grid-card__title">{{ entry.name }}</h3>
+              </header>
+              <p v-if="entry.summary" class="world-grid-card__summary">{{ entry.summary }}</p>
+              <ul v-if="entry.tags && entry.tags.length" class="world-grid-card__tags">
+                <li v-for="tag in entry.tags" :key="tag" class="world-grid-card__tag">{{ tag }}</li>
+              </ul>
+            </article>
+          </div>
         </div>
       </div>
     </section>
@@ -249,6 +306,32 @@ const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
 const filters = reactive({ hasSummary: false, hasQuickFacts: false })
+const sortMode = ref('name-asc')
+const layoutMode = ref('list')
+
+const sortOptions = [
+  { value: 'name-asc', label: 'Name (A → Z)' },
+  { value: 'name-desc', label: 'Name (Z → A)' },
+  { value: 'type', label: 'Type' },
+  { value: 'tag-count', label: 'Tag density' },
+]
+
+const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
+
+const sortComparators = {
+  'name-asc': (a, b) => collator.compare(a.name || '', b.name || ''),
+  'name-desc': (a, b) => collator.compare(b.name || '', a.name || ''),
+  type: (a, b) => {
+    const typeCompare = collator.compare(a.type || '', b.type || '')
+    if (typeCompare !== 0) return typeCompare
+    return collator.compare(a.name || '', b.name || '')
+  },
+  'tag-count': (a, b) => {
+    const countDiff = (Array.isArray(b.tags) ? b.tags.length : 0) - (Array.isArray(a.tags) ? a.tags.length : 0)
+    if (countDiff !== 0) return countDiff
+    return collator.compare(a.name || '', b.name || '')
+  },
+}
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
@@ -284,7 +367,11 @@ const filteredEntries = computed(() => {
     })
 })
 
-const visibleEntries = computed(() => filteredEntries.value)
+const visibleEntries = computed(() => {
+  const entries = [...filteredEntries.value]
+  const comparator = sortComparators[sortMode.value] || sortComparators['name-asc']
+  return entries.sort((a, b) => comparator(a, b))
+})
 
 const relatedEntries = computed(() => {
   if (!selectedEntry.value) return []
@@ -1053,6 +1140,13 @@ loadEntries()
   opacity:0.7;
   margin-right:4px;
 }
+.world-filter-controls {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px;
+  margin-bottom:10px;
+}
 .world-tag-chip {
   padding:4px 12px;
   border-radius:999px;
@@ -1073,7 +1167,6 @@ loadEntries()
   display:flex;
   flex-wrap:wrap;
   gap:12px;
-  margin-bottom:10px;
 }
 .world-toggle {
   display:flex;
@@ -1089,10 +1182,131 @@ loadEntries()
   height:16px;
   accent-color:var(--primary-color);
 }
+.world-control-bar {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-left:auto;
+}
+.world-sort {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:0.72rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  opacity:0.8;
+}
+.world-sort__label {
+  white-space:nowrap;
+}
+.world-select {
+  min-width:160px;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;
+  background:var(--secondary-color);
+  color:var(--text-color);
+  font-size:0.85rem;
+}
+.world-select:focus-visible {
+  outline:2px solid var(--primary-color);
+  outline-offset:2px;
+}
+.world-layout-toggle {
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(0,0,0,0.2);
+}
+.world-layout-toggle__button {
+  padding:6px 12px;
+  font-size:0.78rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text-color);
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  transition:background 0.2s ease, color 0.2s ease;
+}
+.world-layout-toggle__button + .world-layout-toggle__button {
+  border-left:1px solid rgba(255,255,255,0.2);
+}
+.world-layout-toggle__button.active,
+.world-layout-toggle__button:hover {
+  background:var(--primary-color);
+  color:#0b0d13;
+}
+.world-layout-toggle__button:focus-visible {
+  outline:2px solid var(--primary-color);
+  outline-offset:2px;
+}
 .world-input {
   padding:6px 10px; background:var(--secondary-color);
   border:1px solid var(--primary-color); color:var(--text-color);
   width:100%;
+}
+.world-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:16px;
+  padding:12px 4px 16px;
+}
+.world-grid-card {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:14px 16px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  background:rgba(255,255,255,0.04);
+  cursor:pointer;
+  transition:border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+.world-grid-card:hover,
+.world-grid-card:focus-visible {
+  border-color:var(--primary-color);
+  background:rgba(255,255,255,0.08);
+  transform:translateY(-2px);
+  outline:none;
+}
+.world-grid-card__header {
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.world-grid-card__type {
+  font-size:0.72rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  opacity:0.75;
+}
+.world-grid-card__title {
+  font-size:1.05rem;
+  margin:0;
+}
+.world-grid-card__summary {
+  font-size:0.9rem;
+  opacity:0.9;
+}
+.world-grid-card__tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.world-grid-card__tag {
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.18);
+  font-size:0.72rem;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
 }
 .events-list-container.show-placeholder { display:flex; align-items:center; justify-content:center; }
 .empty-placeholder { opacity:0.7; font-style:italic; text-align:center; }
