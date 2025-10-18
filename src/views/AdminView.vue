@@ -26,6 +26,7 @@
         <p class="admin-hint">
           Hint: use ID <code>{{ ADMIN_ID }}</code> and passport <code>{{ ADMIN_PASSPORT }}</code>.
         </p>
+        <RouterLink to="/status" class="admin-exit-link">← Back to briefings</RouterLink>
       </div>
     </section>
 
@@ -34,20 +35,8 @@
         <div>
           <h1>Atlas Admin Console</h1>
           <p>Create and curate dossiers without touching the codebase.</p>
+          <RouterLink to="/world" class="admin-return-link">← View the atlas</RouterLink>
         </div>
-
-        <nav class="admin-header__nav" aria-label="Atlas sections">
-          <RouterLink
-            v-for="link in quickLinks"
-            :key="link.to"
-            :to="link.to"
-            class="admin-nav__link"
-            :class="{ active: currentPath.startsWith(link.to) }"
-          >
-            {{ link.label }}
-          </RouterLink>
-        </nav>
-
         <div class="admin-header__actions">
           <button type="button" class="admin-button" @click="logout">Sign out</button>
         </div>
@@ -326,8 +315,7 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, reactive, ref, watch, onMounted } from 'vue'
 import { slugify } from '@/utils/wiki'
 import { stringifyFrontMatter } from '@/utils/frontMatter'
 
@@ -335,17 +323,6 @@ const ADMIN_ID = 'admin'
 const ADMIN_PASSPORT = '1234'
 const STORAGE_KEY = 'atlas-admin-entries'
 const SESSION_KEY = 'atlas-admin-session'
-
-const quickLinks = [
-  { to: '/admin', label: 'Admin' },
-  { to: '/world', label: 'Atlas' },
-  { to: '/status', label: 'Status' },
-  { to: '/pilots', label: 'Pilots' },
-  { to: '/events', label: 'Events' },
-]
-
-const route = useRoute()
-const currentPath = computed(() => route.path)
 
 const credentials = reactive({ id: '', passport: '' })
 const isAuthenticated = ref(false)
@@ -417,17 +394,8 @@ watch(
 )
 
 onMounted(() => {
-  if (typeof window !== 'undefined') {
-    if (window.sessionStorage?.getItem(SESSION_KEY) === 'true') {
-      isAuthenticated.value = true
-    }
-    document.getElementById('router-view-container')?.classList.add('admin-mode')
-  }
-})
-
-onBeforeUnmount(() => {
-  if (typeof window !== 'undefined') {
-    document.getElementById('router-view-container')?.classList.remove('admin-mode')
+  if (typeof window !== 'undefined' && window.sessionStorage?.getItem(SESSION_KEY) === 'true') {
+    isAuthenticated.value = true
   }
 })
 
@@ -856,15 +824,6 @@ function triggerDownload(content, filename) {
 </script>
 
 <style scoped>
-:global(#router-view-container.admin-mode) {
-  right: 24px;
-  bottom: 24px;
-  width: auto;
-  max-width: none;
-  overflow: auto;
-  box-sizing: border-box;
-}
-
 .admin-view {
   position: relative;
   isolation: isolate;
@@ -874,7 +833,8 @@ function triggerDownload(content, filename) {
   width: 100%;
   padding: 24px 24px 64px;
   box-sizing: border-box;
-  min-height: 100%;
+  min-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
 
 .admin-view::before {
@@ -1027,35 +987,32 @@ function triggerDownload(content, filename) {
 
 .admin-header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
+  gap: 24px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(12, 16, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
 }
 
-.admin-header__nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.admin-nav__link {
+.admin-return-link,
+.admin-exit-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(16, 20, 30, 0.7);
-  color: var(--text-color);
-  font-size: 0.85rem;
-  text-transform: uppercase;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
-.admin-nav__link.active {
-  border-color: var(--primary-color);
-  background: rgba(30, 120, 170, 0.4);
+.admin-exit-link {
+  align-self: flex-start;
+  margin-top: 8px;
 }
 
 .admin-header__actions {

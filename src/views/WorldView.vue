@@ -77,8 +77,8 @@
             >
               <header
                 class="world-grid-card__header"
-                :class="{ 'world-grid-card__header--with-thumb': !!entry.thumbnail }"
-                :style="getCardHeaderStyle(entry)"
+                :class="{ 'world-grid-card__header--with-thumb': !!entry.cardThumbnail }"
+                :style="getCardHeaderStyle(entry.cardThumbnail)"
               >
                 <p class="world-grid-card__type">{{ entry.type }}</p>
                 <h3 class="world-grid-card__title">{{ entry.name }}</h3>
@@ -131,7 +131,11 @@
 
             <!-- Right infobox -->
             <aside class="infobox">
-              <img class="infobox-image" :src="selectedEntry.thumbnail || '/icons/portrait.svg'" alt="thumbnail" />
+              <img
+                class="infobox-image"
+                :src="selectedEntry.thumbnail || selectedEntry.cardThumbnail || '/icons/portrait.svg'"
+                alt="thumbnail"
+              />
               <table class="infobox-table">
                 <tbody>
                   <tr v-for="row in infoboxRows" :key="row.label">
@@ -384,14 +388,12 @@ const relatedEntries = computed(() => {
     .map(item => item.entry)
 })
 
-function getCardHeaderStyle(entry) {
-  if (!entry || !entry.thumbnail) return null
-  const resolved = resolveThumbnailPath(entry.thumbnail)
-  if (!resolved) return null
-  const escaped = resolved.replace(/"/g, '\\"')
-  const gradient = `linear-gradient(160deg, rgba(11,13,19,0.12) 0%, rgba(11,13,19,0.85) 100%), url("${escaped}")`
+function getCardHeaderStyle(thumbnail) {
+  const source = typeof thumbnail === 'string' ? thumbnail.trim() : ''
+  if (!source) return null
+  const escaped = source.replace(/"/g, '\\"')
   return {
-    '--card-thumb-gradient': gradient,
+    backgroundImage: `linear-gradient(160deg, rgba(11,13,19,0.28) 0%, rgba(11,13,19,0.78) 100%), url("${escaped}")`,
   }
 }
 
@@ -504,7 +506,7 @@ function showTooltipForSlug(slug, position) {
     entry: {
       name: entry.name,
       type: entry.type,
-      thumbnail: entry.thumbnail,
+      thumbnail: entry.thumbnail || entry.cardThumbnail,
       summary: entry.summary,
       quickFacts: entry.quickFacts || []
     }
@@ -818,13 +820,16 @@ function postProcessEntry(entry) {
   const category = detectCategory(entry.sourcePath || '', entry.type)
   const summary = extractSummary(entry)
   const thumbnail = resolveThumbnailPath(entry.thumbnail || '')
-  const safeThumbnail = thumbnail || '/world/placeholder.png'
+  const hasThumbnail = !!thumbnail
+  const cardThumbnail = thumbnail || '/world/placeholder.png'
   const quickFacts = buildQuickFacts(entry)
   return {
     ...entry,
     category,
     summary,
-    thumbnail: safeThumbnail,
+    thumbnail,
+    cardThumbnail,
+    hasThumbnail,
     quickFacts,
   }
 }
@@ -1428,7 +1433,6 @@ onUnmounted(() => {
   color:#fff;
   padding:16px 16px 14px;
   min-height:140px;
-  background-image:var(--card-thumb-gradient);
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
