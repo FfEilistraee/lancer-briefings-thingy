@@ -1,26 +1,36 @@
 <template>
   <div id="worldView" :class="{ animate: props.animate }" class="content-container">
     <!-- LIST / GLOSSARY -->
-    <section id="world" class="section-container">
+    <section v-if="!atlasCollapsed" id="world" class="section-container atlas-panel">
       <div class="section-header clipped-medium-backward">
         <img src="/icons/npc.svg" />
         <h1>ATLAS</h1>
       </div>
 
       <div class="section-content-container">
-        <nav class="world-tabs" role="tablist">
+        <div class="world-tabs-row">
+          <nav class="world-tabs" role="tablist">
+            <button
+              v-for="tab in tabs"
+              :key="tab.value"
+              type="button"
+              :class="['world-tab', { active: activeTab === tab.value }]"
+              role="tab"
+              @click="setActiveTab(tab.value, { skipAutoSelect: true, clearSelection: true })"
+            >
+              {{ tab.label }}
+              <span class="world-tab-count">{{ tab.count }}</span>
+            </button>
+          </nav>
           <button
-            v-for="tab in tabs"
-            :key="tab.value"
+            v-if="selectedEntry"
             type="button"
-            :class="['world-tab', { active: activeTab === tab.value }]"
-            role="tab"
-            @click="setActiveTab(tab.value, { skipAutoSelect: true, clearSelection: true })"
+            class="atlas-collapse-button"
+            @click="collapseAtlas"
           >
-            {{ tab.label }}
-            <span class="world-tab-count">{{ tab.count }}</span>
+            Minimize Atlas
           </button>
-        </nav>
+        </div>
 
         <!-- Filters -->
         <div class="world-filters">
@@ -33,9 +43,11 @@
             />
           </div>
 
-          <p class="world-filter-hint">
-            Tip: type <span class="world-filter-hash">#tag</span> to jump straight to dossiers with that tag.
-          </p>
+          <div class="world-filter-meta">
+            <p class="world-filter-hint">
+              Tip: type <span class="world-filter-hash">#tag</span> to jump straight to dossiers with that tag.
+            </p>
+          </div>
         </div>
 
         <div
@@ -170,6 +182,19 @@
       </section>
     </Transition>
 
+    <button
+      v-if="atlasCollapsed"
+      type="button"
+      class="atlas-flyout-handle"
+      @click="expandAtlas"
+    >
+      <img src="/icons/npc.svg" alt="" aria-hidden="true" />
+      <div class="atlas-flyout-copy">
+        <span class="atlas-flyout-label">Atlas</span>
+        <span class="atlas-flyout-detail">{{ collapsedAtlasDetail }}</span>
+      </div>
+    </button>
+
     <transition name="tooltip-fade">
       <div
         v-if="tooltip.visible && tooltip.entry"
@@ -253,6 +278,7 @@ const selectedEntry = ref(null)
 const query = ref('')
 const activeTab = ref(TAB_CONFIG[0].value)
 const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true })
+const atlasCollapsed = ref(false)
 
 // Infobox fields (others still searchable)
 const INFOBOX_ORDER = ['aliases','gender','race','age','height','origin','ethnicity','occupation','title','languages','status','affiliations','location']
@@ -343,10 +369,10 @@ const relatedEntries = computed(() => {
 
 function getCardHeaderStyle(entry) {
   if (!entry || !entry.thumbnail) return null
-  const raw = String(entry.thumbnail)
-  const escaped = raw.replace(/"/g, '\\"')
+  const resolved = resolveThumbnailPath(entry.thumbnail)
+  const escaped = resolved.replace(/"/g, '\\"')
   return {
-    backgroundImage: `linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), url("${escaped}")`,
+    '--card-thumb': `url("${escaped}")`,
   }
 }
 
@@ -360,6 +386,12 @@ const activeTabConfig = computed(() => TAB_CONFIG.find(t => t.value === activeTa
 const searchPlaceholder = computed(() => {
   const base = activeTabConfig.value?.placeholder || 'Search the archive…'
   return `${base} (type #tag to filter)`
+})
+
+const collapsedAtlasDetail = computed(() => {
+  if (selectedEntry.value) return selectedEntry.value.name
+  const active = activeTabConfig.value
+  return active ? `Browse ${active.label}` : 'Browse dossiers'
 })
 
 const tabDirectoryHint = computed(() => activeTabConfig.value?.directory || 'src/assets/world')
@@ -650,6 +682,7 @@ function selectEntry(entry) {
   hideTooltip()
   selectedEntry.value = entry
   if (!entry) {
+    atlasCollapsed.value = false
     if (route.name === 'World' && route.query.slug) {
       const nextQuery = { ...route.query }
       delete nextQuery.slug
@@ -657,12 +690,31 @@ function selectEntry(entry) {
     }
     return
   }
+  atlasCollapsed.value = true
   if (route.name === 'World') {
     const slug = entry.slug
     if (slug && route.query.slug !== slug) {
       router.replace({ path: route.path, query: { ...route.query, slug } })
     }
   }
+}
+
+function collapseAtlas() {
+  atlasCollapsed.value = true
+}
+
+function expandAtlas() {
+  atlasCollapsed.value = false
+}
+
+function resolveThumbnailPath(rawPath) {
+  const raw = (rawPath || '').toString().trim()
+  if (!raw) return ''
+  if (/^https?:\/\//i.test(raw) || raw.startsWith('data:')) return raw
+  if (raw.startsWith('/')) return raw
+  if (raw.startsWith('world/')) return `/${raw}`
+  if (raw.startsWith('./world/')) return `/${raw.slice(2)}`
+  return `/world/${raw.replace(/^\.\//, '')}`
 }
 
 function detectCategory(sourcePath, type) {
@@ -742,11 +794,13 @@ function normalizeQuickFactItem(fact) {
 function postProcessEntry(entry) {
   const category = detectCategory(entry.sourcePath || '', entry.type)
   const summary = extractSummary(entry)
+  const thumbnail = resolveThumbnailPath(entry.thumbnail || '')
   const quickFacts = buildQuickFacts(entry)
   return {
     ...entry,
     category,
     summary,
+    thumbnail,
     quickFacts,
   }
 }
@@ -1051,14 +1105,15 @@ async function loadEntries() {
   adminEntries.forEach(entry => {
     if (!entry || !entry.slug) return
     if (slugSeen.has(entry.slug)) return
-    slugSeen.add(entry.slug)
-    const isDraft = typeof entry.draft === 'string' ? entry.draft.toLowerCase() === 'true' : !!entry.draft
+    const processed = postProcessEntry(entry)
+    slugSeen.add(processed.slug)
+    const isDraft = typeof processed.draft === 'string' ? processed.draft.toLowerCase() === 'true' : !!processed.draft
     if (isDraft) return
-    if (entry.category === 'codex') {
-      codexEntries.value.push(entry)
+    if (processed.category === 'codex') {
+      codexEntries.value.push(processed)
       return
     }
-    entries.value.push(entry)
+    entries.value.push(processed)
   })
 
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
@@ -1107,6 +1162,108 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Layout adjustments */
+#worldView {
+  position: relative;
+  align-items: stretch;
+}
+
+.atlas-panel {
+  width: clamp(520px, 38vw, 640px);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.world-tabs-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.atlas-collapse-button {
+  margin-left: auto;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.atlas-collapse-button:hover,
+.atlas-collapse-button:focus-visible {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--primary-color);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.world-filter-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.atlas-flyout-handle {
+  position: absolute;
+  top: 110px;
+  left: 66px;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(10,12,20,0.9);
+  color: var(--text-color);
+  cursor: pointer;
+  box-shadow: 0 18px 42px rgba(0,0,0,0.45);
+  backdrop-filter: blur(12px);
+  z-index: 5;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+}
+
+.atlas-flyout-handle:hover,
+.atlas-flyout-handle:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 48px rgba(0,0,0,0.5);
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.atlas-flyout-handle img {
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+}
+
+.atlas-flyout-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.atlas-flyout-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.atlas-flyout-detail {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 /* Tabs */
 .world-tabs {
   display:flex;
@@ -1209,31 +1366,32 @@ onUnmounted(() => {
   outline:none;
 }
 .world-grid-card__header {
+  position: relative;
   display:flex;
   flex-direction:column;
   gap:4px;
   border-radius:12px;
   padding:14px 14px 12px;
   background:rgba(255,255,255,0.05);
+  overflow: hidden;
   transition:background 0.35s ease, color 0.35s ease;
 }
 .world-grid-card__header--with-thumb {
-  position:relative;
-  background-color:rgba(11,13,19,0.85);
-  background-size:cover;
-  background-position:center;
-  min-height:140px;
   justify-content:flex-end;
   color:#fff;
   padding:16px 16px 14px;
+  min-height:140px;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08);
 }
 .world-grid-card__header--with-thumb::before {
   content:'';
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(11,13,19,0) 35%, rgba(11,13,19,0.8) 100%);
+  background-image:linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), var(--card-thumb);
+  background-size:cover;
+  background-position:center;
   z-index:0;
+  transition:opacity 0.35s ease, transform 0.35s ease;
 }
 .world-grid-card__header--with-thumb > * {
   position:relative;
@@ -1286,8 +1444,8 @@ onUnmounted(() => {
 }
 
 #world-detail.section-container {
-  flex: 1 1 0;
-  width: clamp(860px, 70vw, 1240px);
+  flex: 1 1 auto;
+  width: clamp(900px, 74vw, 1320px);
   margin: 50px 60px;
   min-width: 0;
   height: 714px;
@@ -1494,12 +1652,30 @@ onUnmounted(() => {
     flex: 1 1 auto;
     margin: 30px 20px;
   }
+  .atlas-panel {
+    width: auto;
+  }
+  .world-tabs-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .atlas-collapse-button {
+    width: 100%;
+    text-align: center;
+  }
   #world-detail.section-container {
     width: auto;
     margin: 30px 20px;
   }
   #world-detail .section-content-container {
     padding: 20px;
+  }
+  .atlas-flyout-handle {
+    position: static;
+    margin: 16px 20px 0;
+    width: calc(100% - 40px);
+    justify-content: center;
   }
   .wiki-article { grid-template-columns: 1fr; }
   .wiki-body { grid-column: 1; min-width: 0; }
