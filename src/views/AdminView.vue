@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-view content-container">
+  <div class="admin-view">
     <section v-if="!isAuthenticated" class="admin-login">
       <div class="admin-card clipped-medium-backward">
         <header class="admin-card__header">
@@ -95,9 +95,19 @@
           <section class="admin-sidebar__section">
             <h2>How it works</h2>
             <ul class="admin-steps">
-              <li>Fill out the form with dossier details, quick facts, and body copy.</li>
-              <li>Save the entry to publish it immediately in the atlas on this device.</li>
-              <li>Download the markdown file when you want to add it to version control.</li>
+              <li>
+                Use the right column for identity and body text, and the left column for the portrait, quick facts, and extra
+                infobox fields.
+              </li>
+              <li>
+                Add quick facts with years or dates to build the timeline, and comma separated tags so the atlas can surface
+                <code>#hashtag</code> searches.
+              </li>
+              <li>
+                Write the body in markdown. Use <code>[[Double Brackets]]</code> to link to other dossiers and regular markdown
+                for headings, lists, and emphasis.
+              </li>
+              <li>Save the entry to publish it instantly on this device, then download or copy the markdown for backups.</li>
             </ul>
           </section>
         </aside>
@@ -109,140 +119,168 @@
           </ul>
 
           <form class="admin-editor" @submit.prevent="saveEntry">
-            <section class="admin-panel">
-              <header>
-                <h2>Identity</h2>
-                <p class="admin-panel__hint">Pick a category and describe the dossier.</p>
-              </header>
-              <div class="admin-grid">
-                <label class="admin-field">
-                  <span>Category</span>
-                  <select v-model="entryForm.category">
-                    <option v-for="option in categoryOptions" :key="option.value" :value="option.value">
-                      {{ option.label }}
-                    </option>
-                  </select>
-                </label>
-                <label class="admin-field admin-field--checkbox">
-                  <input v-model="entryForm.draft" type="checkbox" />
-                  <span>Mark as draft (hidden from atlas)</span>
-                </label>
-                <label class="admin-field">
-                  <span>Display name</span>
-                  <input v-model.trim="entryForm.name" type="text" placeholder="Director Vex" required />
-                </label>
-                <label class="admin-field">
-                  <span>Slug</span>
-                  <input v-model.trim="entryForm.slug" type="text" @input="onSlugInput" placeholder="director-vex" required />
-                </label>
-                <label class="admin-field">
-                  <span>Type</span>
-                  <input v-model.trim="entryForm.type" type="text" placeholder="Personnel File" />
-                </label>
-                <label class="admin-field">
-                  <span>Thumbnail URL</span>
-                  <input v-model.trim="entryForm.thumbnail" type="text" placeholder="/world/Vex.png" />
-                </label>
-                <label class="admin-field admin-field--full">
-                  <span>Tags (comma separated)</span>
-                  <input v-model="entryForm.tagsInput" type="text" placeholder="Rustwatch-37, Orpheus Extraction" />
-                </label>
+            <div class="admin-editor__columns">
+              <div class="admin-column admin-column--aside">
+                <section class="admin-panel admin-panel--media">
+                  <header>
+                    <h2>Portrait &amp; infobox shell</h2>
+                    <p class="admin-panel__hint">
+                      Drop in art for the dossier and start shaping the sidebar content first.
+                    </p>
+                  </header>
+                  <div class="admin-image-preview" v-if="entryForm.thumbnail">
+                    <img :src="entryForm.thumbnail" :alt="`${entryForm.name || 'Dossier'} portrait`" />
+                  </div>
+                  <label class="admin-field admin-field--full">
+                    <span>Portrait / image URL</span>
+                    <input
+                      v-model.trim="entryForm.thumbnail"
+                      type="text"
+                      placeholder="/world/Vex.png"
+                    />
+                  </label>
+                </section>
+
+                <section class="admin-panel">
+                  <header class="admin-panel__header--stack">
+                    <div>
+                      <h2>Quick facts &amp; timeline</h2>
+                      <p class="admin-panel__hint">
+                        Add bite-sized facts. Include a year or date to feed the timeline.
+                      </p>
+                    </div>
+                    <button type="button" class="admin-button" @click="addQuickFact">Add quick fact</button>
+                  </header>
+                  <div v-if="!entryForm.quickFacts.length" class="admin-empty">No quick facts yet.</div>
+                  <div
+                    v-for="(fact, index) in entryForm.quickFacts"
+                    :key="fact.id"
+                    class="admin-quickfact"
+                  >
+                    <div class="admin-grid">
+                      <label class="admin-field">
+                        <span>Label</span>
+                        <input v-model.trim="fact.label" type="text" placeholder="Known for" />
+                      </label>
+                      <label class="admin-field">
+                        <span>Value</span>
+                        <input v-model.trim="fact.value" type="text" placeholder="Keeping the rigs profitable" />
+                      </label>
+                      <label class="admin-field">
+                        <span>Date / Year</span>
+                        <input v-model.trim="fact.date" type="text" placeholder="4981" />
+                      </label>
+                      <label class="admin-field">
+                        <span>Timeline title (optional)</span>
+                        <input v-model.trim="fact.title" type="text" placeholder="Charter Renewed" />
+                      </label>
+                      <label class="admin-field admin-field--full">
+                        <span>Timeline description</span>
+                        <textarea v-model="fact.description" rows="2" placeholder="Short detail shown on the timeline."></textarea>
+                      </label>
+                    </div>
+                    <button type="button" class="admin-button link" @click="removeQuickFact(index)">Remove fact</button>
+                  </div>
+                </section>
+
+                <section class="admin-panel">
+                  <header class="admin-panel__header--stack">
+                    <div>
+                      <h2>Infobox fields</h2>
+                      <p class="admin-panel__hint">
+                        Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
+                      </p>
+                    </div>
+                    <button type="button" class="admin-button" @click="addMetaField">Add field</button>
+                  </header>
+                  <div v-if="!entryForm.additionalFields.length" class="admin-empty">No extra fields defined.</div>
+                  <div
+                    v-for="(field, index) in entryForm.additionalFields"
+                    :key="field.id"
+                    class="admin-metafield"
+                  >
+                    <div class="admin-grid">
+                      <label class="admin-field">
+                        <span>Field key</span>
+                        <input v-model.trim="field.key" type="text" placeholder="aliases" />
+                      </label>
+                      <label class="admin-field admin-field--full">
+                        <span>Values</span>
+                        <textarea v-model="field.valuesText" rows="2" placeholder="Use one value per line"></textarea>
+                      </label>
+                    </div>
+                    <button type="button" class="admin-button link" @click="removeMetaField(index)">Remove field</button>
+                  </div>
+                </section>
               </div>
-              <p class="admin-panel__footnote">
-                Files for this category live in <code>{{ categoryDirectoryHint }}</code> when you export them.
-              </p>
-            </section>
 
-            <section class="admin-panel">
-              <header>
-                <h2>Summary &amp; body</h2>
-                <p class="admin-panel__hint">Summary powers hover cards. The body accepts markdown and wiki links.</p>
-              </header>
-              <label class="admin-field admin-field--full">
-                <span>Summary</span>
-                <textarea v-model="entryForm.summary" rows="3" placeholder="One or two punchy sentences."></textarea>
-              </label>
-              <label class="admin-field admin-field--full">
-                <span>Article body</span>
-                <textarea
-                  v-model="entryForm.body"
-                  rows="12"
-                  placeholder="Write the dossier using markdown. Use [[Double Brackets]] for atlas links."
-                ></textarea>
-              </label>
-            </section>
-
-            <section class="admin-panel">
-              <header class="admin-panel__header--stack">
-                <div>
-                  <h2>Quick facts &amp; timeline</h2>
-                  <p class="admin-panel__hint">
-                    Add bite-sized facts. Include a year or date to feed the timeline.
+              <div class="admin-column admin-column--main">
+                <section class="admin-panel">
+                  <header>
+                    <h2>Identity</h2>
+                    <p class="admin-panel__hint">Pick a category and describe the dossier.</p>
+                  </header>
+                  <div class="admin-grid">
+                    <label class="admin-field">
+                      <span>Category</span>
+                      <select v-model="entryForm.category">
+                        <option v-for="option in categoryOptions" :key="option.value" :value="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </label>
+                    <label class="admin-field admin-field--checkbox">
+                      <input v-model="entryForm.draft" type="checkbox" />
+                      <span>Mark as draft (hidden from atlas)</span>
+                    </label>
+                    <label class="admin-field">
+                      <span>Display name</span>
+                      <input v-model.trim="entryForm.name" type="text" placeholder="Director Vex" required />
+                    </label>
+                    <label class="admin-field">
+                      <span>Slug</span>
+                      <input
+                        v-model.trim="entryForm.slug"
+                        type="text"
+                        @input="onSlugInput"
+                        placeholder="director-vex"
+                        required
+                      />
+                    </label>
+                    <label class="admin-field">
+                      <span>Type</span>
+                      <input v-model.trim="entryForm.type" type="text" placeholder="Personnel File" />
+                    </label>
+                    <label class="admin-field admin-field--full">
+                      <span>Tags (comma separated)</span>
+                      <input v-model="entryForm.tagsInput" type="text" placeholder="Rustwatch-37, Orpheus Extraction" />
+                    </label>
+                  </div>
+                  <p class="admin-panel__footnote">
+                    Files for this category live in <code>{{ categoryDirectoryHint }}</code> when you export them.
                   </p>
-                </div>
-                <button type="button" class="admin-button" @click="addQuickFact">Add quick fact</button>
-              </header>
-              <div v-if="!entryForm.quickFacts.length" class="admin-empty">No quick facts yet.</div>
-              <div
-                v-for="(fact, index) in entryForm.quickFacts"
-                :key="fact.id"
-                class="admin-quickfact"
-              >
-                <div class="admin-grid">
-                  <label class="admin-field">
-                    <span>Label</span>
-                    <input v-model.trim="fact.label" type="text" placeholder="Known for" />
-                  </label>
-                  <label class="admin-field">
-                    <span>Value</span>
-                    <input v-model.trim="fact.value" type="text" placeholder="Keeping the rigs profitable" />
-                  </label>
-                  <label class="admin-field">
-                    <span>Date / Year</span>
-                    <input v-model.trim="fact.date" type="text" placeholder="4981" />
-                  </label>
-                  <label class="admin-field">
-                    <span>Timeline title (optional)</span>
-                    <input v-model.trim="fact.title" type="text" placeholder="Charter Renewed" />
+                </section>
+
+                <section class="admin-panel">
+                  <header>
+                    <h2>Summary &amp; body</h2>
+                    <p class="admin-panel__hint">Summary powers hover cards. The body accepts markdown and wiki links.</p>
+                  </header>
+                  <label class="admin-field admin-field--full">
+                    <span>Summary</span>
+                    <textarea v-model="entryForm.summary" rows="3" placeholder="One or two punchy sentences."></textarea>
                   </label>
                   <label class="admin-field admin-field--full">
-                    <span>Timeline description</span>
-                    <textarea v-model="fact.description" rows="2" placeholder="Short detail shown on the timeline."></textarea>
+                    <span>Article body</span>
+                    <textarea
+                      v-model="entryForm.body"
+                      rows="12"
+                      placeholder="Write the dossier using markdown. Use [[Double Brackets]] for atlas links."
+                    ></textarea>
                   </label>
-                </div>
-                <button type="button" class="admin-button link" @click="removeQuickFact(index)">Remove fact</button>
+                </section>
               </div>
-            </section>
-
-            <section class="admin-panel">
-              <header class="admin-panel__header--stack">
-                <div>
-                  <h2>Infobox fields</h2>
-                  <p class="admin-panel__hint">
-                    Add additional metadata (aliases, pronouns, affiliations). Use one line per value for lists.
-                  </p>
-                </div>
-                <button type="button" class="admin-button" @click="addMetaField">Add field</button>
-              </header>
-              <div v-if="!entryForm.additionalFields.length" class="admin-empty">No extra fields defined.</div>
-              <div
-                v-for="(field, index) in entryForm.additionalFields"
-                :key="field.id"
-                class="admin-metafield"
-              >
-                <div class="admin-grid">
-                  <label class="admin-field">
-                    <span>Field key</span>
-                    <input v-model.trim="field.key" type="text" placeholder="aliases" />
-                  </label>
-                  <label class="admin-field admin-field--full">
-                    <span>Values</span>
-                    <textarea v-model="field.valuesText" rows="2" placeholder="Use one value per line"></textarea>
-                  </label>
-                </div>
-                <button type="button" class="admin-button link" @click="removeMetaField(index)">Remove field</button>
-              </div>
-            </section>
+            </div>
 
             <footer class="admin-actions">
               <button type="submit" class="admin-button primary">Save entry</button>
@@ -782,10 +820,8 @@ function triggerDownload(content, filename) {
   flex-direction: column;
   gap: 24px;
   width: 100%;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
-  padding-right: 12px;
-  scrollbar-gutter: stable both-edges;
+  padding: 0 32px 48px 0;
+  box-sizing: border-box;
 }
 
 .admin-login {
@@ -1074,6 +1110,52 @@ function triggerDownload(content, filename) {
   gap: 24px;
 }
 
+.admin-editor__columns {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  grid-template-areas: 'aside main';
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.admin-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-column--aside {
+  grid-area: aside;
+}
+
+.admin-column--main {
+  grid-area: main;
+}
+
+.admin-panel--media {
+  gap: 20px;
+}
+
+.admin-image-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(7, 9, 14, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .admin-panel {
   display: flex;
   flex-direction: column;
@@ -1148,6 +1230,13 @@ function triggerDownload(content, filename) {
 
   .admin-sidebar {
     position: relative;
+  }
+
+  .admin-editor__columns {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'main'
+      'aside';
   }
 }
 
