@@ -62,7 +62,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  height: 100%;
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 72px;
 }
 
 .sidebar-links {
@@ -72,12 +74,17 @@ export default {
 }
 
 .sidebar-admin {
-  margin-top: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 6px;
   padding-top: 12px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 6px;
 }
 
 .admin-link {
