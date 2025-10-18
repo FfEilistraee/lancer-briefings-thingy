@@ -68,8 +68,10 @@ Quick notes while editing:
 
 - `summary` feeds the hover preview. Keep it short and punchy.
 - `quickFacts` and `tooltipFacts` add labeled bullet points inside the hover card.
+- Any quick fact with a `date`, `year`, or date-like label is parsed into the article timeline component.
 - The Obsidian-style `> [!infobox]` callout still works; every table row is parsed into the right-hand infobox.
 - Use `[[Double Brackets]]` to link between entries. Hovering shows a pop-up, and clicking takes you straight to the target file (terms simply show their hover card).
+- Populate `tags` generously—the viewer now highlights popular tags per category and uses them to recommend related entries beneath each article.
 
 ### _base.css
 

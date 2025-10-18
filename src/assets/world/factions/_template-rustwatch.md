@@ -18,6 +18,11 @@ quickFacts:
     value: Orpheus Extraction & Survey
   - label: Reputation
     value: Reliable, unsentimental
+  - label: 4983u Refit Milestone
+    value: Third Lance fully modernized
+    year: 4983
+    title: Third Lance Retrofit
+    description: Refits finished after six months of downtime, returning the full strike complement to duty.
 factionType: Mercenary Corps
 leaders:
   - Commander Imani Tel
@@ -46,6 +51,8 @@ How to use this template
 2. Remove the draft line to expose it in the archive.
 3. Update the fields above. Add or delete any you don't track.
 4. Fill in the narrative sections below.
+5. Include a date, year, or date-like label inside quickFacts to populate the timeline automatically.
+6. Tag the faction with every relevant world, station, and concept so related dossiers bubble up beneath the article.
 -->
 
 > [!infobox]

@@ -21,6 +21,11 @@ quickFacts:
     value: 14,200 registered inhabitants
   - label: Primary Faction
     value: Orpheus Extraction & Survey
+  - label: 4980u Storm Season
+    value: Colony battered by record ammonia squalls
+    date: 4980-04
+    title: Ammonia Superstorm Season
+    description: Survey crews evacuated Docktown during the month-long storm front.
 climate: Cryogenic storms
 temperature: -62°C average
 dayLength: 32 standard hours
@@ -40,6 +45,8 @@ How to use this template
 2. Remove the draft line so the planet appears in the Atlas.
 3. Update the front-matter facts. Delete anything you do not track.
 4. Write the lore below. [[Link]] to other entries or codex terms whenever helpful.
+5. Dates inside quickFacts (via a date/year field or a date-like label) automatically build the timeline shown under the article.
+6. Stack relevant tags so the related-entry panel can suggest connected worlds, factions, and dossiers.
 -->
 
 > [!infobox]
