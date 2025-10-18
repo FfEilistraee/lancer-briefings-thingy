@@ -17,17 +17,21 @@
 					<img src="/icons/pilot.svg" />
 					<span>Pilots</span>
 				</router-link>
-				<router-link class="clipped-bottom-right" to="/events">
-					<img src="/icons/events.svg" />
-					<span>Logs</span>
-				</router-link>
-				<router-link class="clipped-bottom-right" to="/world">
+                                <router-link class="clipped-bottom-right" to="/events">
+                                        <img src="/icons/events.svg" />
+                                        <span>Logs</span>
+                                </router-link>
+                                <router-link class="clipped-bottom-right" to="/world">
                     <img src="/icons/npc.svg" />
                     <span>World</span>
                 </router-link>
-			</o-sidebar>
-		</section>
-	</div>
+                                <router-link class="clipped-bottom-right" to="/admin">
+                                        <img src="/icons/protocol.svg" />
+                                        <span>Admin</span>
+                                </router-link>
+                        </o-sidebar>
+                </section>
+        </div>
 </template>
 
 <script>

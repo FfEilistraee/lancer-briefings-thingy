@@ -256,17 +256,20 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, reactive } from 'vue'
+import { ref, computed, watch, nextTick, reactive, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { VueMarkdownIt } from '@f3ve/vue-markdown-it'
 import WorldEntry from '@/components/WorldEntry.vue'
 import Timeline from '@/components/Timeline.vue'
 import { slugify, transformWikiLinks, transformWikiImages, isWikiHref, extractWikiSlug } from '@/utils/wiki'
+import { parseFrontMatter } from '@/utils/frontMatter'
 
 const props = defineProps({ animate: { type: Boolean, required: true } })
 
 const route = useRoute()
 const router = useRouter()
+
+const ADMIN_STORAGE_KEY = 'atlas-admin-entries'
 
 // Data
 const TAB_CONFIG = [
@@ -613,54 +616,6 @@ watch(selectedEntry, async () => {
 })
 
 // ---------- Front-matter + Obsidian helpers (no deps) ----------
-function parseFrontMatter(raw) {
-  if (!raw.startsWith('---')) return { data: null, content: raw }
-  const end = raw.indexOf('\n---')
-  if (end === -1) return { data: null, content: raw }
-  const fm = raw.slice(3, end).trim()
-  const content = raw.slice(end + 4).replace(/^\s*\n/, '')
-
-  const data = {}
-  const lines = fm.split('\n')
-  let i = 0
-  while (i < lines.length) {
-    const line = lines[i].trim()
-    if (!line) { i++; continue }
-    const m = line.match(/^([A-Za-z0-9_-]+)\s*:\s*(.*)$/)
-    if (!m) { i++; continue }
-    const key = m[1]; let val = m[2].trim()
-
-    // block list
-    if (val === '') {
-      const arr = []; let j = i + 1
-      while (j < lines.length) {
-        const li = lines[j]; const t = li.trim()
-        if (t.startsWith('- ')) { arr.push(t.slice(2).trim()); j++; continue }
-        if (li.startsWith('  ') || li.startsWith('\t')) { j++; continue }
-        break
-      }
-      if (arr.length) { data[key] = arr; i = j; continue }
-    }
-    // inline array
-    if (val.startsWith('[') && val.endsWith(']')) {
-      const inner = val.slice(1, -1).trim()
-      data[key] = inner ? inner.split(',').map(s => s.trim()).filter(Boolean) : []
-      i++; continue
-    }
-    // comma list (unless quoted)
-    if (val.includes(',') && !(val.startsWith('"') || val.startsWith("'"))) {
-      data[key] = val.split(',').map(s => s.trim()).filter(Boolean)
-      i++; continue
-    }
-    // strip quotes
-    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-      val = val.slice(1, -1)
-    }
-    data[key] = val; i++
-  }
-  return { data, content }
-}
-
 function normalizeArray(val) { return !val ? [] : (Array.isArray(val) ? val : String(val).split(',').map(s=>s.trim()).filter(Boolean)) }
 
 function extractInfobox(md, meta) {
@@ -977,6 +932,112 @@ function extractDateCandidate(value) {
   return null
 }
 
+const CATEGORY_SOURCE_PREFIX = {
+  npcs: 'src/assets/world/npcs/',
+  factions: 'src/assets/world/factions/',
+  planets: 'src/assets/world/planets/',
+  stations: 'src/assets/world/stations/',
+  terms: 'src/assets/world/terms/',
+  custom: 'src/assets/world/custom/',
+}
+
+function loadAdminEntriesFromStorage() {
+  if (typeof window === 'undefined' || !window.localStorage) return []
+  try {
+    const raw = window.localStorage.getItem(ADMIN_STORAGE_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return []
+    return parsed.map(convertAdminEntry).filter(Boolean)
+  } catch (error) {
+    console.warn('Failed to load stored admin entries', error)
+    return []
+  }
+}
+
+function convertAdminEntry(item) {
+  if (!item || typeof item !== 'object') return null
+  const slug = (item.slug && String(item.slug).trim()) || (item.name ? slugify(item.name) : '')
+  if (!slug) return null
+  const categoryKey = typeof item.category === 'string' && CATEGORY_SOURCE_PREFIX[item.category]
+    ? item.category
+    : 'custom'
+
+  const tags = Array.isArray(item.tags)
+    ? item.tags.map(tag => String(tag).trim()).filter(Boolean)
+    : typeof item.tags === 'string'
+      ? item.tags.split(',').map(tag => tag.trim()).filter(Boolean)
+      : []
+
+  const additionalFields = {}
+  if (Array.isArray(item.additionalFields)) {
+    item.additionalFields.forEach(field => {
+      if (!field || typeof field !== 'object' || !field.key) return
+      const key = String(field.key).trim()
+      if (!key) return
+      const values = Array.isArray(field.values)
+        ? field.values.map(val => (typeof val === 'string' ? val.trim() : val)).filter(val => val !== '' && val !== null && val !== undefined)
+        : field.value !== undefined
+          ? [field.value]
+          : []
+      if (!values.length) return
+      additionalFields[key] = values.length === 1 ? values[0] : values
+    })
+  }
+
+  const quickFacts = Array.isArray(item.quickFacts)
+    ? item.quickFacts
+        .map(fact => normalizeAdminQuickFact(fact))
+        .filter(Boolean)
+    : []
+
+  const baseEntry = {
+    slug,
+    name: item.name || 'Untitled Entry',
+    type: item.type || defaultTypeForCategory(categoryKey),
+    tags,
+    thumbnail: item.thumbnail || '',
+    summary: item.summary || '',
+    quickFacts,
+    draft: item.draft ? true : undefined,
+    content: item.body || '',
+    sourcePath: `${CATEGORY_SOURCE_PREFIX[categoryKey]}${slug}.md`,
+    ...additionalFields,
+  }
+
+  const processed = postProcessEntry(baseEntry)
+  processed.sourcePath = baseEntry.sourcePath
+  return processed
+}
+
+function normalizeAdminQuickFact(fact) {
+  if (!fact || typeof fact !== 'object') return null
+  const normalized = {}
+  ;['label', 'value', 'date', 'year', 'title', 'description'].forEach(key => {
+    if (fact[key] !== undefined && fact[key] !== null && String(fact[key]).trim() !== '') {
+      normalized[key] = typeof fact[key] === 'string' ? fact[key].trim() : fact[key]
+    }
+  })
+  return Object.keys(normalized).length ? normalized : null
+}
+
+function defaultTypeForCategory(categoryKey) {
+  switch (categoryKey) {
+    case 'npcs':
+      return 'Personnel File'
+    case 'factions':
+      return 'Faction Brief'
+    case 'planets':
+      return 'World Log'
+    case 'stations':
+      return 'Transit Gate Record'
+    case 'terms':
+      return 'Codex Entry'
+    default:
+      return 'Atlas File'
+  }
+}
+
 async function loadEntries() {
   entries.value = []
   codexEntries.value = []
@@ -1042,6 +1103,21 @@ async function loadEntries() {
     }
     entries.value.push(processed)
   })
+
+  const adminEntries = loadAdminEntriesFromStorage()
+  adminEntries.forEach(entry => {
+    if (!entry || !entry.slug) return
+    if (slugSeen.has(entry.slug)) return
+    slugSeen.add(entry.slug)
+    const isDraft = typeof entry.draft === 'string' ? entry.draft.toLowerCase() === 'true' : !!entry.draft
+    if (isDraft) return
+    if (entry.category === 'codex') {
+      codexEntries.value.push(entry)
+      return
+    }
+    entries.value.push(entry)
+  })
+
   entries.value.sort((a, b) => a.name.localeCompare(b.name))
   codexEntries.value.sort((a, b) => a.name.localeCompare(b.name))
   if (!entries.value.some(e => e.category === activeTab.value)) {
@@ -1071,7 +1147,22 @@ async function loadEntries() {
   attachWikiLinkEvents()
 }
 
-loadEntries()
+const handleAdminEntriesUpdated = () => {
+  loadEntries()
+}
+
+onMounted(() => {
+  loadEntries()
+  if (typeof window !== 'undefined') {
+    window.addEventListener('atlas-admin-entries-updated', handleAdminEntriesUpdated)
+  }
+})
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('atlas-admin-entries-updated', handleAdminEntriesUpdated)
+  }
+})
 
 </script>
 
