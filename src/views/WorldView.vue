@@ -387,9 +387,11 @@ const relatedEntries = computed(() => {
 function getCardHeaderStyle(entry) {
   if (!entry || !entry.thumbnail) return null
   const resolved = resolveThumbnailPath(entry.thumbnail)
+  if (!resolved) return null
   const escaped = resolved.replace(/"/g, '\\"')
+  const gradient = `linear-gradient(160deg, rgba(11,13,19,0.12) 0%, rgba(11,13,19,0.85) 100%), url("${escaped}")`
   return {
-    '--card-thumb': `url("${escaped}")`,
+    '--card-thumb-gradient': gradient,
   }
 }
 
@@ -721,6 +723,10 @@ function collapseAtlas() {
 }
 
 function expandAtlas() {
+  if (selectedEntry.value) {
+    selectEntry(null)
+    return
+  }
   atlasCollapsed.value = false
 }
 
@@ -1422,21 +1428,11 @@ onUnmounted(() => {
   color:#fff;
   padding:16px 16px 14px;
   min-height:140px;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08);
-}
-.world-grid-card__header--with-thumb::before {
-  content:'';
-  position:absolute;
-  inset:0;
-  background-image:linear-gradient(160deg, rgba(11,13,19,0.1) 0%, rgba(11,13,19,0.85) 100%), var(--card-thumb);
+  background-image:var(--card-thumb-gradient);
   background-size:cover;
   background-position:center;
-  z-index:0;
-  transition:opacity 0.35s ease, transform 0.35s ease;
-}
-.world-grid-card__header--with-thumb > * {
-  position:relative;
-  z-index:1;
+  background-repeat:no-repeat;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,0.08);
 }
 .world-grid-card__type {
   font-size:0.72rem;
