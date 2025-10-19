@@ -27,7 +27,7 @@
 import Header from "./components/layout/Header.vue";
 import Sidebar from "./components/layout/Sidebar.vue";
 import Config from "@/assets/info/general-config.json";
-import { applyWikiTransforms } from '@/utils/wiki';
+import { applyWikiTransforms, slugify } from '@/utils/wiki';
 
 export default {
 	components: {
@@ -36,32 +36,48 @@ export default {
 	},
 
 	data() {
-		return {
-			animate: Config.animate,
-			initialSlug: Config.initialSlug,
-			planetPath: Config.planetPath,
-			header: Config.header,
-			pilotSpecialInfo: Config.pilotSpecialInfo,
-			clocks: [],
-			events: [],
-			missions: [],
-			pilots: [],
-			reserves: [],
-			bonds: [],
-		};
-	},
-	created() {
-		this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
-		this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
-		this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
-		this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
-		this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
-		this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
-	},
-	mounted() {
-		this.$router.push("/status");
-	},
-	methods: {
+                return {
+                        animate: Config.animate,
+                        initialSlug: Config.initialSlug,
+                        planetPath: Config.planetPath,
+                        header: Config.header,
+                        pilotSpecialInfo: Config.pilotSpecialInfo,
+                        clocks: [],
+                        events: [],
+                        eventsBase: [],
+                        eventsAdmin: [],
+                        missions: [],
+                        missionsBase: [],
+                        missionsAdmin: [],
+                        pilots: [],
+                        reserves: [],
+                        bonds: [],
+                };
+        },
+        created() {
+                this.setTitleFavicon(Config.defaultTitle + " MISSION BRIEFING", Config.icon);
+                this.importMissions(import.meta.glob("@/assets/missions/*.md", { query: '?raw', import: 'default' }));
+                this.importEvents(import.meta.glob("@/assets/events/*.md", { query: '?raw', import: 'default' }));
+                this.importClocks(import.meta.glob("@/assets/clocks/*.json"));
+                this.importReserves(import.meta.glob("@/assets/reserves/*.json"));
+                this.importPilots(import.meta.glob("@/assets/pilots/*.json"));
+                this.loadAdminMissions();
+                this.loadAdminLogs();
+                if (typeof window !== 'undefined') {
+                        window.addEventListener('atlas-admin-missions-updated', this.loadAdminMissions);
+                        window.addEventListener('atlas-admin-logs-updated', this.loadAdminLogs);
+                }
+        },
+        mounted() {
+                this.$router.push("/status");
+        },
+        beforeUnmount() {
+                if (typeof window !== 'undefined') {
+                        window.removeEventListener('atlas-admin-missions-updated', this.loadAdminMissions);
+                        window.removeEventListener('atlas-admin-logs-updated', this.loadAdminLogs);
+                }
+        },
+        methods: {
 		setTitleFavicon(title, favicon) {
 			document.title = title;
 			let headEl = document.querySelector('head');
@@ -70,37 +86,37 @@ export default {
 			faviconEl.setAttribute('href', favicon);
 			headEl.appendChild(faviconEl);
 		},
-		async importMissions(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-                        fileContents.forEach(content => {
-                                let mission = {};
+                async importMissions(files) {
+                        const filePromises = Object.keys(files).map(path => files[path]());
+                        const fileContents = await Promise.all(filePromises);
+                        const base = fileContents.map(content => {
                                 const lines = content.split("\n");
-                                mission["slug"] = lines[0];
-                                mission["name"] = lines[1];
-                                mission["status"] = lines[2];
-                                mission["content"] = applyWikiTransforms(lines.slice(3).join("\n"));
-                                this.missions = [...this.missions, mission];
+                                return {
+                                        slug: lines[0],
+                                        name: lines[1],
+                                        status: lines[2],
+                                        content: applyWikiTransforms(lines.slice(3).join("\n")),
+                                };
                         });
-			this.missions = this.missions.sort(function (a, b) {
-				return b["slug"] - a["slug"];
-			})
-		},
-		async importEvents(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-                        fileContents.forEach(content => {
-                                let event = {};
+                        this.missionsBase = this.sortMissions(base);
+                        this.updateMissions();
+                },
+                async importEvents(files) {
+                        const filePromises = Object.keys(files).map(path => files[path]());
+                        const fileContents = await Promise.all(filePromises);
+                        const base = fileContents.map(content => {
                                 const lines = content.split("\n");
-                                event["title"] = lines[0];
-                                event["location"] = lines[1];
-                                event["time"] = lines[2];
-                                event["thumbnail"] = lines[3];
-                                event["content"] = applyWikiTransforms(lines.slice(4).join("\n"));
-                                this.events = [...this.events, event];
+                                return {
+                                        title: lines[0],
+                                        location: lines[1],
+                                        time: lines[2],
+                                        thumbnail: lines[3],
+                                        content: applyWikiTransforms(lines.slice(4).join("\n")),
+                                };
                         });
-			this.events = this.events.reverse();
-		},
+                        this.eventsBase = base.reverse();
+                        this.updateEvents();
+                },
 		async importClocks(files) {
 			let filePromises = Object.keys(files).map(path => files[path]());
 			let fileContents = await Promise.all(filePromises);
@@ -115,11 +131,11 @@ export default {
 				this.reserves = JSON.parse(JSON.stringify(content)).default;
 			});
 		},
-		async importPilots(files) {
-			let filePromises = Object.keys(files).map(path => files[path]());
-			let fileContents = await Promise.all(filePromises);
-			fileContents.forEach(content => {
-				let pilotFromJson = JSON.parse(JSON.stringify(content));
+                async importPilots(files) {
+                        let filePromises = Object.keys(files).map(path => files[path]());
+                        let fileContents = await Promise.all(filePromises);
+                        fileContents.forEach(content => {
+                                let pilotFromJson = JSON.parse(JSON.stringify(content));
 				// In case the pilot was added from a copy on compcon via sharecode, remove the "reference mark" symbol
 				pilotFromJson.name = pilotFromJson.name.replace("※", "");
 				pilotFromJson.callsign = pilotFromJson.callsign.replace("※", "");
@@ -153,8 +169,112 @@ export default {
 					this.reserves = [...this.reserves, reserve];
 				});
 			});
-		},
-	},
+                },
+                loadAdminMissions() {
+                        if (typeof window === 'undefined') return;
+                        try {
+                                const raw = window.localStorage.getItem('atlas-admin-missions');
+                                if (!raw) {
+                                        this.missionsAdmin = [];
+                                        this.updateMissions();
+                                        return;
+                                }
+                                const parsed = JSON.parse(raw);
+                                if (!Array.isArray(parsed)) throw new Error('Missions store must be an array');
+                                this.missionsAdmin = parsed.map(this.normalizeAdminMission).filter(Boolean);
+                        } catch (error) {
+                                console.warn('Failed to load admin missions', error);
+                                this.missionsAdmin = [];
+                        }
+                        this.updateMissions();
+                },
+                loadAdminLogs() {
+                        if (typeof window === 'undefined') return;
+                        try {
+                                const raw = window.localStorage.getItem('atlas-admin-logs');
+                                if (!raw) {
+                                        this.eventsAdmin = [];
+                                        this.updateEvents();
+                                        return;
+                                }
+                                const parsed = JSON.parse(raw);
+                                if (!Array.isArray(parsed)) throw new Error('Logs store must be an array');
+                                this.eventsAdmin = parsed.map(this.normalizeAdminLog).filter(Boolean);
+                        } catch (error) {
+                                console.warn('Failed to load admin logs', error);
+                                this.eventsAdmin = [];
+                        }
+                        this.updateEvents();
+                },
+                updateMissions() {
+                        const combined = [];
+                        const map = new Map();
+                        this.missionsBase.forEach(mission => {
+                                if (!mission.slug) return;
+                                map.set(mission.slug, mission);
+                        });
+                        this.missionsAdmin.forEach(mission => {
+                                if (!mission.slug) return;
+                                map.set(mission.slug, {
+                                        ...mission,
+                                        content: applyWikiTransforms(mission.content || ''),
+                                });
+                        });
+                        map.forEach(value => combined.push(value));
+                        this.missions = this.sortMissions(combined);
+                },
+                updateEvents() {
+                        const adminProcessed = this.sortLogs(this.eventsAdmin).map(event => ({
+                                ...event,
+                                content: applyWikiTransforms(event.content || ''),
+                        }));
+                        this.events = [...adminProcessed, ...this.eventsBase];
+                },
+                sortMissions(list) {
+                        return [...list].sort((a, b) => {
+                                const left = Number(a.slug);
+                                const right = Number(b.slug);
+                                if (!Number.isNaN(left) && !Number.isNaN(right)) {
+                                        return right - left;
+                                }
+                                return String(b.slug || '').localeCompare(String(a.slug || ''));
+                        });
+                },
+                sortLogs(list) {
+                        return [...list].sort((a, b) => {
+                                const left = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+                                const right = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+                                return right - left;
+                        });
+                },
+                normalizeAdminMission(record) {
+                        if (!record || typeof record !== 'object') return null;
+                        const name = record.name || 'Untitled Mission';
+                        const slug = (record.slug || slugify(name)).trim();
+                        if (!slug) return null;
+                        const status = ['start', 'partial-success', 'success', 'failure'].includes(record.status)
+                                ? record.status
+                                : 'start';
+                        return {
+                                slug,
+                                name,
+                                status,
+                                content: typeof record.content === 'string' ? record.content : '',
+                                updatedAt: record.updatedAt || null,
+                        };
+                },
+                normalizeAdminLog(record) {
+                        if (!record || typeof record !== 'object') return null;
+                        return {
+                                title: record.title || 'Untitled Log',
+                                location: record.location || 'Unknown Location',
+                                time: record.time || '',
+                                thumbnail: record.thumbnail || '',
+                                content: typeof record.content === 'string' ? record.content : '',
+                                updatedAt: record.updatedAt || null,
+                        };
+                },
+        },
 };
 </script>
 

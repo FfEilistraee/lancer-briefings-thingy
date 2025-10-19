@@ -68,8 +68,20 @@ Quick notes while editing:
 
 - `summary` feeds the hover preview. Keep it short and punchy.
 - `quickFacts` and `tooltipFacts` add labeled bullet points inside the hover card.
+- Any quick fact with a `date`, `year`, or date-like label is parsed into the article timeline component.
 - The Obsidian-style `> [!infobox]` callout still works; every table row is parsed into the right-hand infobox.
 - Use `[[Double Brackets]]` to link between entries. Hovering shows a pop-up, and clicking takes you straight to the target file (terms simply show their hover card).
+- Populate `tags` generously—the viewer now highlights popular tags per category and uses them to recommend related entries beneath each article.
+
+### Atlas admin console
+
+Need a friendlier way to mint dossiers? Point your browser at `/admin` and log in with ID `admin` and passport `1234`. The console runs entirely in the browser:
+
+- Draft entries with forms for summary text, quick-fact timeline events, tags, and infobox fields—no markdown spelunking required.
+- Saved entries live in `localStorage`, appear instantly inside the World view, and can be exported back to markdown or JSON when you want to commit them to the repository.
+- Mark an entry as a draft to keep it off the public atlas while you iterate; delete it from the sidebar when you no longer need the local copy.
+
+Because everything is local, each collaborator signs in separately and controls their own unpublished drafts.
 
 ### _base.css
 

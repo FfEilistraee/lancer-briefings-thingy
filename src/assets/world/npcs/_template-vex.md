@@ -39,6 +39,11 @@ quickFacts:
     value: Oversees mining throughput and logistics
   - label: Temperament
     value: Gruff but fair to working crews
+  - label: 4981u Charter Renewal
+    value: Rustwatch-37 receives a long-term security contract
+    date: 4981
+    title: Security Charter Renewed
+    description: Orpheus signs Rustwatch-37 for another four-year tour guarding Boreline operations.
 # Summary powers the hover preview. Keep it short.
 summary: >
   Director Vex keeps the Elysion-9 rigs profitable with brutal efficiency, balancing corporate quotas with the lives of miners.
@@ -50,6 +55,8 @@ How to use this template
 2. Change draft: true to draft: false (or remove the line) so it appears in the archive.
 3. Update the fields above. Delete any rows you don't need.
 4. Replace the story text below with your write-up. Use [[double brackets]] for links.
+5. Add timeline-ready quick facts by including date fields (date, year, or a date-like label). They'll appear in the new Timeline section.
+6. Keep tags accurate—the app now surfaces related entries with overlapping tags right below the article body.
 -->
 
 > [!infobox]

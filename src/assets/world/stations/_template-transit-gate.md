@@ -18,6 +18,11 @@ quickFacts:
     value: Orpheus Extraction & Survey (leasing)
   - label: Security
     value: Rustwatch-37 garrison
+  - label: 4982-08 First Transit Test
+    value: Prototype gate spool spins up under supervision
+    date: 4982-08-14
+    title: Initial Transit Test
+    description: Engineers managed a short-range jump proving the incomplete ring could shunt cargo.
 stationClass: Logistics Gate
 constructed: 4982u
 status: Operational (Partial Ring)
@@ -37,6 +42,8 @@ How to use this template
 2. Remove draft: true when ready to show the entry.
 3. Update the quick facts and lists above to match your station.
 4. Detail the story below. Use headings for modules, commanders, or secrets.
+5. Timeline events come from quickFacts that include a date, year, or date-like label—add them to surface the new station chronicle.
+6. Use descriptive tags for trade lanes, factions, or worlds so the related-entry grid can stitch everything together.
 -->
 
 > [!infobox]
