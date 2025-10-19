@@ -199,7 +199,7 @@
     <button
       v-if="atlasCollapsed"
       type="button"
-      class="atlas-flyout-handle"
+      class="atlas-flyout-handle clipped-medium-backward"
       @click="expandAtlas"
     >
       <img src="/icons/npc.svg" alt="" aria-hidden="true" />
@@ -1275,35 +1275,34 @@ onUnmounted(() => {
 
 .atlas-flyout-handle {
   position: absolute;
-  top: 110px;
+  top: 108px;
   left: 66px;
   display: inline-flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 18px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(10,12,20,0.9);
-  color: var(--text-color);
+  gap: 18px;
+  height: 52px;
+  padding: 0 26px 0 20px;
+  border: 1px solid var(--primary-color);
+  background: var(--primary-color);
+  color: #05070d;
   cursor: pointer;
   box-shadow: 0 18px 42px rgba(0,0,0,0.45);
-  backdrop-filter: blur(12px);
-  z-index: 5;
-  transition: transform 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+  z-index: 8;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, filter 0.28s ease;
 }
 
 .atlas-flyout-handle:hover,
 .atlas-flyout-handle:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 22px 48px rgba(0,0,0,0.5);
-  border-color: var(--primary-color);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 52px rgba(0,0,0,0.55);
+  filter: brightness(1.05);
   outline: none;
 }
 
 .atlas-flyout-handle img {
-  width: 32px;
-  height: 32px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.28));
 }
 
 .atlas-flyout-copy {
@@ -1318,11 +1317,13 @@ onUnmounted(() => {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   opacity: 0.7;
+  color: rgba(5, 7, 13, 0.7);
 }
 
 .atlas-flyout-detail {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: #05070d;
 }
 
 /* Tabs */

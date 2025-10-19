@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-view">
+  <div :class="['admin-view', adminViewClasses]">
     <section v-if="!isAuthenticated" class="admin-login">
       <div class="admin-card clipped-medium-backward">
         <header class="admin-card__header">
@@ -339,6 +339,10 @@ const SESSION_KEY = 'atlas-admin-session'
 const credentials = reactive({ id: '', passport: '' })
 const isAuthenticated = ref(false)
 const loginError = ref('')
+
+const adminViewClasses = computed(() => ({
+  'admin-view--locked': !isAuthenticated.value,
+}))
 
 const storageAvailable = typeof window !== 'undefined' && (() => {
   try {
@@ -884,13 +888,26 @@ function triggerDownload(content, filename) {
   z-index: -1;
 }
 
+.admin-view--locked {
+  padding: 0;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
+}
+
+.admin-view--locked::before {
+  display: none;
+}
+
 .admin-login {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 140px);
-  padding: 24px;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  background: rgba(7, 10, 18, 0.76);
+  backdrop-filter: blur(18px);
+  z-index: 40;
 }
 
 .admin-card {
@@ -898,7 +915,7 @@ function triggerDownload(content, filename) {
   flex-direction: column;
   gap: 24px;
   padding: 28px 32px;
-  max-width: 420px;
+  max-width: 360px;
   width: 100%;
   background: rgba(18, 22, 34, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.12);
