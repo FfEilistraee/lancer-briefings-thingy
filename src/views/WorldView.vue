@@ -1507,15 +1507,15 @@ onUnmounted(() => {
 
 #world-detail.section-container {
   flex: 1 1 auto;
-  width: clamp(900px, 74vw, 1320px);
-  margin: 50px 60px;
+  width: clamp(1024px, 84vw, 1480px);
+  margin: 36px 44px;
   min-width: 0;
-  height: 714px;
-  max-height: calc(100vh - 190px);
+  height: 756px;
+  max-height: calc(100vh - 150px);
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
 #world-detail .section-content-container {
-  padding: 32px 36px;
+  padding: 36px 44px;
   flex: 1;
   overflow-y: auto;
 }
@@ -1529,15 +1529,15 @@ onUnmounted(() => {
 /* Two-column article layout */
 .wiki-article {
   display: grid;
-  grid-template-columns: minmax(560px, 1fr) 340px;
-  gap: 16px 24px;
+  grid-template-columns: minmax(640px, 1fr) 360px;
+  gap: 24px 32px;
   align-items: start;
 }
 .wiki-header { grid-column: 1 / -1; }
 .entry-type { font-size: 1rem; letter-spacing: .04em; opacity: .85; margin-bottom: .25rem; }
 .entry-title { font-size: 2rem; line-height: 1.2; margin: 0 0 .75rem; }
 
-.wiki-body { grid-column: 1; min-width: 560px; }
+.wiki-body { grid-column: 1; min-width: 640px; }
 #world-detail .wiki-body .markdown {
   height: auto;
   max-height: none;
@@ -1553,7 +1553,7 @@ onUnmounted(() => {
   text-decoration-color: rgba(255, 255, 255, 0.3);
   cursor: default;
 }
-.infobox { grid-column: 2; width: 100%; max-width: 340px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+.infobox { grid-column: 2; width: 100%; max-width: 360px; border: 1px solid var(--primary-color); background: var(--secondary-color); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,.1); }
 .infobox-image { display:block; width:100%; height:auto; }
 .infobox-table { width:100%; border-collapse: collapse; font-size: .95rem; }
 .infobox-label { text-align:left; vertical-align: top; padding: 6px 8px; font-weight: 600; width: 34%; border-bottom: 1px solid rgba(255,255,255,.08); }
