@@ -1,7 +1,8 @@
 <template>
   <div :class="['admin-view', adminViewClasses]">
     <section v-if="!isAuthenticated" class="admin-login">
-      <div class="admin-card clipped-medium-backward">
+      <div class="admin-card admin-login__panel clipped-medium-backward">
+        <p class="admin-login__eyebrow">Atlas admin // clearance required</p>
         <header class="admin-card__header">
           <img src="/icons/protocol.svg" alt="Atlas access" />
           <div>
@@ -10,23 +11,32 @@
           </div>
         </header>
 
-        <form class="admin-form-block" @submit.prevent="handleLogin">
-          <label class="admin-field">
-            <span>Agent ID</span>
-            <input v-model.trim="credentials.id" type="text" autocomplete="username" required />
-          </label>
-          <label class="admin-field">
-            <span>Passport</span>
-            <input v-model.trim="credentials.passport" type="password" autocomplete="current-password" required />
-          </label>
-          <button type="submit" class="admin-button primary">Enter console</button>
-          <p v-if="loginError" class="admin-error">{{ loginError }}</p>
-        </form>
+        <div class="admin-card__body">
+          <form class="admin-form-block" @submit.prevent="handleLogin">
+            <label class="admin-field">
+              <span>Agent ID</span>
+              <input v-model.trim="credentials.id" type="text" autocomplete="username" required />
+            </label>
+            <label class="admin-field">
+              <span>Passport</span>
+              <input
+                v-model.trim="credentials.passport"
+                type="password"
+                autocomplete="current-password"
+                required
+              />
+            </label>
+            <button type="submit" class="admin-button primary">Enter console</button>
+            <p v-if="loginError" class="admin-error">{{ loginError }}</p>
+          </form>
+        </div>
 
-        <p class="admin-hint">
-          Hint: use ID <code>{{ ADMIN_ID }}</code> and passport <code>{{ ADMIN_PASSPORT }}</code>.
-        </p>
-        <RouterLink to="/status" class="admin-exit-link">← Back to briefings</RouterLink>
+        <footer class="admin-card__footer">
+          <p class="admin-hint">
+            Hint: use ID <code>{{ ADMIN_ID }}</code> and passport <code>{{ ADMIN_PASSPORT }}</code>.
+          </p>
+          <RouterLink to="/status" class="admin-exit-link">← Back to briefings</RouterLink>
+        </footer>
       </div>
     </section>
 
@@ -492,7 +502,7 @@
                 <li v-for="(err, index) in missionErrors" :key="`mission-${index}`">{{ err }}</li>
               </ul>
 
-              <form class="admin-editor" @submit.prevent="saveMission">
+              <form class="admin-editor admin-editor--mission" @submit.prevent="saveMission">
                 <section class="admin-panel">
                   <header>
                     <h2>Mission details</h2>
@@ -566,7 +576,7 @@
                 <li v-for="(err, index) in logErrors" :key="`log-${index}`">{{ err }}</li>
               </ul>
 
-              <form class="admin-editor" @submit.prevent="saveLog">
+              <form class="admin-editor admin-editor--log" @submit.prevent="saveLog">
                 <section class="admin-panel">
                   <header>
                     <h2>Log metadata</h2>
@@ -1673,28 +1683,107 @@ function normalizeImportedLog(entry) {
 }
 
 .admin-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  padding: 28px 32px;
-  max-width: 360px;
+  padding: 32px 36px;
+  max-width: 460px;
   width: 100%;
-  background: rgba(18, 22, 34, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 18px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(16px);
+  background: linear-gradient(140deg, rgba(7, 10, 18, 0.92) 0%, rgba(15, 26, 44, 0.94) 55%, rgba(10, 32, 44, 0.92) 100%);
+  border: 1px solid rgba(94, 212, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 32px 70px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.admin-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(94, 212, 255, 0.22), transparent 55%),
+    radial-gradient(circle at 100% 100%, rgba(255, 120, 40, 0.14), transparent 45%);
+  opacity: 0.85;
+}
+
+.admin-card::after {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+.admin-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.admin-login__panel {
+  gap: 28px;
+  padding: 40px 44px;
+  max-width: min(520px, 100%);
+}
+
+.admin-login__eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(94, 212, 255, 0.75);
 }
 
 .admin-card__header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 
 .admin-card__header img {
   width: 48px;
   height: 48px;
+}
+
+.admin-card__header h1 {
+  margin: 0;
+  font-size: 1.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.admin-card__header p {
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.admin-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-card__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.admin-login__panel .admin-button.primary {
+  width: 100%;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-login__panel .admin-form-block {
+  gap: 18px;
 }
 
 .admin-form-block {
@@ -1856,6 +1945,11 @@ function normalizeImportedLog(entry) {
   align-items: flex-start;
 }
 
+.admin-workspace--ops {
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  align-items: stretch;
+}
+
 .admin-sidebar {
   display: flex;
   flex-direction: column;
@@ -1869,6 +1963,17 @@ function normalizeImportedLog(entry) {
 
 .admin-sidebar--ops {
   gap: 20px;
+}
+
+.admin-main--ops {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
+}
+
+.admin-main--ops > * {
+  min-width: 0;
 }
 
 .admin-new-entry {
@@ -2001,6 +2106,29 @@ function normalizeImportedLog(entry) {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.admin-editor--mission,
+.admin-editor--log {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  grid-auto-rows: min-content;
+  gap: 24px;
+}
+
+.admin-editor--mission .admin-actions,
+.admin-editor--log .admin-actions {
+  grid-column: 1 / -1;
+}
+
+.admin-editor--mission .admin-panel,
+.admin-editor--log .admin-panel {
+  align-self: stretch;
+}
+
+.admin-editor--mission textarea,
+.admin-editor--log textarea {
+  min-height: 360px;
 }
 
 .admin-editor__columns {
@@ -2158,8 +2286,17 @@ function normalizeImportedLog(entry) {
     grid-template-columns: 1fr;
   }
 
+  .admin-workspace--ops {
+    grid-template-columns: 1fr;
+  }
+
   .admin-sidebar {
     position: relative;
+  }
+
+  .admin-editor--mission,
+  .admin-editor--log {
+    grid-template-columns: 1fr;
   }
 
   .admin-editor__columns {
