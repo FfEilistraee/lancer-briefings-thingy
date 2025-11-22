@@ -25,7 +25,7 @@
 	--mission-partial: rgba(88, 34, 102, 1);
 	--mission-success: #226662;
 	--mission-failure: rgba(176, 45, 45, 1);
-	--primary-logo: #0C3C40;
+	--primary-logo: #0c3c40;
 	--secondary-logo: #146464;
 	/* Pilot Roster Text */
 	--text-pilot-header: rgba(255, 255, 255, 0.67);
@@ -382,7 +382,6 @@ section.section-container#pilots {
 	flex-direction: column;
 	margin: 50px 30px;
 	width: 1755px;
-
 }
 
 section.section-container#pilots .rhombus-back {
@@ -391,7 +390,7 @@ section.section-container#pilots .rhombus-back {
 }
 
 .pilot-list-container {
-    height:661px;
+	height: 661px;
 }
 
 section .section-header {
@@ -403,22 +402,20 @@ section .section-header {
 	padding-left: 16px;
 }
 
-
-
 .section-header-wrapper {
-        display: inline-flex;
-        align-items: stretch;
-        height: 52px;
-        overflow: hidden;
+	display: inline-flex;
+	align-items: stretch;
+	height: 52px;
+	overflow: hidden;
 }
 
 .section-header-wrapper > .section-header {
-        margin-right: 0;
+	margin-right: 0;
 }
 
 .section-header-wrapper > .rhombus-back {
-        align-self: stretch;
-        top: 0;
+	align-self: stretch;
+	top: 0;
 }
 
 section .section-header img {
@@ -893,7 +890,6 @@ section .section-header h1 {
 
 .pilot-wrapper .mech-column:hover {
 	background-color: var(--highlight-hover) !important;
-
 }
 
 .pilot-wrapper .mech-column .mech-info {
@@ -927,7 +923,7 @@ section .section-header h1 {
 	border-bottom: none;
 }
 
-.o-modal>div:nth-child(2) {
+.o-modal > div:nth-child(2) {
 	display: flex;
 	gap: 5em;
 }
@@ -1405,7 +1401,6 @@ div.markdown {
 	padding-right: 2em;
 }
 
-
 .event div.markdown {
 	height: 100%;
 }
@@ -1421,7 +1416,7 @@ div.markdown hr {
 div.markdown blockquote {
 	margin: 1em 0;
 	font-style: italic;
-	color: #999696
+	color: #999696;
 }
 
 div.markdown p strong {
@@ -1450,6 +1445,13 @@ div.markdown h2 {
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
 	color: var(--text-markdown-h2);
+}
+div.markdown a {
+	color: #a7f0ff;
+	text-decoration-color: rgba(167, 240, 255, 0.5);
+}
+div.markdown a:hover {
+	color: #c8fbff;
 }
 
 div.markdown ul {
@@ -1529,19 +1531,18 @@ div.markdown ol li {
 	font-weight: 800;
 	text-transform: uppercase;
 	letter-spacing: 0.1em;
-	padding:0.5em;
-	display:flex;
+	padding: 0.5em;
+	display: flex;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
-
 }
 .pilot-identity .col.grow-max {
-	flex-grow:100;
+	flex-grow: 100;
 }
 
 .pilot-identity .header .col img {
-	float:right;
-	height:84px;
+	float: right;
+	height: 84px;
 	width: 84px;
 }
 
@@ -1560,48 +1561,49 @@ div.markdown ol li {
 }
 
 .pilot-identity .body .add-padding {
-	padding:0px 8px;
+	padding: 0px 8px;
 }
 
 .pilot-identity .flex-container-rows {
-	display:flex;
+	display: flex;
 	flex-direction: column;
 }
 
 .pilot-identity .flex-container-cols {
-	display:flex;
+	display: flex;
 	flex-direction: row;
 }
 
 .pilot-identity .col.col-primary {
 	flex: 0 0 66.6666666667%;
-    max-width: 66.6666666667%;
+	max-width: 66.6666666667%;
 }
 
 .pilot-identity .col.col-share {
 	flex: 0 0 50%;
-    max-width: 50%;
+	max-width: 50%;
 }
 
-.pilot-identity .stat-text, .pilot-identity .accent--text{
-	color: var(--primary-color)
+.pilot-identity .stat-text,
+.pilot-identity .accent--text {
+	color: var(--primary-color);
 }
 
 .pilot-identity .chip-container {
-	display:inline;
+	display: inline;
 }
 
 .pilot-identity .chip {
-  border: 1px solid var(--primary-color);
-  padding: 4px;
-  margin: 4px;
-  line-height: 16px;
-  border-radius: 5px;
-  display: inline-block;
-  color: var(--primary-color);
-  font-size: 14px;
-  font-weight: bold;
-  text-transform: uppercase;
+	border: 1px solid var(--primary-color);
+	padding: 4px;
+	margin: 4px;
+	line-height: 16px;
+	border-radius: 5px;
+	display: inline-block;
+	color: var(--primary-color);
+	font-size: 14px;
+	font-weight: bold;
+	text-transform: uppercase;
 }
 
 .pilot-identity .pilot-image-container {
@@ -1611,7 +1613,7 @@ div.markdown ol li {
 
 .pilot-identity .pilot-image-border {
 	border: 5px double var(--primary-color);
-  	border-radius: 2px;
+	border-radius: 2px;
 	width: 250px;
 	height: 250px;
 }
@@ -1623,8 +1625,8 @@ div.markdown ol li {
 }
 
 .pilot-identity .biometrics-container {
-	flex-grow:1;
-	display:flex;
+	flex-grow: 1;
+	display: flex;
 	flex-direction: row;
 	padding-top: 0.5em;
 }
@@ -1633,7 +1635,7 @@ div.markdown ol li {
 	align-self: flex-end;
 }
 
-.pilot-identity .overline{
+.pilot-identity .overline {
 	font-size: 11px;
 	text-transform: uppercase;
 }

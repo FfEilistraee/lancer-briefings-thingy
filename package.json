@@ -17,18 +17,22 @@
 		"lancer-ktb-data": "^1.1.0",
 		"lancer-longrim-data": "^1.0.11",
 		"lancer-nrfaw-data": "^1.0.8",
+		"pinia": "^3.0.4",
 		"remove-markdown": "^0.5.0",
 		"typeit": "^8.7.0",
 		"vue": "^3.2.37",
 		"vue-chart-3": "^3.1.8",
-		"vue-router": "^4.1.4",
+		"vue-router": "^4.6.3",
 		"vue-writer": "^2.0.2"
 	},
 	"devDependencies": {
 		"@mdi/font": "^7.0.96",
 		"@types/node": "^18.7.14",
 		"@vitejs/plugin-vue": "^5.2.4",
+		"autoprefixer": "^10.4.22",
+		"postcss": "^8.5.6",
 		"prettier": "2.7.1",
+		"tailwindcss": "^4.1.17",
 		"vite": "^6.3.5",
 		"vite-plugin-compression": "^0.5.1",
 		"vite-plugin-vue-devtools": "^7.7.6"
