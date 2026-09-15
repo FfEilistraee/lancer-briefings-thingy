@@ -254,6 +254,7 @@ import {
 	transformWikiImages,
 	isWikiHref,
 	extractWikiSlug,
+	wikiPreviewText,
 } from "@/utils/wiki";
 import { parseFrontMatter } from "@/utils/frontMatter";
 import { setAtlasIndex } from "@/utils/atlasIndex";
@@ -888,11 +889,11 @@ function detectCategory(sourcePath, type) {
 
 function extractSummary(entry) {
 	if (entry.summary)
-		return Array.isArray(entry.summary) ? entry.summary.join(" ") : String(entry.summary);
+		return wikiPreviewText(entry.summary);
 	if (entry.tooltip)
-		return Array.isArray(entry.tooltip) ? entry.tooltip.join(" ") : String(entry.tooltip);
+		return wikiPreviewText(entry.tooltip);
 	const raw = entry.content || "";
-	const stripped = raw.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1").replace(/[#>*_`]/g, "");
+	const stripped = wikiPreviewText(raw);
 	const sentence =
 		stripped
 			.split(/\n+/)
@@ -1949,7 +1950,7 @@ onUnmounted(() => {
 }
 .wiki-header,
 .related-card__header { display: block; }
-#worldView { width: calc(100vw - 90px); min-width: 0; padding: 24px; gap: 24px; }
+#worldView { width: 100%; min-width: 0; padding: 24px; gap: 24px; overflow: visible; }
 #worldView.has-selection { gap: 24px; flex-wrap: wrap; }
 #world.section-container {
   width: min(100%, 520px);

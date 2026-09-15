@@ -1,3 +1,16 @@
+import removeMarkdown from 'remove-markdown'
+
+// Cards and hover previews display labels, while the article retains its links.
+export function wikiPreviewText(input) {
+  const text = Array.isArray(input) ? input.join(' ') : String(input ?? '')
+  const labels = text
+    .replace(/!\[\[[^\]]+\]\]/g, '')
+    .replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, label) => {
+      return (label || target.split('#')[0] || target.slice(1)).trim()
+    })
+  return removeMarkdown(labels).trim()
+}
+
 export function slugify(input) {
   return String(input || '')
     .replace(/&/g, ' and ')
