@@ -1,5 +1,5 @@
 import { parseFrontMatter } from "./frontMatter";
-import { slugify } from "./wiki";
+import { slugify, wikiPreviewText } from "./wiki";
 
 const STORAGE_KEY = "atlas-slug-index";
 
@@ -16,7 +16,7 @@ function normalizeEntries(entries) {
 			slug,
 			name: entry.name || slug,
 			type: entry.type || "Atlas Entry",
-			summary: entry.summary || "",
+			summary: wikiPreviewText(entry.summary),
 			thumbnail: entry.thumbnail || entry.cardThumbnail || "",
 		};
 	});
@@ -39,13 +39,13 @@ function getStoredAtlasIndex() {
 	if (atlasIndexCache) return atlasIndexCache;
 	if (typeof window === "undefined") return null;
 	if (window.atlasSlugIndex) {
-		atlasIndexCache = window.atlasSlugIndex;
+		atlasIndexCache = normalizeEntries(Object.values(window.atlasSlugIndex));
 		return atlasIndexCache;
 	}
 	try {
 		const raw = window.localStorage?.getItem(STORAGE_KEY);
 		if (raw) {
-			atlasIndexCache = JSON.parse(raw);
+			atlasIndexCache = normalizeEntries(Object.values(JSON.parse(raw)));
 			window.atlasSlugIndex = atlasIndexCache;
 			return atlasIndexCache;
 		}
@@ -120,15 +120,13 @@ function parseRawEntry(raw) {
 		name: data.name || data.slug || "",
 		type: data.type || "Atlas Entry",
 		thumbnail: data.thumbnail || data.cardThumbnail || "",
-		summary: extractSummary(body),
+		summary: data.summary ? wikiPreviewText(data.summary) : extractSummary(body),
 	};
 }
 
 function extractSummary(body) {
 	if (!body) return "";
-	const stripped = body
-		.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-		.replace(/[>#*_`]/g, "");
+	const stripped = wikiPreviewText(body);
 	const sentence = stripped
 		.split(/\n+/)
 		.map(line => line.trim())

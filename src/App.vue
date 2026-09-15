@@ -3,7 +3,7 @@
 		<Header :planet-path="planetPath" :class="{ animate: animate }" :header="header" />
 		<Sidebar :animate="animate" :class="{ animate: animate }" />
 	</div>
-	<div id="router-view-container">
+	<div id="router-view-container" :class="{ 'atlas-route': $route.name === 'World' }">
 		<router-view :animate="animate" :initial-slug="initialSlug" :missions="missions" :events="events"
 			:pilots="pilots" :clocks="clocks" :reserves="reserves" />
 	</div>
@@ -277,6 +277,14 @@ export default {
 </script>
 
 <style>
+/* Atlas articles grow naturally inside one viewport-sized scroll surface. */
+div#router-view-container.atlas-route {
+	right: 0;
+	bottom: 0;
+	min-height: 0;
+	overflow: auto;
+}
+
 #app {
 	min-height: 100vh;
 	overflow: hidden !important;
