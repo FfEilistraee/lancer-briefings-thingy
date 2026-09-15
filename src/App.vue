@@ -68,9 +68,7 @@ export default {
                         window.addEventListener('atlas-admin-logs-updated', this.loadAdminLogs);
                 }
         },
-        mounted() {
-                this.$router.push("/status");
-        },
+
         beforeUnmount() {
                 if (typeof window !== 'undefined') {
                         window.removeEventListener('atlas-admin-missions-updated', this.loadAdminMissions);
