@@ -14,13 +14,13 @@
 
 			<div class="section-content-container">
 				<div class="world-tabs-row">
-					<nav class="world-tabs" role="tablist">
+					<nav class="world-tabs" aria-label="Atlas categories">
 						<button
 							v-for="tab in tabs"
 							:key="tab.value"
 							type="button"
 							:class="['world-tab', { active: activeTab === tab.value }]"
-							role="tab"
+							 :aria-pressed="activeTab === tab.value"
 							@click="setActiveTab(tab.value, { skipAutoSelect: true, clearSelection: true })"
 						>
 							{{ tab.label }}
@@ -42,7 +42,8 @@
 					<div class="world-filter-bar" role="group" aria-label="Atlas search controls">
 						<input
 							v-model="query"
-							type="text"
+							type="search"
+							aria-label="Search Atlas records"
 							:placeholder="searchPlaceholder"
 							class="world-input"
 						/>
@@ -62,8 +63,8 @@
 					style="overflow: auto"
 				>
 					<p v-if="!visibleEntries.length" class="empty-placeholder">
-						No {{ emptyNoun }} logged yet. Drop a new markdown file inside
-						<code>{{ tabDirectoryHint }}</code> and reload.
+						{{ query.trim() ? "No records match this search. Try another name or tag." : "No records available in this category." }}
+						<button v-if="query.trim()" type="button" class="atlas-clear-search" @click="query = ''">Clear search</button>
 					</p>
 					<div class="world-grid" role="list">
 						<article
@@ -131,12 +132,13 @@
 						<section class="wiki-body" @click="handleMarkdownClick">
 							<VueMarkdownIt :source="selectedEntry.content" class="markdown" />
 							<div v-if="selectedEntry.tags && selectedEntry.tags.length" class="tag-chips">
-								<span
+								<button
+									type="button"
 									class="tag-chip"
 									v-for="t in selectedEntry.tags"
 									:key="t"
 									@click="appendTagToQuery(t)"
-									>{{ t }}</span
+									>{{ t }}</button
 								>
 							</div>
 						</section>
@@ -373,7 +375,7 @@ const filteredEntries = computed(() => {
 		.filter(e => {
 			if (!matchesTagFilters(e, tagFilters)) return false;
 			if (!plainQuery) return true;
-			const searchable = [e.name, e.type, ...(e.tags || []), e.content];
+			const searchable = [e.name, e.type, e.summary, ...(e.tags || []), e.content];
 			Object.entries(e).forEach(([k, v]) => {
 				if (!BASE_KEYS.has(k) && v) searchable.push(Array.isArray(v) ? v.join(" ") : String(v));
 			});
@@ -582,6 +584,7 @@ function appendTagToQuery(tag) {
 	const current = query.value.trim();
 	const tokens = current ? current.split(/\s+/) : [];
 	const normalized = tokens.map(t => t.toLowerCase());
+	atlasCollapsed.value = false;
 	if (normalized.includes(token.toLowerCase())) return;
 	const nextTokens = [...tokens, token].filter(Boolean);
 	query.value = nextTokens.join(" ").trim();
@@ -656,7 +659,12 @@ function attachWikiLinkEvents() {
 watch(
 	() => route.query.slug,
 	slug => {
-		if (!slug) return;
+		if (typeof slug !== "string" || !slug) {
+			selectedEntry.value = null;
+			atlasCollapsed.value = false;
+			hideTooltip();
+			return;
+		}
 		const entry = findEntryBySlug(slug);
 		if (!entry) return;
 		if (selectedEntry.value && selectedEntry.value.slug === slug) return;
@@ -1072,7 +1080,7 @@ function extractDateCandidate(value) {
 	const isoMatch = normalized.match(/^(\d{4})[./-](\d{1,2})(?:[./-](\d{1,2}))?$/);
 	if (isoMatch) {
 		const [, year, month, day] = isoMatch;
-		const date = new Date(Number(year), Number(month) - 1, day ? Number(day) : 1);
+		const date = new Date(Date.UTC(Number(year), Number(month) - 1, day ? Number(day) : 1));
 		return { text: raw, sortKey: date.getTime() };
 	}
 
@@ -1080,7 +1088,7 @@ function extractDateCandidate(value) {
 	if (yearOnly) {
 		const year = Number(yearOnly[0]);
 		if (!Number.isNaN(year)) {
-			return { text: raw, sortKey: year * 12 * 31 };
+			return { text: raw, sortKey: Date.UTC(year, 0, 1) };
 		}
 	}
 
@@ -1093,7 +1101,7 @@ function extractDateCandidate(value) {
 	if (firstYear) {
 		const year = Number(firstYear[1]);
 		if (!Number.isNaN(year)) {
-			return { text: raw, sortKey: year * 12 * 31 };
+			return { text: raw, sortKey: Date.UTC(year, 0, 1) };
 		}
 	}
 
@@ -1867,7 +1875,9 @@ onUnmounted(() => {
 
 .wiki-tooltip {
 	position: fixed;
-	max-width: 320px;
+	width: min(320px, calc(100vw - 24px));
+	max-height: calc(100vh - 24px);
+	overflow: auto;
 	padding: 12px;
 	background: rgba(12, 14, 22, 0.92);
 	border: 1px solid rgba(167, 240, 255, 0.5);
@@ -1926,5 +1936,65 @@ onUnmounted(() => {
 .tooltip-fade-enter-from,
 .tooltip-fade-leave-to {
 	opacity: 0;
+}
+
+/* Keep nested article headers independent of the global masthead rules. */
+.world-grid-card__header,
+.related-card__header,
+.wiki-header {
+  height: auto;
+  min-height: 0;
+  position: static;
+  background: transparent;
+}
+.wiki-header,
+.related-card__header { display: block; }
+#worldView { width: calc(100vw - 90px); min-width: 0; padding: 24px; gap: 24px; }
+#worldView.has-selection { gap: 24px; flex-wrap: wrap; }
+#world.section-container {
+  width: min(100%, 520px);
+  height: auto;
+  max-height: none;
+  margin: 0;
+}
+#worldView.no-selection #world { width: 100%; }
+#worldView.no-selection .world-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+#world-detail.section-container {
+  flex: 1 1 480px;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  max-height: none;
+  margin: 0;
+}
+#world-detail .atlas-back-button { position: static; align-self: flex-start; margin-bottom: 12px; }
+#world .events-list-container { height: auto; }
+.wiki-body { grid-row: 2; }
+.infobox { grid-row: 2; min-width: 0; width: 100%; }
+.wiki-timeline { grid-row: 3; }
+.related-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.world-grid-card__text, .wiki-header { min-width: 0; }
+.entry-title, .world-grid-card__title, .infobox-value { overflow-wrap: anywhere; }
+.world-tab, .world-filter-hint, .atlas-back-button, .tag-chip { font-size: .875rem; letter-spacing: .04em; }
+.world-input, .wiki-body, .world-grid-card__summary { font-size: 1rem; }
+.tag-chip { background: transparent; }
+.atlas-clear-search { display: block; margin: 12px auto 0; padding: 8px 12px; background: transparent; border: 1px solid var(--primary-color); color: var(--primary-color); cursor: pointer; }
+button:focus-visible, .world-input:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 3px; }
+@media (max-width: 1000px) {
+  #world.section-container { width: 100%; }
+  .wiki-article { grid-template-columns: minmax(0, 1fr); }
+  .infobox { grid-column: 1; grid-row: 3; max-width: none; }
+  .infobox-image { max-height: 360px; object-fit: contain; }
+  .wiki-timeline { grid-row: 4; }
+}
+@media (max-width: 600px) {
+  #worldView { padding: 12px; }
+  .world-tabs-row { flex-wrap: wrap; }
+  #world-detail .section-content-container { padding: 16px; }
+  .section-header-wrapper .section-header { width: 100%; clip-path: none; }
+  .section-header-wrapper .rhombus-back { display: none; }
 }
 </style>
